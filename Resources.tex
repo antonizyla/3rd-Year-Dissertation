@@ -1,4 +1,5 @@
 \documentclass{article} 
+\usepackage[a4paper, margin=3cm]{geometry}
 
 \usepackage{cite}
 
@@ -8,21 +9,40 @@
 \begin{document}
 
 \maketitle
+
 \section{Efficient Influence Maximization in Social Networks}
 \cite{chen2009efficient}
 
 \begin{enumerate}
-    \item 
+    \item Independant Cascade Model - Very simplistic spread of information model across a graph network, 'active' node has some probability $p_{vw}:V \times V \to [0,1]$ for a given edge to transfer information/influence across
+    \item  Social Network $G=(V,E), \hspace{0.5em}S \subset V$
+    \item Degree Discount Heuristic is that given vertex $v$ then if there is a direct 'active' neighbour $v_{nk}$ of $v$ where $deg(v) = p$ then the degree discount heursitic $h$ would say $h(v) = p - |activeNeighbours(v)|$
+    \item Weights can be added to vertices to give well weight to influence
+    \item Running time $O(k\log n + m)$ for degree discount using fib heap.. $O(kNm)$ for greedy initial
+    \item Basically just runs a traversal with some extra computation
 \end{enumerate}
 
 \section{Learning agent influence in MAS with complex
   social networks}
 \cite{franks2014learning}
 
+\begin{enumerate}
+  \item 14 heuristics, 5 found to be statistically significant
+  \item Sampling is required if dataset too large to work with given current algorithms and hardware
+  \item Retaining Structural Properties of the main network in the sub network is important to keep results accurate, 6 Ways listed, All have some drawbacks and upsides
+  \item Each of the 5 found perform differently on different networks due to underlying sub structure
+\end{enumerate}
+
 \section{Influential Nodes in a Diffusion Model for Social
   Networks}
 \cite{kempe2005influential}
 
+\begin{enumerate}
+  \item decreasing cascade model - 'active' nodes remain active, nodes are contagious and given some $k$ contagion attempts on all other nodes, probability of turning a node is dependant on a function $p$ which takes into account how many other nodes have tried to change it's state
+  \item Choose $S \subset V$ such that once $\forall v \in V$ $v$ is not contagious (we have stopped computation) maximise the number of nodes that are now active
+\end{enumerate}
+
 \bibliography{sources}{}
 \bibliographystyle{plain}
+
 \end{document}
