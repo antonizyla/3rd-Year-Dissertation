@@ -20,15 +20,14 @@ print("Checking data is imported in temp table")
 
 print("Performing data surgery")
 res = cursor.execute(
-    "CREATE TABLE emails (emailID INTEGER PRIMARY KEY ASC, sender TEXT, recipients TEXT)"
+    "CREATE TABLE emails (emailID INTEGER PRIMARY KEY ASC, sender TEXT, recipients TEXT, messageID Text)"
 )
 res = cursor.execute(
-    "insert into emails select ROWID, SUBSTR (message, INSTR (message, 'From: ') + 6, ABS( INSTR (message, 'From: ') + 6 - INSTR (message, 'To: '))) as sender, SUBSTR (message,INSTR (message, 'To: ') + 4,ABS(INSTR (message, 'To: ') + 4 - INSTR (message, 'Subject: '))) as recipients from foo;"
+    "insert into emails select ROWID, SUBSTR (message, INSTR (message, 'From: ') + 6, ABS( INSTR (message, 'From: ') + 7 - INSTR (message, 'To: '))) as sender, SUBSTR (message,INSTR (message, 'To: ') + 4,ABS(INSTR (message, 'To: ') + 5 - INSTR (message, 'Subject: '))) as recipients, substr(message, INSTR(message, '-ID: ')+5, ABS(INSTR(message, '-ID: ')-INSTR(message, 'Date: ')+6)) from foo;"
 )
 res = cursor.execute(
     "create table edges ( edgeID INTEGER PRIMARY KEY ASC,inNode TEXT Not null,outNode TEXT not null);"
 )
-
 
 print("Ingesting modified data into script")
 

@@ -3,8 +3,9 @@
 
 \usepackage{cite}
 
-\title{References List} 
+\title{Initial Research} 
 \author{Antoni Zyla}
+\date{13/05/2025}
 
 \begin{document}
 
@@ -13,11 +14,25 @@
 \section{Project Directions}
 
 \begin{enumerate}
-  \item Simulation platform for running social influence models across a given network
+  \item Simulation platform for running social influence models across a given network, maybe with some sort of UI to add vertices and egdges
   \item Find a new heursitic for a given dataset that is more efficient than given ones from \cite{franks2014learning}
-  \item Visualisation for simulation of Independant and Decreasing Cascade Mdoels and allow given heuristics to see how they affect the path taken.
+  \item Visualisation for simulation of Independant and Decreasing Cascade Mdoels and allow given heuristics to see how they affect the choice of subset
 \end{enumerate}
 
+\subsubsection{Firmer Ideas}
+
+\textbf{Abstract: } Influence Maximization Evaluation Research Platform \\
+
+Design and Implement a Tool for running various sampling techniques on networks, allowing for 'slot in' testing of various heuristics and comparison against existing papers. Operating on Independant Cascade, Decreasing Cascade and Linear Threashold Models.
+
+\begin{enumerate}
+  \item Import datasets using graphml format
+  \item Sample (maybe 3 diff ways) and save modified subsets of data 
+  \item Run each of the algorithms on any valid set of data 
+  \item Probably incorporate very small sqlite db to store the data - very little overhead for reading and writing and parallelism is not important.
+  \item User interface CLI and exposed API with documentation 
+  \item Export datasets as well as seed nodes and statistics - json?
+\end{enumerate}
 
 \section{Efficient Influence Maximization in Social Networks}
 \cite{chen2009efficient}
