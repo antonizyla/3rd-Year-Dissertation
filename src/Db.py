@@ -24,6 +24,7 @@ def create_tables(con: sqlite3.Connection) -> bool:
     cur.execute(query)
     return networks_table_exists(con)
 
+
 def delete_networks_table_contents(con: sqlite3.Connection) -> bool:
     query = """
         Drop table networks;
@@ -33,12 +34,23 @@ def delete_networks_table_contents(con: sqlite3.Connection) -> bool:
     create_tables(con)
     return networks_table_exists(con)
 
+
 def networks_table_exists(con: sqlite3.Connection) -> bool:
     cur: sqlite3.Cursor = con.cursor()
     res: sqlite3.Cursor = cur.execute("SELECT name FROM sqlite_master")
     if res.fetchone()[0] == "networks":
         return True
     return False
+
+
+def query_all_networks(con: sqlite3.Connection)->list[dict[str, str]]:
+    cur = con.cursor()
+    res = cur.execute("select name, id from networks")
+    rows = cur.fetchall()
+    r = []
+    for row in rows:
+        r.append({'name': row[0], 'id': row[1]})
+    return r
 
 def close(con: sqlite3.Connection):
     con.close()
