@@ -28,3 +28,14 @@ jobs:
         git add ./src/
         git commit -m "Formatted and Linted using Ruff" || echo "No commit required"
         git push
+    - name: Auto Generate Documentation using pdoc
+      run: |
+        cd src/
+        pdoc ./*.py -o ../docs
+        cd ..
+        git add .
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git commit -m "Generated Documentation" || echo "No commit required"
+        git push
+
