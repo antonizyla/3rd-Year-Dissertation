@@ -53,8 +53,6 @@ def load_data(con: sqlite3.Connection):
         print(f"{i + 1}. Name: {network['name']}, Id: {network['id']}")
     print("Select a network to work on, or 'q' to go back")
 
-
-
     c: str | int = prompt_for_input(
         ">>> ", ["q", "Q"], [i + 1 for i in range(len(networks))]
     )
