@@ -1,15 +1,19 @@
-import random
-import networkx as nx
-import uuid
-import sqlite3
-from Db import initialise_database
 import ast
+import random
+import sqlite3
+import uuid
+
+import networkx as nx
+
+from Db import initialise_database
 from helper import turn
 
 
 class Network:
     """
-    Network Class: Create, Update, Load, Save networks into a database. Run simulations on networks using ICC, DCC and LTM models and utilise various heuristics to choose seed nodes
+    Network Class: Create, Update, Load, Save networks into a database.
+    Run simulations on networks using ICC, DCC and LTM models and utilise
+    various heuristics to choose seed nodes
     """
 
     def __init__(self, project: str, name: str) -> None:
@@ -28,9 +32,12 @@ class Network:
 
     def save_db(self, verbose=False) -> str:
         """
-        Save the network into database. Database file specified when network was instanciated.
-        :param bool verbose: Default to `False`, adds logging of database actions if `True`
-        :return str network_id: `str` The unique identifier of the network in the database as a string
+        Save the network into database. Database file specified when network
+        was instanciated.
+        :param bool verbose: Default to `False`, adds logging of database
+        actions if `True`
+        :return str network_id: `str` The unique identifier of the network
+        in the database as a string
         """
         edge_list: list[str] = [line for line in nx.generate_edgelist(self.__G)]
         query = """
@@ -40,8 +47,8 @@ class Network:
             cur: sqlite3.Cursor = self.__con.cursor()
             cur.execute(query, (self.__network_id, self.__name, str(edge_list)))
             self.__con.commit()
-        except:
-            print("[Network] Error Saving to Database")
+        except Exception as e:
+            print(f"[Network] Error Saving to Database: {e}")
             return ""
         return self.__network_id
 
@@ -49,11 +56,9 @@ class Network:
         """
         Load the a given network from the database by it's name.
         :param str name: Name of network to retrieve
-        :param bool verbose: Default to `False`, adds logging of database actions if `True`
+        :param bool verbose: Default to `False`, adds logging of
+        database actions if `True`
         :return bool status: `True` if succeeded, `False` if not
-        """
-        query = """
-            select * from networks where name = ?
         """
         cur: sqlite3.Cursor = self.__con.cursor()
         res: sqlite3.Cursor = cur.execute(
@@ -71,10 +76,11 @@ class Network:
             self.__G.add_edges_from(edges)
             if verbose:
                 print(
-                    f"[Network Verbose] Loaded {len(self.__G.edges)} edges into graph"
+                    f"""[Network Verbose] Loaded {len(self.__G.edges)} 
+                    edges into graph"""
                 )
-        except:
-            print("[Network] Error Occured in Reading file")
+        except Exception as e:
+            print(f"[Network] Error Occured in Reading file: {e}")
             return False
         return True
 
@@ -82,15 +88,19 @@ class Network:
         """
         Run a simulation of the independant cascade model on the network.
         :param float p: Probability of a node turning a neighbouring node
-        :param list seed_nodes: The set of nodes which start the spread in the network
-        :return: A tuple in the form `(i, G)`, where `i` is the number of iterations before the network could no longer change in influence and `G` is the final graph after `i` iterations
+        :param list seed_nodes: The set of nodes which start the spread in
+        the network
+        :return: A tuple in the form `(i, G)`, where `i` is the number of
+        iterations before the network could no longer change in influence
+        and `G` is the final graph after `i` iterations
         """
 
         self.H: nx.DiGraph = self.__G
 
-        if seed_nodes == None or seed_nodes == []:
+        if seed_nodes is None or seed_nodes == []:
             print(
-                f"[Independant Cascade Model]  on network: {self.__name}. No seed nodes provided. Using Degree Heuristic"
+                f"""[Independant Cascade Model]  on network: {self.__name}. 
+                No seed nodes provided. Using Degree Heuristic"""
             )
             seed_nodes = self.deg_h()
 
@@ -123,15 +133,21 @@ class Network:
         """
         Run a simulation of the decreasing cascade model on the network.
         :param float p: Probability of a node turning a neighbouring node
-        :param list seed_nodes: The set of nodes which start the spread in the network
-        :param lambda dec_func: A single variable lambda function which denotes how the likelyhood of a node being influence changes every time it is attempted.
-        :return: A tuple in the form `(i, G)`, where `i` is the number of iterations before the network could no longer change in influence and `G` is the final graph after `i` iterations
+        :param list seed_nodes: The set of nodes which start the spread in
+        the network
+        :param lambda dec_func: A single variable lambda function which
+        denotes how the likelyhood of a node being influence changes every
+        time it is attempted.
+        :return: A tuple in the form `(i, G)`, where `i` is the number of
+        iterations before the network could no longer change in influence
+        and `G` is the final graph after `i` iterations
         """
         self.H = self.__G
 
-        if seed_nodes == None or seed_nodes == []:
+        if seed_nodes is None or seed_nodes == []:
             print(
-                f"[Decreasing Cascade Model] on network: {self.__name}. No seed nodes provided. Using Degree Heuristic"
+                f"""[Decreasing Cascade Model] on network: {self.__name}. 
+                No seed nodes provided. Using Degree Heuristic"""
             )
             seed_nodes = self.deg_h()
 
@@ -161,15 +177,21 @@ class Network:
     ) -> tuple[int, nx.DiGraph]:
         """
         Run a simulation of the linear threshold model on the network.
-        :param list seed_nodes: The set of nodes which start in the `active` state
-        :param lambda thres_funct: A lambda function which gives the threshold for a given node, taking in the graph and the specific node
-        :return: A tuple in the form `(i, G)`, where `i` is the number of iterations before the network could no longer change in influence and `G` is the final graph after `i` iterations
+        :param list seed_nodes: The set of nodes which start in the
+        `active` state
+        :param lambda thres_funct: A lambda function which gives the
+        threshold for a given node, taking in the graph and the specific node
+        :return: A tuple in the form `(i, G)`, where `i` is the number of
+        iterations before the network could no longer change in influence
+        and `G` is the final graph after `i` iterations
         """
         self.H = self.__G
 
-        if seed_nodes == None or seed_nodes == []:
+        if seed_nodes is None or seed_nodes == []:
             print(
-                f"[Linear Threshold Model] on network: {self.__name}. No seed nodes provided. Using Degree Heuristic"
+                f"""[Linear Threshold Model] on network: 
+                {self.__name}. No seed nodes provided. Using 
+                Degree Heuristic"""
             )
             seed_nodes = self.deg_h()
 
@@ -218,7 +240,9 @@ class Network:
         """
         Find n vertices in the graph that satisfy the degree discount heuristic
 
-        Takes the highest degree vertex v from the network, removes it from the network (thereby lowering the degree of adj(v)) and continues doing this until n vertices are found.
+        Takes the highest degree vertex v from the network, removes it from
+        the network (thereby lowering the degree of adj(v)) and continues doing
+        this until n vertices are found.
 
         :param int n: Number of vertices to return
         :return: list of size n of vertices

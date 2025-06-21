@@ -1,0 +1,9 @@
+# python ci formatter and linter settings
+line-length = 88
+target-version = "py313"
+
+[lint]
+select = ["E", "F", "I"]  # Errors, pyflakes, isort-compatible import sorting
+
+[format]
+quote-style = "double"
