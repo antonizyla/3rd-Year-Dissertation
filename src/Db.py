@@ -43,14 +43,15 @@ def networks_table_exists(con: sqlite3.Connection) -> bool:
     return False
 
 
-def query_all_networks(con: sqlite3.Connection)->list[dict[str, str]]:
+def query_all_networks(con: sqlite3.Connection) -> list[dict[str, str]]:
     cur = con.cursor()
     res = cur.execute("select name, id from networks")
     rows = cur.fetchall()
     r = []
     for row in rows:
-        r.append({'name': row[0], 'id': row[1]})
+        r.append({"name": row[0], "id": row[1]})
     return r
+
 
 def close(con: sqlite3.Connection):
     con.close()

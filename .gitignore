@@ -6,3 +6,5 @@ Resources.fdb_latexmk
 Resources.fls
 Resources.log 
 Resources.synctex.gz
+
+./src/__pycache__
