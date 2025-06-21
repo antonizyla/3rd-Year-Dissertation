@@ -22,7 +22,7 @@ jobs:
     - name: Auto fix ruff 
       run: |
         ruff check ./src/ --fix
-        ruff format ./src/ --fix
+        ruff format ./src/
         git config user.name github-actions
         git config user.email github-actions@github.com 
         git add ./src/
