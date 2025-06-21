@@ -1,0 +1,27 @@
+name: Influence Modelling Suite 
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Format with ruff 
+      run: |
+        ruff format --check ./src/
+    - name: Auto fix ruff 
+        ruff check ./src/ --fix
+        git config user.name github-actions
+        git config user.email github-actions@github.com 
+        git add ./src/
+        git commit -m "Formatted and Linted using Ruff"
+
