@@ -1,4 +1,4 @@
-name: Influence Modelling Suite 
+name: Lint, Format, Auto-fix 
 on: [push]
 permissions:
   contents: write
@@ -22,6 +22,7 @@ jobs:
     - name: Auto fix ruff 
       run: |
         ruff check ./src/ --fix
+        ruff format ./src/ --fix
         git config user.name github-actions
         git config user.email github-actions@github.com 
         git add ./src/
