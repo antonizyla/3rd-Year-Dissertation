@@ -8,3 +8,9 @@ Resources.log
 Resources.synctex.gz
 
 ./src/__pycache__
+Notebooks/db.db
+src/__pycache__/CsvNetwork.cpython-313.pyc
+src/__pycache__/Db.cpython-313.pyc
+src/__pycache__/helper.cpython-313.pyc
+src/__pycache__/main.cpython-313.pyc
+src/__pycache__/Network.cpython-313.pyc
