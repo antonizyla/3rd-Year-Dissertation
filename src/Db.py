@@ -1,5 +1,5 @@
-import sqlite3
 import os
+import sqlite3
 
 
 def initialise_database(path) -> sqlite3.Connection | None:
@@ -44,8 +44,8 @@ def networks_table_exists(con: sqlite3.Connection) -> bool:
 
 
 def query_all_networks(con: sqlite3.Connection) -> list[dict[str, str]]:
-    cur = con.cursor()
-    res = cur.execute("select name, id from networks")
+    cur: sqlite3.Cursor = con.cursor()
+    cur.execute("select name, id from networks")
     rows = cur.fetchall()
     r = []
     for row in rows:

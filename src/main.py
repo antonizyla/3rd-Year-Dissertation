@@ -1,6 +1,7 @@
-from Db import query_all_networks, initialise_database
 import sqlite3
 import sys
+
+from Db import initialise_database, query_all_networks
 
 
 def prompt_for_input(prompt: str, letters: list[str], numbers: list[int]) -> str | int:
@@ -49,12 +50,12 @@ def load_data(con: sqlite3.Connection):
     print("Networks in Database: ")
     networks: list[dict[str, str]] = query_all_networks(con)
     for i, network in enumerate(networks):
-        print(f"{i+1}. Name: {network['name']}, Id: {network['id']}")
+        print(f"{i + 1}. Name: {network['name']}, Id: {network['id']}")
     print("Select a network to work on, or 'q' to go back")
     c: str | int = prompt_for_input(
         ">>> ", ["q", "Q"], [i + 1 for i in range(len(networks))]
     )
-    if type(c) == int:
+    if type(c) is int:
         work_on_network(networks[c - 1]["id"], networks[c - 1]["name"])
     else:
         print("[Returning to Main Menu]")
