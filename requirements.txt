@@ -8,4 +8,3 @@ pyright # type checker for ci
 
 # Actual program
 networkx
-ast
