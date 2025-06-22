@@ -38,7 +38,8 @@ class Net_CSV(Network):
                 self.H.add_edge(split_line[0], split_line[1])
             elif len(split_line) == 3:
                 self.H.add_edge(
-                    split_line[0], split_line[1], ast.literal_eval(split_line[2])) # type: ignore
+                    split_line[0], split_line[1], ast.literal_eval(split_line[2])
+                )  # type: ignore
             else:
                 print(f"[CSV Network] Error Reading row: {line}")
         self.__G = self.H
