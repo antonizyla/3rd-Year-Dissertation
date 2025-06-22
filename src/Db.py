@@ -6,10 +6,19 @@ def initialise_database(path) -> sqlite3.Connection | None:
     if os.path.exists(os.path.join(os.getcwd(), path)):
         print("[Database] File Found - Connection Successful")
         con: sqlite3.Connection = sqlite3.connect(path)
+        try:
+            cur = con.cursor()
+            cur.execute("PRAGMA integrity_check")
+        except sqlite3.DatabaseError:
+            print(
+                "[Database] Given File is not a valid Sqlite Database File, choose a different file"
+            )
+            return None
         return con
     else:
-        print("[Database] File Not Found - Please Create a DB file for Sqlite to use")
-        return None
+        print("[Database] File Not Found - Creating one")
+        con: sqlite3.Connection = sqlite3.connect(os.path.join(os.getcwd(), path))
+        return con
 
 
 def create_tables(con: sqlite3.Connection) -> bool:
