@@ -38,4 +38,7 @@ jobs:
         git config user.email github-actions@github.com
         git commit -m "Generated Documentation" || echo "No commit required"
         git push
+    - name: Test with Pytest
+      run: |
+        pytest
 
