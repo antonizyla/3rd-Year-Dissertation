@@ -11,7 +11,8 @@ def initialise_database(path) -> sqlite3.Connection | None:
             cur.execute("PRAGMA integrity_check")
         except sqlite3.DatabaseError:
             print(
-                "[Database] Given File is not a valid Sqlite Database File, choose a different file"
+                "[Database] Given File is not a valid Sqlite Database File, " \
+                "choose a different file"
             )
             return None
         return con
