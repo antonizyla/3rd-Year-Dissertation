@@ -4,7 +4,7 @@ from Network import Network
 
 
 def test_invalid_project():
-    net = Network("ABC", "name") # noqa: F841
+    net = Network("ABC", "name")  # noqa: F841
     # there doesn't exist a file called ABC
     # expected behaviour is to create one
     if not os.path.isfile("ABC"):
