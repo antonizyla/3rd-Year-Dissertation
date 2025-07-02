@@ -2,7 +2,7 @@ import os
 import sqlite3
 import sys
 
-from Db import initialise_database, query_all_networks
+from Influence_Modelling import Db
 
 
 def prompt_for_input(prompt: str, letters: list[str], numbers: list[int]) -> str | int:
@@ -81,7 +81,7 @@ def input_workspace():
 def load_data(con: sqlite3.Connection):
     print("[Loading Data] Entering Loading Data")
     print("Networks in Database: ")
-    networks: list[dict[str, str]] = query_all_networks(con)
+    networks: list[dict[str, str]] = Db.query_all_networks(con)
     for i, network in enumerate(networks):
         print(f"{i + 1}. Name: {network['name']}, Id: {network['id']}")
     print("Select a network to work on, or 'q' to go back")
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # make this be over a filepath for a set of sqlite file which
     # will act as 'projects'
     project_file = "db"
-    c: sqlite3.Connection | None = initialise_database(project_file)
+    c: sqlite3.Connection | None = Db.initialise_database(project_file)
     if c is None:
         print(f"[Error] Cannot establish connection to database `{project_file}`")
         sys.exit(1)

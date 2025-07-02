@@ -5,7 +5,7 @@ import uuid
 
 import networkx as nx
 
-from . import Db, helper
+from Influence_Modelling import Db, helper
 
 
 class Network:
