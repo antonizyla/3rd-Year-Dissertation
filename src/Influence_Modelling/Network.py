@@ -4,8 +4,8 @@ import sqlite3
 import uuid
 
 import networkx as nx
-from Db import initialise_database
-from helper import turn
+
+from . import Db, helper
 
 
 class Network:
@@ -29,7 +29,7 @@ class Network:
         self.__H = self.__G
         self.__name: str = name
         self.__limit: int = 10**5  # limit on the number of iterations reached
-        con: sqlite3.Connection | None = initialise_database(project)
+        con: sqlite3.Connection | None = Db.initialise_database(project)
         if con is not None:
             self.__con: sqlite3.Connection = con
 
@@ -119,7 +119,7 @@ class Network:
             for node in self.__active_nodes():
                 self.H.add_node(node, status="used")
                 for adj in self.H.adj[node]:
-                    if turn(p) and self.H.nodes[adj]["status"] == "inactive":
+                    if helper.turn(p) and self.H.nodes[adj]["status"] == "inactive":
                         self.H.add_node(adj, status="active")
             i += 1
         return (i, self.H)
@@ -168,7 +168,7 @@ class Network:
                 for adj in self.H.adj[node]:
                     if self.H.nodes[adj]["status"] == "inactive":
                         probability: float = self.H.nodes[adj]["prob"]
-                        if turn(probability):
+                        if helper.turn(probability):
                             self.H.add_node(adj, status="active")
                         else:
                             self.H.add_node(adj, prob=dec_func(probability))

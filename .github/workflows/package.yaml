@@ -1,0 +1,27 @@
+name: Package 
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.13"
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        sudo apt-get install sqlite3 libsqlite3-dev
+    - name: Package
+      run: | 
+        python -m build
+        git config --global user.name github-actions 
+        git config --global user.email github-actions@github.com 
+        git add dist/
+        git commit -m "Built package" || echo "No commit required"
+        git push
+    
