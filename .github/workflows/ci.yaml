@@ -21,14 +21,11 @@ jobs:
         ruff format ./src/
     - name: Auto fix ruff 
       run: |
-        ruff check ./src/ --fix
-        ruff check ./test/ --fix
-        ruff format ./src/
-        ruff format ./test/
+        ruff check src/ --fix
+        ruff format src/
         git config user.name github-actions
         git config user.email github-actions@github.com 
-        git add ./src/
-        git add ./test/
+        git add src/
         git commit -m "Formatted and Linted using Ruff" || echo "No commit required"
         git push
     - name: Auto Generate Documentation using pdoc
