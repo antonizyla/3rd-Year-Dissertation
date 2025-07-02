@@ -34,7 +34,7 @@ jobs:
     - name: Auto Generate Documentation using pdoc
       run: |
         cd src/Influence_Modelling
-        pdoc ./*.py -o ../docs
+        pdoc ./*.py -o ../../docs
         cd ..
         git add .
         git config user.name github-actions
