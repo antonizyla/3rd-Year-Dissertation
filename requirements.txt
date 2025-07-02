@@ -5,6 +5,9 @@ pytest # testing framework
 pdoc # documentation generator
 ruff # code formatter and linter
 pyright # type checker for ci
+build
+packaging
+hatchling
 
 # Actual program
 networkx
