@@ -2,15 +2,16 @@ import ast
 import os
 from pathlib import Path
 
+from . import Network as Net
+
 import networkx as nx
-from Network import Network
 
 """
 Class for dealing with input from a csv file
 """
 
 
-class Net_CSV(Network):
+class Net_CSV(Net.Network):
     def __init__(self, project: str, name: str, filepath: str):
         self.__filepath = filepath
 

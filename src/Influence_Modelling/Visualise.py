@@ -1,9 +1,8 @@
 import networkx as nx
-from Network import Network
-
+from . import Network as Net
 
 class Visualise:
-    def __init__(self, network: Network, pos) -> None:
+    def __init__(self, network: Net.Network, pos) -> None:
         self.network = network
         self.positioning = nx.arf_layout(self.network.get_nx())
         return None
