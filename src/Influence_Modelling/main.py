@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import sys
 
@@ -45,6 +46,38 @@ def initial_load_print(con: sqlite3.Connection):
             initial_load_print(con)
 
 
+def initial_load(con: sqlite3.Connection):
+    print("Welcome to Influence Modelling Framework")
+    workspace = input_workspace()
+    print(workspace)
+
+
+def input_workspace(): 
+    print("Select a workspace folder")
+    print("-------------------------")
+    print("n. Create a new folder")
+    directories = [
+        dir
+        for dir in os.listdir(os.getcwd())
+        if os.path.isdir(os.path.join(os.getcwd(), dir))
+    ]
+    print("--Available Directories: --")
+    for index, dir in enumerate(directories):
+        print(f"{index}. ./{dir}/")
+    choice: str | int = prompt_for_input(
+        "Choose and option: ", ["n", "q"], [x + 1 for x in range(len(directories))]
+    )
+    if type(choice) is str:
+        if choice == "n":
+            print("[Moving to New Workspace Creation Screen]")
+            return "n"
+        else:
+            print("[Quiting Program]")
+            return "q"
+    elif type(choice) is int:
+        return str(directories[choice - 1])
+
+
 def load_data(con: sqlite3.Connection):
     print("[Loading Data] Entering Loading Data")
     print("Networks in Database: ")
@@ -78,6 +111,6 @@ if __name__ == "__main__":
         sys.exit(1)
     con: sqlite3.Connection = c
 
-    initial_load_print(con)
+    initial_load(con)
 
     sys.exit(0)
