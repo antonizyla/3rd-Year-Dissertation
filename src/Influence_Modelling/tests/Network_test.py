@@ -1,10 +1,10 @@
 import os
 
-from Network import Network
+import Influence_Modelling.Network as Net
 
 
 def test_invalid_project():
-    net = Network("ABC", "name")  # noqa: F841
+    net = Net.Network("ABC", "name")  # noqa: F841
     # there doesn't exist a file called ABC
     # expected behaviour is to create one
     if not os.path.isfile("ABC"):
@@ -20,7 +20,7 @@ def test_malformed_sqlite():
     f.write("Text File Contents")
     f.close()
 
-    n = Network("TestFile", "Network")
+    n = Net.Network("TestFile", "Network")
     assert n.save_db() == ""  # should not save as it's invalid
 
     os.remove("TestFile")

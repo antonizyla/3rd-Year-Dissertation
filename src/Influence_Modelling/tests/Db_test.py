@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from Db import initialise_database
+from Influence_Modelling.Db import initialise_database
 
 
 def test_initialise_db():
