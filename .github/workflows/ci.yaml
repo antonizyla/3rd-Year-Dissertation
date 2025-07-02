@@ -33,7 +33,7 @@ jobs:
         git push
     - name: Auto Generate Documentation using pdoc
       run: |
-        cd src/
+        cd src/Influence_Modelling
         pdoc ./*.py -o ../docs
         cd ..
         git add .
