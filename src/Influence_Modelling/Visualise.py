@@ -1,6 +1,6 @@
+import networkx as nx
 from Network import Network
 
-import networkx as nx
 
 class Visualise:
     def __init__(self, network: Network, pos) -> None:

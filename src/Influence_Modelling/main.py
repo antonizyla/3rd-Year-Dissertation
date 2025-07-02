@@ -1,8 +1,8 @@
-from Db import initialise_database, query_all_networks
-
 import os
 import sqlite3
 import sys
+
+from Db import initialise_database, query_all_networks
 
 
 def prompt_for_input(prompt: str, letters: list[str], numbers: list[int]) -> str | int:
