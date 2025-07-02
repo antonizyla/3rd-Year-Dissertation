@@ -4,7 +4,6 @@ import sqlite3
 import uuid
 
 import networkx as nx
-
 from Db import initialise_database
 from helper import turn
 
@@ -16,6 +15,9 @@ class Network:
     various heuristics to choose seed nodes
     """
 
+    def get_nx(self):
+        return self.__H
+
     def __init__(self, project: str, name: str) -> None:
         """
         Initialise a new empty Graph.
@@ -24,6 +26,7 @@ class Network:
         """
         self.__network_id: str = str(uuid.uuid4())
         self.__G: nx.DiGraph = nx.empty_graph()
+        self.__H = self.__G
         self.__name: str = name
         self.__limit: int = 10**5  # limit on the number of iterations reached
         con: sqlite3.Connection | None = initialise_database(project)
