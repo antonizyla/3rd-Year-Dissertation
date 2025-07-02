@@ -2,9 +2,9 @@ import ast
 import os
 from pathlib import Path
 
-from . import Network as Net
-
 import networkx as nx
+
+from . import Network as Net
 
 """
 Class for dealing with input from a csv file

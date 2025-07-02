@@ -1,5 +1,7 @@
 import networkx as nx
+
 from . import Network as Net
+
 
 class Visualise:
     def __init__(self, network: Net.Network, pos) -> None:
