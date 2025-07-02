@@ -52,7 +52,7 @@ def initial_load(con: sqlite3.Connection):
     print(workspace)
 
 
-def input_workspace(): 
+def input_workspace():
     print("Select a workspace folder")
     print("-------------------------")
     print("n. Create a new folder")

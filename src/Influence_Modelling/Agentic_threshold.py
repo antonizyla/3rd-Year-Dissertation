@@ -6,7 +6,7 @@ class Agentic_threshold_model:
         self.__relationship_matrix: dict[str, list[str]] = {
             "Student": ["Teacher", "Student"],
             "Teacher": ["Student", "Parent", "Teacher"],
-            "Parent": ["Student", "Teacher", "Parent"]
+            "Parent": ["Student", "Teacher", "Parent"],
         }
 
     def __network(self):

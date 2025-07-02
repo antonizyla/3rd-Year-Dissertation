@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 import networkx as nx
-
 from Network import Network
 
 """

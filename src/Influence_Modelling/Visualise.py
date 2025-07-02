@@ -1,10 +1,8 @@
-import matplotlib.pyplot as plt
-from Network import Network
 import networkx as nx
+from Network import Network
 
 
 class Visualise:
-
     def __init__(self, network: Network, pos) -> None:
         self.network = network
         self.positioning = nx.arf_layout(self.network.get_nx())
@@ -30,7 +28,7 @@ class Visualise:
             return "blue"  # for used nodes
 
     def __colour_nodes(self):
-        for node in g.nodes.data():
+        for node in self.network.__G.nodes.data():
             self.network.add_node(
                 node[0],
                 status=node[1]["status"],

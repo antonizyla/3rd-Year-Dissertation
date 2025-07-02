@@ -4,7 +4,6 @@ import sqlite3
 import uuid
 
 import networkx as nx
-
 from Db import initialise_database
 from helper import turn
 
