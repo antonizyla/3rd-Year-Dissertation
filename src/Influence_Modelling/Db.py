@@ -2,9 +2,10 @@ import os
 import sqlite3
 
 
-def initialise_database(path) -> sqlite3.Connection | None:
+def initialise_database(path, verbose=False) -> sqlite3.Connection | None:
     if os.path.exists(os.path.join(os.getcwd(), path)):
-        print("[Database] File Found - Connection Successful")
+        if verbose:
+            print("[Database] File Found - Connection Successful")
         con: sqlite3.Connection = sqlite3.connect(path)
         try:
             cur = con.cursor()
@@ -17,7 +18,8 @@ def initialise_database(path) -> sqlite3.Connection | None:
             return None
         return con
     else:
-        print("[Database] File Not Found - Creating one")
+        if verbose:
+            print("[Database] File Not Found - Creating one")
         con: sqlite3.Connection = sqlite3.connect(os.path.join(os.getcwd(), path))
         return con
 
