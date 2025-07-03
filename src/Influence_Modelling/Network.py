@@ -16,9 +16,9 @@ class Network:
     """
 
     def get_nx(self):
-        return self.__H
+        return self.__G
 
-    def __init__(self, project: str, name: str) -> None:
+    def __init__(self, project: str, name: str, verbose: bool = False) -> None:
         """
         Initialise a new empty Graph.
         :param str project: Name of Project - links to sqlite file
@@ -28,12 +28,13 @@ class Network:
         self.__G: nx.DiGraph = nx.empty_graph()
         self.__H = self.__G
         self.__name: str = name
+        self.__v = verbose
         self.__limit: int = 10**5  # limit on the number of iterations reached
         con: sqlite3.Connection | None = Db.initialise_database(project)
         if con is not None:
             self.__con: sqlite3.Connection = con
 
-    def save_db(self, verbose=False) -> str:
+    def save_db(self) -> str:
         """
         Save the network into database. Database file specified when network
         was instanciated.
@@ -55,7 +56,7 @@ class Network:
             return ""
         return self.__network_id
 
-    def load_from_db(self, name: str, verbose=False) -> bool:
+    def load_from_db(self, name: str) -> bool:
         """
         Load the a given network from the database by it's name.
         :param str name: Name of network to retrieve
@@ -77,7 +78,7 @@ class Network:
                 sp: list[str] = edge.split()
                 edges.append((sp[0], sp[1], ast.literal_eval(sp[2])))
             self.__G.add_edges_from(edges)
-            if verbose:
+            if self.__v:
                 print(
                     f"""[Network Verbose] Loaded {len(self.__G.edges)} 
                     edges into graph"""
@@ -98,7 +99,7 @@ class Network:
         and `G` is the final graph after `i` iterations
         """
 
-        self.H: nx.DiGraph = self.__G
+        self.__H: nx.DiGraph = self.__G
 
         if seed_nodes is None or seed_nodes == []:
             print(
@@ -108,24 +109,24 @@ class Network:
             seed_nodes = self.deg_h()
 
         # set all nodes to be inactive
-        for v in self.H.nodes.data():
+        for v in self.__H.nodes.data():
             self.__G.add_node(v[0], status="inactive")
         # set our seed nodes to be active
         for s in seed_nodes:
-            self.H.add_node(s[0], status="active")
+            self.__H.add_node(s[0], status="active")
 
         i: int = 0
         while not self.__all_nodes_complete() and i < self.__limit:
             for node in self.__active_nodes():
-                self.H.add_node(node, status="used")
-                for adj in self.H.adj[node]:
-                    if helper.turn(p) and self.H.nodes[adj]["status"] == "inactive":
-                        self.H.add_node(adj, status="active")
+                self.__H.add_node(node, status="used")
+                for adj in self.__H.adj[node]:
+                    if helper.turn(p) and self.__H.nodes[adj]["status"] == "inactive":
+                        self.__H.add_node(adj, status="active")
             i += 1
-        return (i, self.H)
+        return (i, self.__H)
 
     def __all_nodes_complete(self) -> bool:
-        for n in self.H.nodes.data():
+        for n in self.__H.nodes.data():
             if n[1]["status"] == "active":
                 return False
         return True
@@ -145,7 +146,7 @@ class Network:
         iterations before the network could no longer change in influence
         and `G` is the final graph after `i` iterations
         """
-        self.H = self.__G
+        self.__H = self.__G
 
         if seed_nodes is None or seed_nodes == []:
             print(
@@ -155,25 +156,25 @@ class Network:
             seed_nodes = self.deg_h()
 
         # all nodes inactive and get a starting probability
-        for node in self.H.nodes.data():
-            self.H.add_node(node[0], status="inactive", prob=p)
+        for node in self.__H.nodes.data():
+            self.__H.add_node(node[0], status="inactive", prob=p)
         # seed nodes become active
         for seed in seed_nodes:
-            self.H.add_node(seed, status="active")
+            self.__H.add_node(seed, status="active")
         # same as ICC
         i = 0
         while not self.__all_nodes_complete() and i < self.__limit:
             for node in self.__active_nodes():
-                self.H.add_node(node, status="used")
-                for adj in self.H.adj[node]:
-                    if self.H.nodes[adj]["status"] == "inactive":
-                        probability: float = self.H.nodes[adj]["prob"]
+                self.__H.add_node(node, status="used")
+                for adj in self.__H.adj[node]:
+                    if self.__H.nodes[adj]["status"] == "inactive":
+                        probability: float = self.__H.nodes[adj]["prob"]
                         if helper.turn(probability):
-                            self.H.add_node(adj, status="active")
+                            self.__H.add_node(adj, status="active")
                         else:
-                            self.H.add_node(adj, prob=dec_func(probability))
+                            self.__H.add_node(adj, prob=dec_func(probability))
             i += 1
-        return (i, self.H)
+        return (i, self.__H)
 
     def run_LTM(
         self, seed_nodes, thres_funct=lambda G, node: random.random()
@@ -188,7 +189,7 @@ class Network:
         iterations before the network could no longer change in influence
         and `G` is the final graph after `i` iterations
         """
-        self.H = self.__G
+        self.__H = self.__G
 
         if seed_nodes is None or seed_nodes == []:
             print(
@@ -198,30 +199,32 @@ class Network:
             )
             seed_nodes = self.deg_h()
 
-        for node in self.H.nodes.data():
-            self.H.add_node(node[0], status="inactive", prob=thres_funct(self.H, node))
+        for node in self.__H.nodes.data():
+            self.__H.add_node(
+                node[0], status="inactive", prob=thres_funct(self.__H, node)
+            )
         for seed in seed_nodes:
-            self.H.add_node(seed, status="active")
+            self.__H.add_node(seed, status="active")
 
         i = 0
         while not self.__all_nodes_complete() and i < self.__limit:
             i += 1
-            for node in self.H.nodes.data():
+            for node in self.__H.nodes.data():
                 if node["status"] == "inactive":
                     # check neighbours for percentage > threshold
                     active_neighbours = 0
-                    for adj in self.H.adj[node]:
-                        if self.H.nodes[adj]["status"] == "active":
+                    for adj in self.__H.adj[node]:
+                        if self.__H.nodes[adj]["status"] == "active":
                             active_neighbours += 1
-                    if (active_neighbours / len(self.H.adj[node])) > self.H.nodes[node][
-                        "prob"
-                    ]:
-                        self.H.add_node(node, status="active")
-        return (i, self.H)
+                    if (active_neighbours / len(self.__H.adj[node])) > self.__H.nodes[
+                        node
+                    ]["prob"]:
+                        self.__H.add_node(node, status="active")
+        return (i, self.__H)
 
     def __active_nodes(self) -> list:
         active = []
-        for n in self.H.nodes.data():
+        for n in self.__H.nodes.data():
             if n[1]["status"] == "active":
                 active.append(n[0])
         return active
