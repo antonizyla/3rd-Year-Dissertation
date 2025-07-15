@@ -16,3 +16,4 @@ src/__pycache__/main.cpython-313.pyc
 src/__pycache__/Network.cpython-313.pyc
 test/__pycache__
 src/Influence_Modelling/__pycache__
+src/Influence_Modelling/tests/__pycache__

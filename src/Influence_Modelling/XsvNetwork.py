@@ -26,12 +26,26 @@ class XsvNetwork(Network):
         self.__edge_list_to_graph(self.__read_file_to_str())
 
     def __read_file_to_str(self) -> list[str]:
+        # Pacakged with the library
         if self.__filepath == "airports":
             self.__sep = " "
             data = importlib.resources.open_binary(
                 "Influence_Modelling.datasets", "usairport.tsv"
             )
             return data.read().decode("utf-8").split("\n")
+        elif self.__filepath == "p2p":
+            self.__sep = " "
+            data = importlib.resources.open_binary(
+                "Influence_Modelling.datasets", "p2p-Gnutella04.txt"
+            )
+            return data.read().decode("utf-8").split("\n")
+        elif self.__filepath == "twitter":
+            self.__sep = " "
+            data = importlib.resources.open_binary(
+                "Influence_Modelling.datasets", "twitter_combined.txt"
+            )
+            return data.read().decode("utf-8").split("\n")
+        # Own files
         absolute_path: str = ""
         if os.path.isfile(self.__filepath):
             absolute_path = self.__filepath
