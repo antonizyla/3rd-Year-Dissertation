@@ -4,6 +4,8 @@ import sqlite3
 import uuid
 
 import networkx as nx
+from networkx.algorithms.graphical import is_graphical
+from networkx.utils.random_sequence import powerlaw_sequence
 
 from Influence_Modelling import Db, helper
 
@@ -266,3 +268,36 @@ class Network:
             H.remove_node(vertex)
             n -= 1
         return vertices
+
+    def eppstein_generator(self, n: int):
+        """
+        Generate a random graph based on the Eppstein power law generation algorithm.
+        :param n int: number of nodes to generate.
+        """
+        # https://stackoverflow.com/a/68247654
+        sequence = []
+        while True:
+            sequence = sorted(
+                [int(round(d)) for d in powerlaw_sequence(n)], reverse=True
+            )
+            if is_graphical(sequence):
+                break
+        G = nx.random_degree_sequence_graph(sequence)
+        # with this the graph is undirected so add a reverse of each edge
+        H: nx.DiGraph = nx.empty_graph(0)
+        for u, v in G.edges():
+            H.add_edge(u, v)
+            H.add_edge(v, u)
+        self.__G = H
+        self.__H = H
+
+    def kleinbergs_generator(self, n: int):
+        """
+        Generate a random graph based on the Kleinberg generation algorithm.
+        :param n int: number of nodes to generate.
+        """
+        n = (
+            n**0.5
+        )  # based on a square lattice of root n on each side gives n total nodes
+        self.__G = nx.navigable_small_world_graph(n)
+        self.__H = self.__G
