@@ -1,0 +1,196 @@
+\documentclass{article} 
+\usepackage[a4paper, margin=3cm]{geometry}
+
+\usepackage{cite}
+
+\usepackage{pgfgantt}
+\usepackage{pdflscape}
+
+
+\title{\textbf{Network Influence Analysis Framework}} 
+\author{Antoni Zyla}
+\date{21/07/2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+To create a framework for the analysis of influence within networks,
+particularly the investigation of heuristics for finding the most
+influential nodes in an efficient manner.
+
+\section{Problem Discussion}
+
+Network Influence Analysis relates to studying social networks
+to determine the set of $k$ nodes which have the most 'influence',
+or greatest spread of information through the network, in the
+network. Using brute force is incredibly time consuming
+on the order of $O \left( |V| \choose k \right)$. Using certain heuristics
+such as the degree of a node to choose the seed nodes is significantly
+more efficient running in polynomial time, I will focus on allowing for
+simple implementations and analysis of different heuristics.
+
+\vspace*{12pt}
+
+There is a significant amount of information out there regarding how
+these models are implemented and computed, there are graph packages in most
+programmming languages which make it relatively simple to implement them
+as described.
+
+\vspace*{12pt}
+
+A typical piece of research in this area would be to attempt to find a
+new heuristic to find the set of seed nodes which have a greater influence
+than other heuristics. To do this the researcher would need to implement
+the model, implement representing their chosen networks in their model,
+implement the known heuristics and their new hypothesised heuristic and
+analyse the influence spread of each of them to be able to see if there is a
+measurable difference.
+
+\vspace*{12pt}
+
+Creation of a framework for performing these tasks would allow for creating
+such a study to be simpler, quicker and more reproducible due to a consistent
+environment.
+
+\section{Objectives}
+
+\begin{itemize}
+	\item Import and Export of different graph formats
+	\item Generation of synthetic graphs (\textbf{Kleinberg, Eppstein})
+	\item Independent Cascade Model (\textbf{IC})
+	\item Linear Threshold Model (\textbf{LTM})
+	\item Decreasing Cascade Model (\textbf{DC})
+	\item Different Sampling of large graphs to make them manageable
+	\item Different heuristics to find seed nodes
+	\item Simple Creation of new sampling methods
+	\item Simple Creation of new heuristics
+	\item Python \textbf{whl} and \textbf{tarball} packaging to allow easy installation
+\end{itemize}
+
+\section{Methodology}
+
+The project will be broken up into three main stages; research, implementation and
+evaluation.
+
+\vspace*{12pt}
+
+The research stage will require a detailed literature review of articles
+pertaining to network influence modelling, methods, heuristics and sampling.
+I will identify the validity and applications of each source and find if there
+are any gaps in the presented knowledge to research further.
+
+\vspace*{12pt}
+
+The implementation stage of the project will require a methodology that can
+be adapted to changing requirements or a shift in focus based on information
+learnt later in the research phase. I will use an agile-like methodology, of
+one to two week segments determined by meetings with my supervisor with any
+changes to requirements determined during these meetings.
+
+\vspace*{12pt}
+
+The final stage will be to use my framework to replicate the results of the
+researched papers, showcase how to create new sampling methods and heuristics
+and how to compare the results of different sampling, heuristics and models
+on different networks.
+
+
+\begin{landscape}
+
+	\section{Timelines}
+
+  \hspace{1cm}
+
+  \newganttlinktype{end-start}{
+  \ganttsetendanchor{on left=0}
+  \ganttsetstartanchor{on right=0.5}
+  \draw[/pgfgantt/link,->] (\xLeft,\yUpper) -| (\xRight,\yLower);
+  }
+
+  \newganttlinktype{start-start}{
+  \ganttsetendanchor{on left=0}
+  \ganttsetstartanchor{on left=0.5}
+  \draw[/pgfgantt/link,->] (\xLeft,\yUpper) -| (\xRight,\yLower);
+  }
+
+  \begin{ganttchart}[
+    x unit=0.7cm,
+    y unit title=0.5cm,
+    y unit chart=0.5cm,
+    hgrid=true,
+    vgrid=true,
+    title label anchor/.style={below=-1.5ex},
+    title height=1,
+    incomplete/.style={fill=white},
+    progress label text={},
+    bar height=0.6,
+]{1}{32}
+  \gantttitle{\textbf{Term 1}}{10}
+  \gantttitle{\textbf{Christmas}}{4}
+  \gantttitle{\textbf{Term 2}}{10}
+  \gantttitle{\textbf{Easter}}{5}
+  \gantttitle{\textbf{Term 3}}{3}\\
+  \gantttitle{W1}{1}
+  \gantttitle{W2}{1}
+  \gantttitle{W3}{1}
+  \gantttitle{W4}{1}
+  \gantttitle{W5}{1}
+  \gantttitle{W6}{1}
+  \gantttitle{W7}{1}
+  \gantttitle{W8}{1}
+  \gantttitle{W9}{1}
+  \gantttitle{W10}{1}%term 1 done
+  \gantttitle{W1}{1}
+  \gantttitle{W2}{1}
+  \gantttitle{W3}{1}
+  \gantttitle{W4}{1}%christmas done
+  \gantttitle{W1}{1}
+  \gantttitle{W2}{1}
+  \gantttitle{W3}{1}
+  \gantttitle{W4}{1}
+  \gantttitle{W5}{1}
+  \gantttitle{W6}{1}
+  \gantttitle{W7}{1}
+  \gantttitle{W8}{1}
+  \gantttitle{W9}{1}
+  \gantttitle{W10}{1}%term 2 done
+  \gantttitle{W1}{1}
+  \gantttitle{W2}{1}
+  \gantttitle{W3}{1}
+  \gantttitle{W4}{1}
+  \gantttitle{W5}{1}% Easter Done
+  \gantttitle{W1}{1}
+  \gantttitle{W2}{1}
+  \gantttitle{W3}{1} \\ %t3 done
+
+  \ganttbar[name=spec]{\textbf{Specification}}{1}{1}\\    
+  \ganttbar[name=progress]{\textbf{Progress Report}}{4}{5} \\ 
+  \ganttbar[name=literature]{Literature Review}{2}{2}\\
+  \ganttbar[name=architecture]{Architecture \& Definition}{3}{4} \\
+  \ganttbar[name=implement]{Implementation}{6}{14}\\
+  \ganttbar[name=present]{\textbf{Presentation}}{14}{17} \\
+  \ganttbar[name=report]{\textbf{Final Report}}{18}{30}
+
+  % arrows
+
+  \ganttlink[]{spec}{progress}
+  \ganttlink[]{spec}{literature}
+  \ganttlink[]{literature}{architecture}
+  \ganttlink[]{progress}{implement}
+
+\end{ganttchart}
+
+\end{landscape}
+
+\section{Resources and Risks}
+
+\section{Legal, Social, Ethical and Professional Considerations}
+
+
+\bibliography{sources}{}
+\bibliographystyle{plain}
+
+\end{document}
