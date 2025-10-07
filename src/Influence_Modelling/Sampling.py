@@ -6,7 +6,7 @@ import networkx as nx
 
 def bfs_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     """
-    From the set of seed nodes add nodes using bfs until qutoa is reached.
+    Generate a sample from the set of seed nodes add nodes using bfs until the quota is reached.
 
     :param nx.Digraph G: The graph to be sampled
     :param S: List of nodes which are our seed nodes
@@ -54,7 +54,7 @@ def snowball_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
                 layer.add(adjacent)
         if len(layer) > (n - H.number_of_nodes()):
             H.add_nodes_from(random.sample(list(layer), n - H.number_of_nodes()))
-            return H
+            break
         H.add_nodes_from(layer)
         S = list(layer)
         layer = set()
@@ -90,7 +90,30 @@ def random_walk_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
         layer = layer_walked_one
 
 
-def mhrw_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
+def mhrw_sample(G: nx.DiGraph, n) -> nx.DiGraph:
+    """
+    Metropolis-Hastings Random Walk. A random walk sample with a bias
+    towards high degree locations aiming to preserve them inside the sample.
+
+    :param nx.Digraph G: The graph to be sampled
+    :param int n: Number of nodes to be selected in our sample.
+    :return: Subgraph of G following the algorithm
+    """
+    # Practical Recommendations on Crawling social networks (page 5)
+    subgraph_nodes = set()
+    v = random_sample([v for v in G.nodes()], 1)[0]
+    while len([v for v in subgraph_nodes]) < n:
+        neighbours = [node for node in G.adj[v]]
+        random.shuffle(neighbours)
+        w = neighbours[0]
+        p = random.random()
+        if p <= (G.degree(v)) / (G.degree(w)):
+            subgraph_nodes.add(v)
+            v = w
+    return G.subgraph(subgraph_nodes)
+
+
+def mhrw_sample_redundant(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     """
     Metropolis-Hastings Random Walk. A random walk sample with a bias
     towards high degree locations aiming to preserve them inside the sample.
@@ -103,15 +126,15 @@ def mhrw_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     subgraph_nodes: set[Any] = set()
     for seed in S:
         subgraph_nodes.add(seed)
-    explored = subgraph_nodes
+    explored: Set[Any] = subgraph_nodes
     from_explored = set()
     while len(subgraph_nodes) < n:
         for e in explored:
             # choose random neighbour of e based on probability from degrees
-            neighbours = G.adj[e]
             samples = []
-            for n in neighbours:
-                for _ in G.degree(n):  # type: ignore
+            for n in [n for n in G.adj[e]]:
+                i: int = G.degree(n)
+                for _ in range(i):
                     samples.append(n)
             selection = random_sample(samples, 1)[
                 0
@@ -125,7 +148,7 @@ def mhrw_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     )
 
 
-def mhda_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
+def mhda_sample_redundant(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     """
     Metropolis-Hastings Random Walk With Delayed Acceptance. An extension
     of MHRW with a modification to transition functions to reduce revisiting of
@@ -162,6 +185,44 @@ def mhda_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     return G.remove_nodes_from(
         [node for node in G.nodes() if node not in subgraph_nodes]
     )
+
+
+def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
+    """
+    Metropolis-Hastings Random Walk With Delayed Acceptance. An extension
+    of MHRW with a modification to transition functions to reduce revisiting of
+    the same locations.
+
+    :param nx.Digraph G: The graph to be sampled
+    :param int n: Number of nodes to be selected in our sample.
+    :return: Subgraph of G following the algorithm
+    """
+    yt = None
+    xt = random_sample([v for v in G.nodes()], 1)[0]
+    subgraph_nodes = set()
+    while len(subgraph_nodes) < n:
+        p = random.random()
+        i = random_sample([n for n in G.adj[xt[-1]]], 1)[0]
+        if p <= min(1, G.degree(xt) / G.degree(i)):
+            if yt == i and G.degree(xt) > 1:
+                k = random_sample([n for n in G.adj[xt] if n is not i], 1)[0]
+                q = random.random()
+                if q <= min(
+                    1,
+                    min(1, (G.degree(xt) / G.degree(k)) ** 2)
+                    * max(1, (G.degree(i) / G.degree(xt)) ** 2),
+                ):
+                    yt = xt
+                    xt = k
+                else:
+                    yt = xt
+                    xt = i
+            else:
+                yt = xt
+                xt = i
+        subgraph_nodes.add(xt)
+        print(len(subgraph_nodes))
+    return G.subgraph([n for n in subgraph_nodes])
 
 
 def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
@@ -235,9 +296,9 @@ def albatross_transition_probability(G: nx.DiGraph, u, v) -> float:
 
 
 def random_sample(collection: list[Any], n: int) -> list[Any]:
-    if n >= collection:
+    if n >= len(collection):
         return collection
-    s: set[Any] = {}  # type: ignore
+    s: set[Any] = set()
     while len(s) < n:
         random.shuffle(collection)
         s.add(collection.pop(0))
