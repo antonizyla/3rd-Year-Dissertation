@@ -11,3 +11,7 @@ hatchling
 
 # Actual program
 networkx
+
+# Analysis
+pandas
+matplotlib

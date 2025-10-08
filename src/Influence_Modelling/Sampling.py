@@ -90,20 +90,33 @@ def random_walk_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
         layer = layer_walked_one
 
 
-def mhrw_sample(G: nx.DiGraph, n) -> nx.DiGraph:
+def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Metropolis-Hastings Random Walk. A random walk sample with a bias
     towards high degree locations aiming to preserve them inside the sample.
+
+    Based on pseudocode from `Practical Recommendations on Crawling social networks (page 5)`
 
     :param nx.Digraph G: The graph to be sampled
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    # Practical Recommendations on Crawling social networks (page 5)
+    if n >= len(list(G.nodes())):
+        return G
     subgraph_nodes = set()
     v = random_sample([v for v in G.nodes()], 1)[0]
-    while len([v for v in subgraph_nodes]) < n:
+
+    while len(subgraph_nodes) < n:
         neighbours = [node for node in G.adj[v]]
+
+        # remove already contained nodes, TODO use map
+        for n in neighbours:
+            if n in subgraph_nodes:
+                neighbours.remove(n)
+
+        if len(neighbours) == 0:
+            neighbours = [u for u in G.nodes() if u not in subgraph_nodes]
+
         random.shuffle(neighbours)
         w = neighbours[0]
         p = random.random()
@@ -111,80 +124,6 @@ def mhrw_sample(G: nx.DiGraph, n) -> nx.DiGraph:
             subgraph_nodes.add(v)
             v = w
     return G.subgraph(subgraph_nodes)
-
-
-def mhrw_sample_redundant(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
-    """
-    Metropolis-Hastings Random Walk. A random walk sample with a bias
-    towards high degree locations aiming to preserve them inside the sample.
-
-    :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
-    :param int n: Number of nodes to be selected in our sample.
-    :return: Subgraph of G following the algorithm
-    """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    explored: Set[Any] = subgraph_nodes
-    from_explored = set()
-    while len(subgraph_nodes) < n:
-        for e in explored:
-            # choose random neighbour of e based on probability from degrees
-            samples = []
-            for n in [n for n in G.adj[e]]:
-                i: int = G.degree(n)
-                for _ in range(i):
-                    samples.append(n)
-            selection = random_sample(samples, 1)[
-                0
-            ]  # our chose next step based on degree of neighbours
-            from_explored.add(selection)
-        subgraph_nodes.add(explored)
-        explored = from_explored
-        from_explored = set()
-    return G.remove_nodes_from(
-        [node for node in G.nodes() if node not in subgraph_nodes]
-    )
-
-
-def mhda_sample_redundant(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
-    """
-    Metropolis-Hastings Random Walk With Delayed Acceptance. An extension
-    of MHRW with a modification to transition functions to reduce revisiting of
-    the same locations.
-
-    :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
-    :param int n: Number of nodes to be selected in our sample.
-    :return: Subgraph of G following the algorithm
-    """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    explored = subgraph_nodes
-    from_explored = set()
-    while len(subgraph_nodes) < n:
-        for e in explored:
-            # choose random neighbour of e based on probability from degrees
-            neighbours = G.adj[e]
-            samples = []
-            for n in neighbours:
-                if n in from_explored or n in explored or n in subgraph_nodes:
-                    samples.append(n)
-                else:
-                    for _ in G.degree(n):  # type: ignore
-                        samples.append(n)
-            selection = random_sample(samples, 1)[
-                0
-            ]  # our chose next step based on degree of neighbours
-            from_explored.add(selection)
-        subgraph_nodes.add(explored)
-        explored = from_explored
-        from_explored = set()
-    return G.remove_nodes_from(
-        [node for node in G.nodes() if node not in subgraph_nodes]
-    )
 
 
 def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
