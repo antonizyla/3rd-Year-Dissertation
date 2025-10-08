@@ -221,7 +221,6 @@ def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
                 yt = xt
                 xt = i
         subgraph_nodes.add(xt)
-        print(len(subgraph_nodes))
     return G.subgraph([n for n in subgraph_nodes])
 
 
