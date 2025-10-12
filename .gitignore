@@ -7,5 +7,15 @@ Resources.fls
 Resources.log 
 Resources.synctex.gz
 
-**/__pycache__/
+./venv/
+
+src/__pycache__
 Notebooks/db.db
+src/__pycache__/CsvNetwork.cpython-313.pyc
+src/__pycache__/Db.cpython-313.pyc
+src/__pycache__/helper.cpython-313.pyc
+src/__pycache__/main.cpython-313.pyc
+src/__pycache__/Network.cpython-313.pyc
+test/__pycache__
+src/Influence_Modelling/__pycache__
+src/Influence_Modelling/tests/__pycache__

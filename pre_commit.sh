@@ -19,6 +19,6 @@ cd ..
 rm -rf dist/
 
 # build and install the package
-pip3 uninstall -y Influence_Modelling
-python3 -m build
-pip3 install dist/*.whl
+pip uninstall -y Influence_Modelling
+python -m build
+pip install dist/*.whl

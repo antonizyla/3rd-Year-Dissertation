@@ -6,68 +6,75 @@
 \usepackage{pgfgantt}
 \usepackage{pdflscape}
 
+\usepackage{graphicx}
 
-\title{\textbf{Network Influence Analysis Maximization Framework}} 
-\author{Antoni Zyla}
+\title{\textbf{Network Influence Maximization Analysis Specification}} 
+\author{Antoni Zyla \and Supervisor: Nathan Griffiths}
 \date{16/09/2025}
 
 \begin{document}
 
 \maketitle
-
+\linespread{1.25}
 \section{Abstract}
 
-To create a framework for the analysis of influence within networks,
-particularly the investigation of heuristics for finding the most
+To create a tool for the analysis of influence within networks,
+in particular the investigation of heuristics for finding the most
 influential nodes in an efficient manner.
 
 \section{Problem Discussion}
 
-Network Influence Analysis relates to studying social networks
-to determine the set of $k$ nodes which have the most 'influence',
-or greatest spread of information through the network, in the
-network. A brute force approach may have a running time on the order of 
-the factorial of the number or nodes in a network, using certain heuristics
+A network is a weakly connected directed graph about which we reason, 
+Influence is the measure of how ideas or properties spread through this 
+graph based on certain models, choosing the seed set of nodes from which  
+to begin the model determines how quickly and how far the ideas will 
+propogate. Social networks, Infectious diseases can be studied by using 
+such an approach and can be used to inform descision making in many areas.
+
+An example could be to determine which properties or topological features are correlated
+with effective spreading of ideas in a network. Finding a subset of nodes of the network 
+which produce the greatest influence spread after a given time period could for example be 
+used to determine those who'd best promote a product. Finding this
+subset is difficult and a naive brute force approach may have a running time
+of $O(n!)$, using certain heuristics
 such as the degree of a node to choose the seed nodes is significantly
-more efficient running in polynomial time, I will focus on allowing for
-simple implementations and analysis of different heuristics.
+more efficient running in polynomial time.
 
-\vspace*{12pt}
+\subsection{Implementation}
+Each of the propagation models, sampling methods, seed selection heuristics
+are written about in a variety of papers described in either pseudocode or natural
+lanuage. I will use Python with some standard libraries to implement these
+concepts.
 
-There is a significant amount of information out there regarding how
-these models are implemented and computed, there are graph packages in most
-programming languages which make it relatively simple to implement them
-as described.
-
-\vspace*{12pt}
-
-A typical piece of research in this area would be to attempt to find a
-new heuristic to find the set of seed nodes which have a greater influence
-than other heuristics. To do this the researcher would need to implement
-the model, implement representing their chosen networks in their model,
-implement the known heuristics and their new hypothesised heuristic and
-analyse the influence spread of each of them to be able to see if there is a
-measurable difference.
-
-\vspace*{12pt}
-
-Creation of a framework for performing these tasks would allow for creating
-such a study to be simpler, quicker and more reproducible due to a consistent
-environment.
+\subsection{Application to research}
+Possible pieces of research in this area may include:
+\begin{itemize}
+	\item Finding a more effective heuristic for finding seed nodes in a network.
+	\item Optimising a heuristic's running time whilst maintaining performance.
+	\item Finding a more representative sampling method for varied network topologies.
+	\item Finding a correlation between certain topological features and the effectiveness of one sampling method or heuristic over another.
+\end{itemize}
 
 \section{Objectives}
 
 \begin{itemize}
 	\item Facilitate import and export of different graph formats
-	\item Generation of synthetic graphs (\textbf{Kleinberg, Eppstein})
-	\item Running of the Independent Cascade Model (\textbf{IC})
-	\item Running of the Linear Threshold Model (\textbf{LTM})
-	\item Running of the Decreasing Cascade Model (\textbf{DC})
-	\item Different Sampling of large graphs to make them manageable to perform computation on
-	\item Implement different heuristics to find seed nodes
-	\item Allow simple creation of new sampling methods
-	\item Allow simple creation of new heuristics
+	\item Generation of synthetic graphs using graph generators for consistent analysis when real world datasets could
+	      be too large to run quick computations on.
+	\item Running and evaulation of the Independent Cascade Model, Decreasing Cascade Model and  Linear Threshold Model.
+	      Allowing for evaluation of different heuristics against these models on different graphs
+	\item Creation and evaulation of new sampling methods. Allowing for comparision to existing algorithms on
+	      key graph metrics as well as comparision of influence spread due to different topologies.
+	\item Creation and evaluation of new heuristics for selection of seed nodes against benchmark algorithms.
+	      There are a few ways in which I could implement this. A 'cost' based strategy could be to give each
+	      algorithm a total cost and each node has a value with the aim to find the subset that produces the
+	      greatest spread from nodes within a certain total 'cost'. A 'minimum nodes' strategy to meet some
+	      spread metric, for example finding the lowest number of nodes that will produce a $\delta$\% spread after $x$ iterations.
+	      Investigation of heuristics focused on overall growth rates in influence or rate of change in influence - this would involve charting the growth rate of various heuristics against eachother with trendlines etc.
 	\item Python \textbf{whl} and \textbf{tarball} packaging to allow easy installation on various systems
+	\item Programming with parallelisation in mind. Some results may take hours to compute on a personal device
+	      but are able to be ran in parallel on a cluster or more powerful system. I will attempt to use the batch
+	      compute system to produce any results.
 \end{itemize}
 
 \section{Methods and Methodology}
@@ -109,24 +116,15 @@ on different networks.
 
 \section{Timeline}
 
-The following is based on the university week schedule with week 0 representing freshers' week and week 15 representing the start of the second term. Bold text denotes a deliverable that will be submitted as part of the assessment of this project.
+The schedule is not fully decided at this point as the research phase is yet to be completed and the further points maybe change. Some points such as writing the report in the month leading to the deadline are certain however the 
+contents and direction of that report is not yet concrete. The purple bars on the gannt chart are the deliverables and 
+the yellow bars are the main phases assosciated with the deliverables.
 
-\subsection{Deliverables}
-\begin{enumerate}
-	\item \textbf{Specification} - Week 0 to Week 2
-	\item \textbf{Progress Report} - Week 2 to Week 17
-	\item \textbf{Presentation and Demonstration} - Week 17 to Week 28
-	\item \textbf{Final Report} - Week 17 to Week 25
-\end{enumerate}
-
-\subsection{Milestones}
-\begin{enumerate}
-	\item \textbf{Literature Review} Weeks 0 to Week 2
-	\item \textbf{implementation} Weeks 2 to 13
-	\item \textbf{Replication} Weeks 13 to 17
-	\item \textbf{Documentation and Reporting} Weeks 17 to 23
-	\item \textbf{Polishing up} Weeks 23 to 25 
-\end{enumerate}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{../../images/9octGanntChart.png}
+	\caption{Gantt Chart of Expected Timeline}
+\end{figure}
 
 \section{Resources and Risks}
 
@@ -136,27 +134,43 @@ The following is based on the university week schedule with week 0 representing 
 %This part of the Project Specification should show that you've thought these issues through and that you have appropriate back-up plans in place where necessary. 
 %For more discussion on resources and managing risk, check out the information on equipment and other resources.
 
-In terms of non standard tools and programs my project will include some open 
-source large network datasets as model data. If these are to become unavailable 
-from one source not only are they saved in the repository under version control 
-they are also available from multiple sources online. 
+\subsection{Resources}
+\begin{enumerate}
+	\item Python and Standard Libraries - NetworkX, NumPy, Pandas, Matplotlib, Build tools.
+	      These are all commonly available on a variety of systems, are open source
+	      and can be built from source in case PyPI is unavailable.
 
-My code and all documentation is stored in version control locally and with a 
-remote backup in the form of GitHub. I will be using Python3 (Version 3.9 or above), 
-within my program I will use some common libraries such as \textbf{NetworkX} for 
-the implementation of the program, Documentation will be generated from docstrings 
-and automatically created into web pages which will be easily searchable with 
-internal links between all relevant sections.
+	\item Large Graph Datasets - Enron emails, airport traffic data, Gnutella data,
+	      Twitter tweet data and any other data sets as research progresses. The data
+	      is available from multiple sources on the internet as well as being stored in the
+	      repository of my program under version control.
+
+	\item Batch Compute System - Department of Computer Science. The datasets I will
+	      be working with are large but not unmanageable on a typical desktop. The batch
+	      compute system will be used to learn and utilise good practice for scientific computing
+	      as well as allowing for faster computation.
+\end{enumerate}
+
+\subsection{Risks}
+\begin{enumerate}
+	\item Failure to find a  new heuristic that is any better than those currently written about.
+	      In this case the project would still be a success as it would show that it allows for
+	      evaluation of heuristics effectively to be able to show that it is not statistically better.
+
+	\item Lost or Damaged device containing code and documents. Using Github to be a remote
+	      mirror of local git repository and regularly committing code will prevent issues from lost
+	      work arising. DCS machines are more than adequate for processing needs.
+\end{enumerate}
 
 \section{Legal, Social, Ethical and Professional Considerations}
 
-At this stage there are no Legal, Social, Ethical or Professional considerations 
-to take into account.
+At this stage there are no Legal, Social, Ethical or Professional considerations
+to take into account. The project will not be using, processing or interacting with
+personal data or information.
 
-The project does not require collection of any user data, it is not going to 
-be processing user data.
-
-\bibliography{sources}{}
-\bibliographystyle{plain}
+\newpage
+\nocite{*}
+\bibliographystyle{abbrv}
+\bibliography{../sources}{}
 
 \end{document}
