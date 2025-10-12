@@ -1,3 +1,4 @@
+import math
 import random
 from typing import Any, List, Set
 
@@ -95,35 +96,30 @@ def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     Metropolis-Hastings Random Walk. A random walk sample with a bias
     towards high degree locations aiming to preserve them inside the sample.
 
-    Based on pseudocode from `Practical Recommendations on Crawling social networks (page 5)`
-
     :param nx.Digraph G: The graph to be sampled
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
     if n >= len(list(G.nodes())):
         return G
+
+    xt = random_element([v for v in G.nodes()])  # generate x_0 in effect
     subgraph_nodes = set()
-    v = random_sample([v for v in G.nodes()], 1)[0]
 
     while len(subgraph_nodes) < n:
-        neighbours = [node for node in G.adj[v]]
-
-        # remove already contained nodes, TODO use map
-        for n in neighbours:
-            if n in subgraph_nodes:
-                neighbours.remove(n)
-
-        if len(neighbours) == 0:
-            neighbours = [u for u in G.nodes() if u not in subgraph_nodes]
-
-        random.shuffle(neighbours)
-        w = neighbours[0]
         p = random.random()
-        if p <= (G.degree(v)) / (G.degree(w)):
-            subgraph_nodes.add(v)
-            v = w
-    return G.subgraph(subgraph_nodes)
+
+        # this turns it into O(n^2) at minimum
+        j = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
+
+        if j is None:
+            j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
+
+        if p <= min(1, G.degree(xt) / G.degree(j)):
+            xt = j
+            subgraph_nodes.add(j)
+
+    return G.subgraph([n for n in subgraph_nodes])
 
 
 def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
@@ -137,14 +133,16 @@ def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     :return: Subgraph of G following the algorithm
     """
     yt = None
-    xt = random_sample([v for v in G.nodes()], 1)[0]
+    xt = random_element([v for v in G.nodes()])
     subgraph_nodes = set()
     while len(subgraph_nodes) < n:
         p = random.random()
-        i = random_sample([n for n in G.adj[xt[-1]]], 1)[0]
+        i = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
+        if i is None:
+            i = random_element([n for n in G.nodes() if n not in subgraph_nodes])
         if p <= min(1, G.degree(xt) / G.degree(i)):
             if yt == i and G.degree(xt) > 1:
-                k = random_sample([n for n in G.adj[xt] if n is not i], 1)[0]
+                k = random_element([n for n in G.adj[xt] if n is not i])
                 q = random.random()
                 if q <= min(
                     1,
@@ -241,3 +239,10 @@ def random_sample(collection: list[Any], n: int) -> list[Any]:
         random.shuffle(collection)
         s.add(collection.pop(0))
     return [x for x in s]
+
+
+def random_element(xs: list[Any]) -> Any:
+    length = len(xs)
+    if length <= 0:
+        return None
+    return xs[math.floor(random.random() * length)]
