@@ -3,6 +3,8 @@
 
 \usepackage{cite}
 
+\usepackage{hyperref}
+
 \usepackage{pgfgantt}
 \usepackage{pdflscape}
 
@@ -19,63 +21,59 @@
 \section{Abstract}
 
 To create a tool for the analysis of influence within networks,
-in particular the investigation of heuristics for finding the most
-influential nodes in an efficient manner.
+in particular the investigation of heuristics for finding the most influential nodes in an efficient manner.
 
 \section{Problem Discussion}
 
-A network is a weakly connected directed graph about which we reason, 
-Influence is the measure of how ideas or properties spread through this 
-graph based on certain models, choosing the seed set of nodes from which  
-to begin the model determines how quickly and how far the ideas will 
-propogate. Social networks, Infectious diseases can be studied by using 
-such an approach and can be used to inform descision making in many areas.
+A network is a weakly connected directed graph about which we reason,
+Influence is the measure of how ideas or properties spread through this graph based on certain models,
+choosing the seed set of nodes from which to begin the model determines how quickly and how far the ideas will propagate.
+Social networks, Infectious diseases and behaviors can be studied by using such an approach and can be used to inform decision making in many areas.
 
-An example could be to determine which properties or topological features are correlated
-with effective spreading of ideas in a network. Finding a subset of nodes of the network 
-which produce the greatest influence spread after a given time period could for example be 
-used to determine those who'd best promote a product. Finding this
-subset is difficult and a naive brute force approach may have a running time
-of $O(n!)$, using certain heuristics
-such as the degree of a node to choose the seed nodes is significantly
-more efficient running in polynomial time.
+Finding a subset of nodes of the network which produce the greatest influence spread after a given time period could be used to determine those who'd best promote a product or be at greatest risk of spreading an infectious disease.
+Finding this subset is difficult and a naive brute force approach may have a running time on the order of $O(|V|!)$,
+using certain heuristics such as the degree of a node to choose the seed nodes is significantly more efficient running in polynomial time.
 
 \subsection{Implementation}
-Each of the propagation models, sampling methods, seed selection heuristics
-are written about in a variety of papers described in either pseudocode or natural
-lanuage. I will use Python with some standard libraries to implement these
-concepts.
+Each of the propagation models, sampling methods, seed selection heuristics are written about in a variety of papers described in either pseudocode or natural language.
+I will use Python with some standard libraries to implement these concepts.
 
-\subsection{Application to research}
+\subsection{Application to research}\label{implementation}
 Possible pieces of research in this area may include:
 \begin{itemize}
-	\item Finding a more effective heuristic for finding seed nodes in a network.
-	\item Optimising a heuristic's running time whilst maintaining performance.
+	\item Finding a more effective or representative heuristic for finding seed nodes in a network.
+	\item Optimising a heuristic's running time whilst maintaining performance in regards to representation.
 	\item Finding a more representative sampling method for varied network topologies.
-	\item Finding a correlation between certain topological features and the effectiveness of one sampling method or heuristic over another.
+	\item Finding a correlation between certain topological features and the effectiveness of one sampling method or heuristic over another, particularly in relation to that network feature.
 \end{itemize}
 
 \section{Objectives}
 
-\begin{itemize}
-	\item Facilitate import and export of different graph formats
-	\item Generation of synthetic graphs using graph generators for consistent analysis when real world datasets could
-	      be too large to run quick computations on.
-	\item Running and evaulation of the Independent Cascade Model, Decreasing Cascade Model and  Linear Threshold Model.
-	      Allowing for evaluation of different heuristics against these models on different graphs
-	\item Creation and evaulation of new sampling methods. Allowing for comparision to existing algorithms on
-	      key graph metrics as well as comparision of influence spread due to different topologies.
+The exact goal of my project is not fully decided however there are some requirements for the code.
+With these features I would be able to perform much of the computation and comparision of various papers.
+Ideally I would be able to find something new or improve on existing techniques as described in \ref{implementation}.
+
+\begin{enumerate}
+	\item Facilitate import and export of different graph formats.
+	\item Generation of synthetic graphs using graph generators for consistent analysis when real world datasets could be too large to run quick computations on.
+	\item Running and evaluation of the Independent Cascade Model, Decreasing Cascade Model and  Linear Threshold Model.
+	      Allowing for evaluation of different heuristics against these models on different graphs.
+	\item Creation and evaluation of new sampling methods.
+	      \begin{itemize}
+		      \item Evaluate the running time of sampling algorithms in practice, finding the real world constant factors.
+		      \item Allow for evaluation of influence spread on the same network with different samples and how they affect it.
+	      \end{itemize}
 	\item Creation and evaluation of new heuristics for selection of seed nodes against benchmark algorithms.
-	      There are a few ways in which I could implement this. A 'cost' based strategy could be to give each
-	      algorithm a total cost and each node has a value with the aim to find the subset that produces the
-	      greatest spread from nodes within a certain total 'cost'. A 'minimum nodes' strategy to meet some
-	      spread metric, for example finding the lowest number of nodes that will produce a $\delta$\% spread after $x$ iterations.
-	      Investigation of heuristics focused on overall growth rates in influence or rate of change in influence - this would involve charting the growth rate of various heuristics against eachother with trendlines etc.
-	\item Python \textbf{whl} and \textbf{tarball} packaging to allow easy installation on various systems
-	\item Programming with parallelisation in mind. Some results may take hours to compute on a personal device
-	      but are able to be ran in parallel on a cluster or more powerful system. I will attempt to use the batch
-	      compute system to produce any results.
-\end{itemize}
+	      \begin{itemize}
+		      \item A 'cost' based strategy could be to give each algorithm a total cost and each node has a value with the aim to find the subset that produces the greatest spread from nodes within a certain total 'cost'.
+		      \item	A 'minimum nodes' strategy to meet some spread metric, for example finding the lowest number of nodes that will produce a $\delta$\% spread after $x$ iterations.
+		      \item Investigation of heuristics focused on overall growth rates in influence or rate of change in influence - this would involve charting the growth rate of various heuristics against eachother with trendlines etc.
+	      \end{itemize}
+	\item Python \textbf{whl} and \textbf{tarball} packaging to allow easy installation on various systems.
+	\item Programming with parallelisation in mind.
+	      Some results may take hours to compute on a personal device but are able to be ran in parallel on a cluster or more powerful system.
+	      I will attempt to use the batch compute system to produce any results.
+\end{enumerate}
 
 \section{Methods and Methodology}
 %How are you going to approach your project?
@@ -87,38 +85,30 @@ Possible pieces of research in this area may include:
 %Whatever the nature of your project - what methods are you using to ensure that it stays on track and achieves its goals?
 %
 
-The project will be broken up into three main stages; research, implementation and
-evaluation. During each stage I will be in contact with my supervisor to ensure that I am on the right track and to keep me accountable.
+The project will be broken up into three main stages; research, implementation and evaluation.
+During each stage I will be in contact with my supervisor to ensure that I am on the right track and to keep me accountable.
 
-\vspace*{12pt}
+\begin{enumerate}
 
-The research stage will require a detailed literature review of articles and
-papers pertaining to network influence modelling, methods, heuristics and sampling.
-I will identify the validity and applications of each source, find if there
-are any gaps in the presented knowledge to research further. I will repeat this
-process until my supervisor and I are happy the full scope of the project has been
-thoroughly reviewed.
+	\item The research stage will require a detailed literature review of articles and papers pertaining to network influence modelling, methods, heuristics and sampling.
+	      I will identify the validity and applications of each source, find if there are any gaps in the presented knowledge to research further.
+	      I will repeat this process until my supervisor and I are happy the full scope of the project has been thoroughly reviewed.
 
-\vspace*{12pt}
+	\item The implementation stage of the project will require a methodology that can be adapted to changing requirements or a shift in focus based on information learnt in the later stages of the research phase.
+	      I will use an agile-like methodology, of one to two week sprints determined by meetings with my supervisor with any changes to requirements determined during these meetings with future sprints based on the previous.
 
-The implementation stage of the project will require a methodology that can
-be adapted to changing requirements or a shift in focus based on information
-learnt in the later stages of the research phase. I will use an agile-like methodology, of one to two week sprints determined by meetings with my
-supervisor with any changes to requirements determined during these meetings with
-future sprints based on the previous.
+	\item I will use my framework to replicate the results of the researched papers, showcasing how to create new sampling methods and heuristics and how to compare the results of different sampling, heuristics and models on different networks.
 
-\vspace*{12pt}
+	\item Finally I will attempt to improve upon a sampling method or heuristic and use my framework to do so. This will demonstrate that my tool is applicable to real world research uses and potentially find something interesting or noteworthy.
 
-The final stage will be to use my framework to replicate the results of the
-researched papers, showcase how to create new sampling methods and heuristics
-and how to compare the results of different sampling, heuristics and models
-on different networks.
+\end{enumerate}
+
 
 \section{Timeline}
 
-The schedule is not fully decided at this point as the research phase is yet to be completed and the further points maybe change. Some points such as writing the report in the month leading to the deadline are certain however the 
-contents and direction of that report is not yet concrete. The purple bars on the gannt chart are the deliverables and 
-the yellow bars are the main phases assosciated with the deliverables.
+The schedule is not fully decided at this point as the research phase is yet to be completed and the further points maybe change.
+Some points such as writing the report in the month leading to the deadline are certain however the contents and direction of that report is not yet concrete.
+The purple bars on the gantt chart are the deliverables and the yellow bars are the main sub-tasks associated with those deliverables.
 
 \begin{figure}[h]
 	\centering
@@ -137,36 +127,30 @@ the yellow bars are the main phases assosciated with the deliverables.
 \subsection{Resources}
 \begin{enumerate}
 	\item Python and Standard Libraries - NetworkX, NumPy, Pandas, Matplotlib, Build tools.
-	      These are all commonly available on a variety of systems, are open source
-	      and can be built from source in case PyPI is unavailable.
+	      These are all commonly available on a variety of systems, are open source and can be built from source in case PyPI is unavailable.
 
-	\item Large Graph Datasets - Enron emails, airport traffic data, Gnutella data,
-	      Twitter tweet data and any other data sets as research progresses. The data
-	      is available from multiple sources on the internet as well as being stored in the
-	      repository of my program under version control.
+	\item Large Graph Datasets - Enron emails, airport traffic data, Gnutella data, Twitter tweet data and any other data sets as research progresses.
+	      The data is available from multiple sources on the internet as well as being stored in the repository of my program under version control.
 
-	\item Batch Compute System - Department of Computer Science. The datasets I will
-	      be working with are large but not unmanageable on a typical desktop. The batch
-	      compute system will be used to learn and utilise good practice for scientific computing
-	      as well as allowing for faster computation.
+	\item Batch Compute System - Department of Computer Science.
+	      The datasets I will be working with are large but not unmanageable on a typical desktop.
+	      The batch compute system will be used to learn and utilise good practice for scientific computing as well as allowing for faster computation.
 \end{enumerate}
 
 \subsection{Risks}
 \begin{enumerate}
 	\item Failure to find a  new heuristic that is any better than those currently written about.
-	      In this case the project would still be a success as it would show that it allows for
-	      evaluation of heuristics effectively to be able to show that it is not statistically better.
+	      In this case the project would still be a success as it would show that it allows for evaluation of heuristics effectively to be able to show that it is not statistically better.
 
-	\item Lost or Damaged device containing code and documents. Using Github to be a remote
-	      mirror of local git repository and regularly committing code will prevent issues from lost
-	      work arising. DCS machines are more than adequate for processing needs.
+	\item Lost or Damaged device containing code and documents.
+	      Using Github to be a remote mirror of local git repository and regularly committing code will prevent issues from lost work arising.
+	      DCS machines are more than adequate for processing needs.
 \end{enumerate}
 
 \section{Legal, Social, Ethical and Professional Considerations}
 
-At this stage there are no Legal, Social, Ethical or Professional considerations
-to take into account. The project will not be using, processing or interacting with
-personal data or information.
+At this stage there are no Legal, Social, Ethical or Professional considerations to take into account.
+The project will not be using, processing or interacting with personal data or information.
 
 \newpage
 \nocite{*}

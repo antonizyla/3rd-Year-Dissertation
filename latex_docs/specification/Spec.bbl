@@ -34,6 +34,11 @@ R.~Pastor-Satorras and A.~Vespignani.
 \newblock Epidemic spreading in scale-free networks.
 \newblock {\em Physical review letters}, 86:3200--3, 05 2001.
 
+\bibitem{Wang2011UnderstandingGS}
+T.~Wang, Y.~Chen, Z.~Zhang, T.~Xu, L.~Jin, P.~Hui, B.~Deng, and X.~Li.
+\newblock Understanding graph sampling algorithms for social network analysis.
+\newblock {\em 2011 31st International Conference on Distributed Computing Systems Workshops}, pages 123--128, 2011.
+
 \bibitem{yang2019influence}
 W.~Yang, L.~Brenner, and A.~Giua.
 \newblock Influence maximization in independent cascade networks based on activation probability computation.

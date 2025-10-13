@@ -5,7 +5,7 @@ from typing import Any, List, Set
 import networkx as nx
 
 
-def bfs_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
+def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Generate a sample from the set of seed nodes add nodes using bfs until the quota is reached.
 
@@ -17,22 +17,52 @@ def bfs_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     # early termination when no sample required
     if G.number_of_nodes() <= n:
         return G
-    if len(S) == 0:  # cannot perform bfs from no start
-        return nx.empty_graph()
 
-    H: nx.DiGraph = nx.empty_graph(0)
-    working_set = set()
-    while H.number_of_nodes() < n:
-        for node in S:
-            working_set.add(node)
-            for adjacent in G.adj[node]:
-                working_set.add(adjacent)
-        H.add_nodes_from(working_set)
-        S = list(working_set)
-    return G.subgraph(H.nodes()).copy()
+    subgraph_nodes = set()
+    current_layer = set()
+    next_layer = set()
+    current_layer.add(random_element([v for v in G.nodes()]))
+    subgraph_nodes.add(current_layer)
+    while len(subgraph_nodes) < n:
+        for node in current_layer:
+            next_layer.add(set([v for v in G.adj[node]]))
+        subgraph_nodes.add(next_layer)
+        current_layer = next_layer
+    return G.subgraph(subgraph_nodes).copy()
 
 
-def snowball_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
+def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
+    """
+    Following from BFS until quota is reached, if adding another bfs layer
+    would put over the quota then a random selection would be added instead.
+
+    :param nx.Digraph G: The graph to be sampled
+    :param S: List of nodes which are our seed nodes
+    :param int n: Number of nodes to be selected in our sample.
+    :return: Subgraph of G following the algorithm
+    """
+    if G.number_of_nodes() <= n:
+        return G
+
+    subgraph_nodes = set()
+    current_layer = set()
+    next_layer = set()
+    current_layer.add(random_element([v for v in G.nodes()]))
+    subgraph_nodes.add(current_layer)
+    while len(subgraph_nodes) < n:
+        for node in current_layer:
+            next_layer.add(set([v for v in G.adj[node]]))
+        if len(next_layer) > n - len(subgraph_nodes):
+            subgraph_nodes.add(
+                random_sample([v for v in next_layer], n - len(subgraph_nodes))
+            )
+        else:
+            subgraph_nodes.add(next_layer)
+        current_layer = next_layer
+    return G.subgraph(subgraph_nodes).copy()
+
+
+def snowball_sample_redundant(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Following from BFS until quota is reached, if adding another bfs layer
     would put over the quota then a random selection would be added instead.
@@ -47,6 +77,8 @@ def snowball_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
         return G
 
     H: nx.DiGraph = nx.empty_graph(0)
+    S = []
+    S.append(random_element([v for v in G.nodes()]))
     H.add_nodes_from(S)
     layer: Set[Any] = set()
     while H.number_of_nodes() < n:
