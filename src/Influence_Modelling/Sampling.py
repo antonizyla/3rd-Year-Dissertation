@@ -1,13 +1,14 @@
 import math
 import random
-from typing import Any, List, Set
+from typing import Any, List
 
 import networkx as nx
 
 
 def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
-    Generate a sample from the set of seed nodes add nodes using bfs until the quota is reached.
+    Generate a sample from the set of seed nodes add nodes using bfs until the quota is
+    reached.
 
     :param nx.Digraph G: The graph to be sampled
     :param S: List of nodes which are our seed nodes
@@ -17,18 +18,19 @@ def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     # early termination when no sample required
     if G.number_of_nodes() <= n:
         return G
-
     subgraph_nodes = set()
-    current_layer = set()
-    next_layer = set()
-    current_layer.add(random_element([v for v in G.nodes()]))
-    subgraph_nodes.add(current_layer)
+    current_layer = [random_element([v for v in G.nodes()])]
     while len(subgraph_nodes) < n:
-        for node in current_layer:
-            next_layer.add(set([v for v in G.adj[node]]))
-        subgraph_nodes.add(next_layer)
-        current_layer = next_layer
-    return G.subgraph(subgraph_nodes).copy()
+        for v in current_layer:
+            subgraph_nodes.add(v)
+
+        # find the neighbourhood of current layer that's no included already
+        neighbours = []
+        for c in current_layer:
+            for v in G.adj[c]:
+                neighbours.append(v)
+        current_layer = [v for v in neighbours if v not in subgraph_nodes]
+    return G.subgraph([u for u in subgraph_nodes])
 
 
 def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
@@ -43,55 +45,21 @@ def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     if G.number_of_nodes() <= n:
         return G
-
     subgraph_nodes = set()
-    current_layer = set()
-    next_layer = set()
-    current_layer.add(random_element([v for v in G.nodes()]))
-    subgraph_nodes.add(current_layer)
+    current_layer = [random_element([v for v in G.nodes()])]
     while len(subgraph_nodes) < n:
-        for node in current_layer:
-            next_layer.add(set([v for v in G.adj[node]]))
-        if len(next_layer) > n - len(subgraph_nodes):
-            subgraph_nodes.add(
-                random_sample([v for v in next_layer], n - len(subgraph_nodes))
-            )
-        else:
-            subgraph_nodes.add(next_layer)
-        current_layer = next_layer
-    return G.subgraph(subgraph_nodes).copy()
+        for v in current_layer:
+            subgraph_nodes.add(v)
+            if len(subgraph_nodes) == n:
+                return G.subgraph([u for u in subgraph_nodes])
 
-
-def snowball_sample_redundant(G: nx.DiGraph, n: int) -> nx.DiGraph:
-    """
-    Following from BFS until quota is reached, if adding another bfs layer
-    would put over the quota then a random selection would be added instead.
-
-    :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
-    :param int n: Number of nodes to be selected in our sample.
-    :return: Subgraph of G following the algorithm
-    """
-    # early termination when no sample required
-    if G.number_of_nodes() <= n:
-        return G
-
-    H: nx.DiGraph = nx.empty_graph(0)
-    S = []
-    S.append(random_element([v for v in G.nodes()]))
-    H.add_nodes_from(S)
-    layer: Set[Any] = set()
-    while H.number_of_nodes() < n:
-        for node in S:
-            for adjacent in G.adj[node]:
-                layer.add(adjacent)
-        if len(layer) > (n - H.number_of_nodes()):
-            H.add_nodes_from(random.sample(list(layer), n - H.number_of_nodes()))
-            break
-        H.add_nodes_from(layer)
-        S = list(layer)
-        layer = set()
-    return G.subgraph(H.nodes()).copy()
+        # find the neighbourhood of current layer that's no included already
+        neighbours = []
+        for c in current_layer:
+            for v in G.adj[c]:
+                neighbours.append(v)
+        current_layer = [v for v in neighbours if v not in subgraph_nodes]
+    return G.subgraph([u for u in subgraph_nodes])
 
 
 def random_walk_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
@@ -204,7 +172,7 @@ def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    sample = Set()
+    sample = set()
     p = 0.02
     sample.add(random_sample(G.nodes(), 1)[0])
     last_added = [v for v in sample][0]
@@ -225,42 +193,6 @@ def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
             else:
                 sample.add(u)
     return sample
-
-
-def albatross_transition_probability(G: nx.DiGraph, u, v) -> float:
-    """
-    Function for computing the probability of a jump beetween two
-    nodes inside of the albatross sampling algorithmn. (I did
-    not read the full algorithm and thought this was part of it
-    rather than the analysis)
-
-    :param nx.DiGraph G: Graph we reason about.
-    :param u: start node.
-    :param v: destination node.
-    :return: Probability of going to that node.
-    """
-    p_jump = 0.02  # as given in albatross paper page 5 section 4.1
-    m = len([v for v in G.nodes()])  # number of nodes in graph
-    # the two are neighbours
-    if v in [x for x in G.adj[u]]:
-        return (
-            min((1 - p_jump) / G.in_degree(u), (1 - p_jump) / G.in_degree(v))
-            + p_jump / m
-        )
-    # the two are the same
-    if v is u:
-        pairs = [(a, b) for a in G.nodes() for b in G.nodes() if a is not b]
-        return (
-            1
-            - p_jump
-            - [
-                min((1 - p_jump) / G.in_degree(w), (1 - p_jump) / G.in_degree(u))
-                for (w, u) in pairs
-            ]
-            + p_jump / m
-        )
-    # the two are disjoint
-    return p_jump / m
 
 
 def random_sample(collection: list[Any], n: int) -> list[Any]:

@@ -3,6 +3,7 @@ import networkx as nx
 import pandas as pd
 from Influence_Modelling import NetworkMetrics, Sampling, XsvNetwork
 
+
 def single_run(G: nx.DiGraph, sampling_method, results, nodes: int = 1000):
     sample: nx.DiGraph = nx.empty_graph()
     if sampling_method is None:
@@ -58,12 +59,12 @@ def repeats(G, label, method, trials, nodes, results):
             )
         )
 
+
 if __name__ == "__main__":
     enron_data = XsvNetwork.XsvNetwork("", "", "enron")
     enron_network = enron_data.get_nx()
     trials = 15
     nodes = 1000
-
 
     methods = [
         ("None", None),

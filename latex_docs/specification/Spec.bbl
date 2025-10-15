@@ -1,9 +1,14 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{archbold2024cvd}
 J.~Archbold, S.~Clohessy, D.~Herath, N.~Griffiths, and O.~Oyebode.
 \newblock An agent-based model of the spread of behavioural risk-factors for cardiovascular disease in city-scale populations.
 \newblock {\em PLOS ONE}, 19(5):1--22, 05 2024.
+
+\bibitem{griffiths17LimitiingConcept}
+J.~Archbold and N.~Griffiths.
+\newblock Limiting concept spread in environments with interacting concepts.
+\newblock In {\em 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)}, pages 1332--1340. IFAAMAS, 2017.
 
 \bibitem{chen2009efficient}
 W.~Chen, Y.~Wang, and S.~Yang.
@@ -14,6 +19,11 @@ W.~Chen, Y.~Wang, and S.~Yang.
 H.~Franks, N.~Griffiths, and S.~S. Anand.
 \newblock Learning agent influence in mas with complex social networks.
 \newblock {\em Autonomous Agents and Multi-Agent Systems}, 28:836--866, 2014.
+
+\bibitem{gjoka11practicalreco}
+M.~Gjoka, M.~Kurant, C.~T. Butts, and A.~Markopoulou.
+\newblock Practical recommendations on crawling online social networks.
+\newblock {\em IEEE Journal on Selected Areas in Communications}, 29(9):1872--1892, 2011.
 
 \bibitem{jin2011albatross}
 L.~Jin, Y.~Chen, P.~Hui, C.~Ding, T.~Wang, A.~Vasilakos, B.~Deng, and X.~Li.
@@ -33,6 +43,11 @@ C.-H. Lee, X.~Xu, and D.~Y. Eun.
 R.~Pastor-Satorras and A.~Vespignani.
 \newblock Epidemic spreading in scale-free networks.
 \newblock {\em Physical review letters}, 86:3200--3, 05 2001.
+
+\bibitem{qiang23tieredInfluence}
+Z.~Qiang, E.~Pasiliao, and Q.~Zheng.
+\newblock Target set selection in social networks with tiered influence and activation thresholds.
+\newblock {\em Journal of Combinatorial Optimization}, 45, 06 2023.
 
 \bibitem{Wang2011UnderstandingGS}
 T.~Wang, Y.~Chen, Z.~Zhang, T.~Xu, L.~Jin, P.~Hui, B.~Deng, and X.~Li.
