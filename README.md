@@ -9,11 +9,10 @@ Independant Cascade, Decreasing Cascade and Linear Threshold Models.
 # Usage
 
 ### Prerquisities
-1. `Python 3.13` (lower versions not tested but very likely to work)
-2. `Pip` (via global system or a virtual env)
+1. `Python 3.10` or above
+2.  `Pip` (via global system or a virtual env)
 
 ## Installation
-
 ### From Source
 
 1. Download the Source Code using Git
@@ -26,13 +25,15 @@ cd 3rdyearproject/
 ```
 3. Install Python Dependencies (This can be global or into a venv)
 ```bash
+python3.xx -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 **This is the stage where you would modify the code and then pacakge it for your own use**
 
 4. Package the source into a wheel
 ```bash
-python3 -m build
+python -m build
 ```
 5. Install the package onto your system
 ```bash
@@ -65,6 +66,5 @@ rm influence_modelling-(version).whl
 from Influence_Modelling import Network as Net
 
 N = Net.Network(...) # create a network
-N.load_from_db("path") # load a premade network from disk
 N.run_DCC(N.deg_discount(5)) # run a simulation on the network
 ```
