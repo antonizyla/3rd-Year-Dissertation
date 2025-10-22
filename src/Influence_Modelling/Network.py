@@ -1,13 +1,11 @@
-import ast
+import math
 import random
-import sqlite3
-import uuid
 
 import networkx as nx
 from networkx.algorithms.graphical import is_graphical
 from networkx.utils.random_sequence import powerlaw_sequence
 
-from Influence_Modelling import Db, helper
+from Influence_Modelling import Heuristics, helper
 
 
 class Network:
@@ -26,71 +24,19 @@ class Network:
         :param str project: Name of Project - links to sqlite file
         :param str name: Name of Network
         """
-        self.__network_id: str = str(uuid.uuid4())
         self.__G: nx.DiGraph = nx.empty_graph()
         self.__H = self.__G
         self.__name: str = name
         self.__v = verbose
         self.__limit: int = 10**5  # limit on the number of iterations reached
-        con: sqlite3.Connection | None = Db.initialise_database(project)
-        if con is not None:
-            self.__con: sqlite3.Connection = con
 
-    def save_db(self) -> str:
-        """
-        Save the network into database. Database file specified when network
-        was instanciated.
-        :param bool verbose: Default to `False`, adds logging of database
-        actions if `True`
-        :return str network_id: `str` The unique identifier of the network
-        in the database as a string
-        """
-        edge_list: list[str] = [line for line in nx.generate_edgelist(self.__G)]
-        query = """
-            insert into networks (id, name, network) values (?, ?, ?);
-        """  # id, name, blob
-        try:
-            cur: sqlite3.Cursor = self.__con.cursor()
-            cur.execute(query, (self.__network_id, self.__name, str(edge_list)))
-            self.__con.commit()
-        except Exception as e:
-            print(f"[Network] Error Saving to Database: {e}")
-            return ""
-        return self.__network_id
+    def set_nx(self, G: nx.DiGraph):
+        self.__G = G
+        self.__H = self.__G.copy()
 
-    def load_from_db(self, name: str) -> bool:
-        """
-        Load the a given network from the database by it's name.
-        :param str name: Name of network to retrieve
-        :param bool verbose: Default to `False`, adds logging of
-        database actions if `True`
-        :return bool status: `True` if succeeded, `False` if not
-        """
-        cur: sqlite3.Cursor = self.__con.cursor()
-        res: sqlite3.Cursor = cur.execute(
-            "select * from networks where name = ?", (name,)
-        )
-        temp_record = res.fetchone()
-        self.__network_id = temp_record[0]
-        self.__name = name
-        try:
-            edges_list: list[str] = ast.literal_eval(temp_record[2])
-            edges = []
-            for edge in edges_list:
-                sp: list[str] = edge.split()
-                edges.append((sp[0], sp[1], ast.literal_eval(sp[2])))
-            self.__G.add_edges_from(edges)
-            if self.__v:
-                print(
-                    f"""[Network Verbose] Loaded {len(self.__G.edges)} 
-                    edges into graph"""
-                )
-        except Exception as e:
-            print(f"[Network] Error Occured in Reading file: {e}")
-            return False
-        return True
-
-    def run_ICC(self, seed_nodes, p: float = 0.5) -> tuple[int, nx.DiGraph]:
+    def run_ICC(
+        self, seed_nodes, p: float = 0.1, iteration_limit=None
+    ) -> tuple[int, nx.DiGraph]:
         """
         Run a simulation of the independant cascade model on the network.
         :param float p: Probability of a node turning a neighbouring node
@@ -101,22 +47,24 @@ class Network:
         and `G` is the final graph after `i` iterations
         """
 
-        self.__H: nx.DiGraph = self.__G
+        self.__H: nx.DiGraph = self.__G.copy()
 
         if seed_nodes is None or seed_nodes == []:
             print(
                 f"""[Independant Cascade Model]  on network: {self.__name}. 
-                No seed nodes provided. Using Degree Heuristic"""
+                No seed nodes provided. Using Random Nodes"""
             )
-            seed_nodes = self.deg_h()
+            seed_nodes = Heuristics.random_h(self.get_nx())
 
         # set all nodes to be inactive
         for v in self.__H.nodes.data():
-            self.__G.add_node(v[0], status="inactive")
+            self.__H.add_node(v[0], status="inactive")
         # set our seed nodes to be active
         for s in seed_nodes:
-            self.__H.add_node(s[0], status="active")
+            self.__H.add_node(s, status="active")
 
+        if iteration_limit is not None:
+            self.__limit = iteration_limit
         i: int = 0
         while not self.__all_nodes_complete() and i < self.__limit:
             for node in self.__active_nodes():
@@ -153,9 +101,9 @@ class Network:
         if seed_nodes is None or seed_nodes == []:
             print(
                 f"""[Decreasing Cascade Model] on network: {self.__name}. 
-                No seed nodes provided. Using Degree Heuristic"""
+                No seed nodes provided. Using Random Nodes"""
             )
-            seed_nodes = self.deg_h()
+            seed_nodes = Heuristics.random_h(self.get_nx())
 
         # all nodes inactive and get a starting probability
         for node in self.__H.nodes.data():
@@ -199,7 +147,7 @@ class Network:
                 {self.__name}. No seed nodes provided. Using 
                 Degree Heuristic"""
             )
-            seed_nodes = self.deg_h()
+            seed_nodes = Heuristics.random_h(self.get_nx())
 
         for node in self.__H.nodes.data():
             self.__H.add_node(
@@ -231,44 +179,6 @@ class Network:
                 active.append(n[0])
         return active
 
-    def deg_h(self, n: int = 2) -> list:
-        """
-        Finds the `n` highest degree nodes in the network.
-
-        :param int n: Number of vertices to return
-        :return: List of size n of vertices
-        """
-        nodes = []
-        for node in self.__G.nodes():
-            nodes.append((self.__G.degree(node), node))  # type: ignore
-        nodes.sort(reverse=True)
-        return [x[1] for x in nodes[:n]]
-
-    def deg_discount_h(self, n: int = 2) -> list:
-        """
-        Find n vertices in the graph that satisfy the degree discount heuristic
-
-        Takes the highest degree vertex v from the network, removes it from
-        the network (thereby lowering the degree of adj(v)) and continues doing
-        this until n vertices are found.
-
-        :param int n: Number of vertices to return
-        :return: list of size n of vertices
-
-        """
-        if n >= len(self.__G.nodes()):
-            return [node for node in self.__G.nodes()]
-        H: nx.DiGraph = self.__G
-        vertices = []
-        while n != 0:
-            degrees = H.degree()  # type: ignore
-            maximal_deg = max([v for (u, v) in degrees])
-            vertex = [u for (u, v) in degrees if v == maximal_deg][0]
-            vertices.append(vertex)
-            H.remove_node(vertex)
-            n -= 1
-        return vertices
-
     def eppstein_generator(self, n: int):
         """
         Generate a random graph based on the Eppstein power law generation algorithm.
@@ -296,8 +206,7 @@ class Network:
         Generate a random graph based on the Kleinberg generation algorithm.
         :param n int: number of nodes to generate.
         """
-        n = (
-            n**0.5
-        )  # based on a square lattice of root n on each side gives n total nodes
+        n = math.floor(n**0.5)
+        # based on a square lattice of root n on each side gives n total nodes
         self.__G = nx.navigable_small_world_graph(n)
         self.__H = self.__G

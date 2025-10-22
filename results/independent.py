@@ -1,0 +1,226 @@
+import argparse
+import os
+import pickle
+import time
+from multiprocessing import Pool
+
+import networkx as nx
+import pandas as pd
+
+from Influence_Modelling import Heuristics, Network, Sampling, XsvNetwork
+
+output_folder_path = ""
+
+
+def single_run_icc(
+    dataset_name: str,
+    network: nx.DiGraph,
+    heuristic_name: str,
+    heuristic_method,
+    seed_size: int,
+    maximum_iterations: int,
+    trial: int,
+    sampling_function,
+    sample_size: int,
+):
+    start_time = time.time_ns()
+
+    if sampling_function is not None and sample_size is not None:
+        network = sampling_function(network, sample_size)
+    start_coverage = seed_size / len(list(network.nodes()))
+    N = Network.Network("", "", False)
+    N.set_nx(network)
+    iterations, final = N.run_ICC(
+        heuristic_method(network, seed_size), 0.1, maximum_iterations
+    )
+    end_coverage = len(
+        [(v, n) for n, v in final.nodes().data() if v["status"] == "inactive"]  # pyright: ignore[reportAttributeAccessIssue]
+    ) / len(list(final.nodes()))
+    end_time = time.time_ns()
+    result = pd.DataFrame(
+        data=[
+            [
+                dataset_name,
+                heuristic_name,
+                seed_size,
+                start_coverage,
+                end_coverage,
+                iterations,
+                end_time - start_time,
+            ]
+        ],
+        columns=[
+            "dataset",
+            "heuristic",
+            "n",
+            "start_coverage",
+            "end_coverage",
+            "iterations",
+            "time_taken_ns",
+        ],
+    )
+    filepath: str = (
+        f"{output_folder_path}/ICC-{heuristic_name}-{seed_size}-{trial}.pickle"
+    )
+    with open(filepath, "wb") as handle:
+        pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(
+            f"""Completed a trial of {heuristic_name} and saved to file at `{filepath}`"""
+        )
+    return result
+
+
+def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
+    # columns=["heuristic", "n", "start_coverage", "end_coverage", "iterations"],
+    df = pd.DataFrame.from_dict(
+        data={
+            "dataset": [rows["dataset"].to_string().split(" ")[-1]],
+            "heuristic": [rows["heuristic"].to_string().split(" ")[-1]],
+            "n": [rows["n"].to_string().split(" ")[-1]],
+            "start_coverage": [rows["start_coverage"].to_numpy().mean()],
+            "start_coverage_std": [rows["start_coverage"].to_numpy().std()],
+            "end_coverage": [rows["end_coverage"].to_numpy().mean()],
+            "end_coverage_std": [rows["end_coverage"].to_numpy().std()],
+            "iterations": [rows["iterations"].to_numpy().mean()],
+            "iterations_std": [rows["iterations"].to_numpy().std()],
+            "time_taken_ns": [rows["time_taken_ns"].to_numpy().mean()],
+            "time_taken_std_ns": [rows["time_taken_ns"].to_numpy().std()],
+        }
+    )
+    heuristic_name = df["heuristic"][0]
+    seed_size = df["n"][0]
+    filepath: str = (
+        f"{output_folder_path}/Concatenated-ICC-{heuristic_name}-{seed_size}.pickle"
+    )
+    with open(filepath, "wb") as handle:
+        pickle.dump(df, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(
+            f"Completed Concatenation of {heuristic_name} with {seed_size} seeds and saved to `{filepath}`"
+        )
+    return df
+
+
+if __name__ == "__main__":
+    pd.options.display.max_columns = None
+    pd.options.display.max_rows = None
+    pd.options.display.expand_frame_repr = False
+
+    parser = argparse.ArgumentParser("python independent.py")
+    parser.add_argument(
+        "--output_location",
+        "-o",
+        "-o",
+        help="Folder to output all intermediate data. Default will be to create a folder called log.",
+        type=str,
+        default="log",
+    )
+    parser.add_argument(
+        "--processes",
+        "-p",
+        help="Number of processes to use. Should be set to double the number of physical cpu cores.",
+        type=int,
+        default=16,
+    )
+    parser.add_argument(
+        "--trials",
+        "-t",
+        help="The number of times to repeat each sample and average the results from, a good starting point is 30.",
+        type=int,
+        default=30,
+    )
+    args = parser.parse_args()
+
+    # create the intermediate output folder
+    output_folder_path = args.output_location
+    if not os.path.exists(args.output_location):
+        os.makedirs(args.output_location)
+    threads = args.processes
+    trials = args.trials
+    logfile = f"{output_folder_path}/log.txt"
+
+    enron_data = XsvNetwork.XsvNetwork("", "", "enron")
+
+    # THIS IS THE BIT TO EDIT
+    ################################################################################
+    datasets = [
+        # (Label, Networkx Datastructure, Sampling Method, number of nodes to sample)
+        # ("Enron-No-Sampling", enron_data.get_nx(), None, None),
+        ("Enron-MHDA-1000", enron_data.get_nx(), Sampling.mhda_sample, 1000),
+    ]
+    heuristics = [
+        ("Random", Heuristics.random_h),
+        ("Degree", Heuristics.deg_h),
+        ("Degree Discount", Heuristics.deg_discount_h),
+        # (Name, Function)
+    ]
+    seed_sizes = [10, 20, 30, 40, 50, 75, 100, 125, 150]
+    #################################################################################
+
+    runs = []
+    p = Pool(threads)
+
+    for dataset_name, dataset_network, sampling_method, sample_size in datasets:
+        for heuristic_name, heuristic_function in heuristics:
+            for seed_size in seed_sizes:
+                for trial in range(trials):
+                    runs.append(
+                        (
+                            dataset_name,
+                            dataset_network,
+                            heuristic_name,
+                            heuristic_function,
+                            seed_size,
+                            1000,
+                            trial,
+                            sampling_method,
+                            sample_size,
+                        )
+                    )
+
+    rows = []
+    all_rows = p.starmap(single_run_icc, runs)
+
+    # take mean and std dev of each combo of dataset and sample method
+    df = pd.concat(all_rows)
+    concatenated = pd.DataFrame()
+    for heuristic_name, _ in heuristics:
+        for dataset_name, _, _, _ in datasets:
+            for seed_size in seed_sizes:
+                concatenated = pd.concat(
+                    [
+                        concatenate_individual_runs(
+                            df[
+                                (df["heuristic"] == heuristic_name)
+                                & (df["dataset"] == dataset_name)
+                                & (df["n"] == seed_size)
+                            ]
+                        ),
+                        concatenated,
+                    ]
+                )
+
+    print(concatenated)
+    filepath = f"{output_folder_path}/Concatenated-Individual-Runs-ICC.pickle"
+    with open(filepath, "wb") as handle:
+        pickle.dump(concatenated, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(f"Completed Concatenation ICC runs and saved to `{filepath}`")
+
+    datasets = concatenated["dataset"].unique()
+    heuristics = concatenated["heuristic"].unique()
+
+    tables = []
+    for dataset in datasets:
+        for heuristic in heuristics:
+            table = concatenated[
+                (concatenated["dataset"] == dataset)
+                & (concatenated["heuristic"] == heuristic)
+            ]
+            tables.append(table)
+            print(table)
+            filepath = f"{output_folder_path}/Compiled-ICC-{dataset}-{heuristic}.pickle"
+            with open(filepath, "wb") as handle:
+                pickle.dump(table, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    filepath = f"{output_folder_path}/All-Compiled-Tables.pickle"
+    with open(filepath, "wb") as handle:
+        pickle.dump(tables, handle, protocol=pickle.HIGHEST_PROTOCOL)

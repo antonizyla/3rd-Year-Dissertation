@@ -15,22 +15,19 @@ def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    # early termination when no sample required
     if G.number_of_nodes() <= n:
         return G
-    subgraph_nodes = set()
-    current_layer = [random_element([v for v in G.nodes()])]
-    while len(subgraph_nodes) < n:
-        for v in current_layer:
-            subgraph_nodes.add(v)
 
-        # find the neighbourhood of current layer that's no included already
-        neighbours = []
-        for c in current_layer:
-            for v in G.adj[c]:
-                neighbours.append(v)
-        current_layer = [v for v in neighbours if v not in subgraph_nodes]
-    return G.subgraph([u for u in subgraph_nodes])
+    layers = [
+        layer for layer in nx.bfs_layers(G, random_element([v for v in G.nodes()]))
+    ]
+    subgraph = set()
+    while len(subgraph) < n and len(layers) > 0:
+        layer = layers[0]
+        layers = layers[1::]
+        for v in layer:
+            subgraph.add(v)
+    return G.subgraph([v for v in subgraph])
 
 
 def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
@@ -39,56 +36,37 @@ def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     would put over the quota then a random selection would be added instead.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
     if G.number_of_nodes() <= n:
         return G
-    subgraph_nodes = set()
-    current_layer = [random_element([v for v in G.nodes()])]
-    while len(subgraph_nodes) < n:
-        for v in current_layer:
-            subgraph_nodes.add(v)
-            if len(subgraph_nodes) == n:
-                return G.subgraph([u for u in subgraph_nodes])
 
-        # find the neighbourhood of current layer that's no included already
-        neighbours = []
-        for c in current_layer:
-            for v in G.adj[c]:
-                neighbours.append(v)
-        current_layer = [v for v in neighbours if v not in subgraph_nodes]
-    return G.subgraph([u for u in subgraph_nodes])
+    layers = [
+        layer for layer in nx.bfs_layers(G, random_element([v for v in G.nodes()]))
+    ]
+    subgraph = set()
+    while len(subgraph) < n and len(layers) > 0:
+        layer = layers[0]
+        layers = layers[1::]
+        for v in layer:
+            subgraph.add(v)
+            if len(subgraph) == n:
+                return G.subgraph([v for v in subgraph])
+    return G.subgraph([v for v in subgraph])
 
 
-def random_walk_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
+def random_walk_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Nodes are chosen following a random traversal, every node has an equal
     chance of being chosen at each step.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    layer: set[Any] = subgraph_nodes
-    while True:
-        layer_walked_one: set[Any] = set()
-        for v in layer:
-            if len(subgraph_nodes) >= n:
-                return G.remove_nodes_from(
-                    [node for node in G.nodes() if node not in subgraph_nodes]
-                )
-            # choose a neighbour of v to go to as the next step of walk
-            adj = G.adj[v]
-            next = random.choice(adj)
-            layer_walked_one.add(next)
-        subgraph_nodes.add(layer)
-        layer = layer_walked_one
+    path = [p for p in nx.generate_random_paths(G, 1, n)][0]
+    return G.subgraph([v for v in path])
 
 
 def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
@@ -112,8 +90,8 @@ def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
         # this turns it into O(n^2) at minimum
         j = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
 
-        if j is None:
-            j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
+        # if j is None:
+        # j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
 
         if p <= min(1, G.degree(xt) / G.degree(j)):
             xt = j
@@ -158,7 +136,7 @@ def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
                 yt = xt
                 xt = i
         subgraph_nodes.add(xt)
-    return G.subgraph([n for n in subgraph_nodes])
+    return G.subgraph([n for n in subgraph_nodes]).copy()
 
 
 def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:

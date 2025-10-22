@@ -1,15 +1,20 @@
+import argparse
 import gc
-import math
-import multiprocessing
-import random
+import os
+import pickle
 import resource
 import time
 from multiprocessing import Pool
 
 import networkx as nx
 import pandas as pd
+import logging
 
 from Influence_Modelling import NetworkMetrics, Sampling, XsvNetwork
+
+output_folder_path: str = ""
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename="example.log", encoding="utf-8", level=logging.DEBUG)
 
 
 def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
@@ -35,16 +40,25 @@ def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
             "maximum_memory_std_kb": [rows["maximum_memory"].to_numpy().std()],
         }
     )
-    print(f"Concatenating {df['dataset']}: {df['method']}")
-    return df 
+    filepath = f"{output_folder_path}/Concatenated-{df['dataset'].to_string().split(' ')[0]}-{df['method'].to_string().split(' ')[0]}-{df['nodes'].to_string().split(' ')[0]}.pickle"
+    with open(filepath, "wb") as handle:
+        pickle.dump(df, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(
+            f"Completed Concatenation of {df['dataset'].to_string().split(' ')[0]} using {df['method'].to_string().split(' ')[0]} and saved to `{filepath}`"
+        )
+    return df
 
 
 def single_row(
-    dataset_name, dataset_network, method_name, method_function, nodes
+    dataset_name: str,
+    dataset_network: nx.DiGraph,
+    method_name: str,
+    method_function,
+    nodes: int,
+    trial: int,
 ) -> pd.DataFrame:
-    gc.disable()
     memory_start: resource.struct_rusage = resource.getrusage(resource.RUSAGE_SELF)
-    start_time = time.time_ns()
+    start_time: int = time.time_ns()
     sample: nx.DiGraph = nx.empty_graph()
     if method_function is None:
         sample = dataset_network
@@ -61,13 +75,19 @@ def single_row(
         }
     )
     memory_end: resource.struct_rusage = resource.getrusage(resource.RUSAGE_SELF)
-    gc.enable()
-    end_time = time.time_ns()
+    end_time: int = time.time_ns()
     result["time_taken"] = end_time - start_time
     result["maximum_memory"] = memory_end.ru_maxrss - memory_start.ru_maxrss
     result["dataset"] = dataset_name
     result["method"] = method_name
-    print(f"Completed a trial of {dataset_name}: {method_name}")
+    filepath: str = (
+        f"{output_folder_path}/{dataset_name}-{method_name}-{nodes}-{trial}.pickle"
+    )
+    with open(filepath, "wb") as handle:
+        pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(
+            f"""Completed a trial of {dataset_name}: {method_name} and saved to file at `{filepath}`"""
+        )
     return result
 
 
@@ -76,48 +96,104 @@ if __name__ == "__main__":
     pd.options.display.max_rows = None
     pd.options.display.expand_frame_repr = False
 
-    # Set all parameters here
-    trials: int = 2
-    nodes: int = 100
-    threads: int = 40
+    parser = argparse.ArgumentParser("python sampling.py")
+    parser.add_argument(
+        "--output_location",
+        "-o",
+        "-o",
+        help="Folder to output all intermediate data. Default will be to create a folder called log.",
+        type=str,
+        default="log",
+    )
+    parser.add_argument(
+        "--processes",
+        "-p",
+        help="Number of processes to use. Should be set to double the number of physical cpu cores.",
+        type=int,
+        default=16,
+    )
+    parser.add_argument(
+        "--nodes",
+        "-n",
+        help="The number of nodes to sample from each dataset, a good starting point is 1000.",
+        type=int,
+        default=1000,
+    )
+    parser.add_argument(
+        "--trials",
+        "-t",
+        help="The number of times to repeat each sample and average the results from, a good starting point is 15.",
+        type=int,
+        default=15,
+    )
+    args = parser.parse_args()
 
-    output_file_path: str = f"sampling_results{math.floor(random.random() * 1000)}.txt"
+    # create the intermediate output folder
+    output_folder_path = args.output_location
+    if not os.path.exists(args.output_location):
+        os.makedirs(args.output_location)
+    threads = args.processes
+    trials = args.trials
+    nodes = args.nodes
+    logfile = f"{output_folder_path}/log.txt"
+    logging.basicConfig(filename=logfile, encoding="utf-8", level=logging.DEBUG)
 
     enron_data = XsvNetwork.XsvNetwork("", "", "enron")
     twitter_data = XsvNetwork.XsvNetwork("", "", "twitter")
     p2p_data = XsvNetwork.XsvNetwork("", "", "p2p")
+
+    # THIS IS BIT TO EDIT
+    #########################################################################
     datasets = [
         ("Enron", enron_data.get_nx()),
-        #("Twitter", twitter_data.get_nx()),
+        # ("Twitter", twitter_data.get_nx()),
         # ("P2P", p2p_data.get_nx()),
     ]
-
     methods = [
         ("None", None),
-        ("BFS", Sampling.bfs_sample),
+        # ("BFS", Sampling.bfs_sample),
         # ("SNS", Sampling.snowball_sample),
         # ("RW", Sampling.random_walk_sample),
-        ("MHRW", Sampling.mhrw_sample),
+        # ("MHRW", Sampling.mhrw_sample),
         ("MHDA", Sampling.mhda_sample),
         # ("Albatross", Sampling.albatross_sample),
     ]
+    ##########################################################################
 
     runs = []
     p = Pool(threads)
 
     for dataset_name, dataset_network in datasets:
         for method_name, method_function in methods:
-            for _ in range(trials):
+            if method_function is None:
                 runs.append(
-                    (dataset_name, dataset_network, method_name, method_function, nodes)
+                    (
+                        dataset_name,
+                        dataset_network,
+                        method_name,
+                        method_function,
+                        nodes,
+                        0,
+                    )
                 )
+            else:
+                for trial in range(trials):
+                    runs.append(
+                        (
+                            dataset_name,
+                            dataset_network,
+                            method_name,
+                            method_function,
+                            nodes,
+                            trial,
+                        )
+                    )
 
     rows = []
     all_rows = p.starmap(single_row, runs)
 
     # take mean and std dev of each combo of dataset and sample method
     df = pd.concat(all_rows)
-    compressed = pd.DataFrame()
     concatenated = pd.DataFrame()
     for method_name, _ in methods:
         for dataset_name, _ in datasets:
@@ -126,8 +202,7 @@ if __name__ == "__main__":
                     concatenate_individual_runs(
                         df[
                             (df["method"] == method_name)
-                            & 
-                            (df["dataset"] == dataset_name)
+                            & (df["dataset"] == dataset_name)
                         ]
                     ),
                     concatenated,
@@ -138,7 +213,14 @@ if __name__ == "__main__":
     tables = []
     for dataset_name, _ in datasets:
         tables.append(concatenated[concatenated["dataset"] == dataset_name])
+        filepath = (
+            f"{output_folder_path}/Compiled-{dataset_name}-{nodes}n-{trials}t.pickle"
+        )
+        with open(filepath, "wb") as handle:
+            pickle.dump(tables[-1], handle, protocol=pickle.HIGHEST_PROTOCOL)
+            logger.debug(
+                f"Saved Compiled Table for {dataset_name} to file `{filepath}`"
+            )
 
-    print(len(tables))
     for table in tables:
         print(table)
