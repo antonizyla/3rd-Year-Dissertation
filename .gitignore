@@ -7,6 +7,8 @@ Resources.fls
 Resources.log 
 Resources.synctex.gz
 
+./venv/
+
 src/__pycache__
 Notebooks/db.db
 src/__pycache__/CsvNetwork.cpython-313.pyc

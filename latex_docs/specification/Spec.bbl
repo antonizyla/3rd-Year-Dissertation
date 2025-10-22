@@ -1,0 +1,62 @@
+\begin{thebibliography}{10}
+
+\bibitem{archbold2024cvd}
+J.~Archbold, S.~Clohessy, D.~Herath, N.~Griffiths, and O.~Oyebode.
+\newblock An agent-based model of the spread of behavioural risk-factors for cardiovascular disease in city-scale populations.
+\newblock {\em PLOS ONE}, 19(5):1--22, 05 2024.
+
+\bibitem{griffiths17LimitiingConcept}
+J.~Archbold and N.~Griffiths.
+\newblock Limiting concept spread in environments with interacting concepts.
+\newblock In {\em 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)}, pages 1332--1340. IFAAMAS, 2017.
+
+\bibitem{chen2009efficient}
+W.~Chen, Y.~Wang, and S.~Yang.
+\newblock Efficient influence maximization in social networks.
+\newblock In {\em Proceedings of the 15th ACM SIGKDD international conference on Knowledge discovery and data mining}, pages 199--208, 2009.
+
+\bibitem{franks2014learning}
+H.~Franks, N.~Griffiths, and S.~S. Anand.
+\newblock Learning agent influence in mas with complex social networks.
+\newblock {\em Autonomous Agents and Multi-Agent Systems}, 28:836--866, 2014.
+
+\bibitem{gjoka11practicalreco}
+M.~Gjoka, M.~Kurant, C.~T. Butts, and A.~Markopoulou.
+\newblock Practical recommendations on crawling online social networks.
+\newblock {\em IEEE Journal on Selected Areas in Communications}, 29(9):1872--1892, 2011.
+
+\bibitem{jin2011albatross}
+L.~Jin, Y.~Chen, P.~Hui, C.~Ding, T.~Wang, A.~Vasilakos, B.~Deng, and X.~Li.
+\newblock Albatross sampling: robust and effective hybrid vertex sampling for social graphs.
+\newblock 07 2011.
+
+\bibitem{kempe2005influential}
+D.~Kempe, J.~Kleinberg, and {\'E}.~Tardos.
+\newblock Influential nodes in a diffusion model for social networks.
+\newblock In {\em international colloquium on automata, languages, and programming}, pages 1127--1138. Springer, 2005.
+
+\bibitem{lee2012randomwalkmetropolishastingssamplers}
+C.-H. Lee, X.~Xu, and D.~Y. Eun.
+\newblock Beyond random walk and metropolis-hastings samplers: Why you should not backtrack for unbiased graph sampling, 2012.
+
+\bibitem{satorras2008scalefree}
+R.~Pastor-Satorras and A.~Vespignani.
+\newblock Epidemic spreading in scale-free networks.
+\newblock {\em Physical review letters}, 86:3200--3, 05 2001.
+
+\bibitem{qiang23tieredInfluence}
+Z.~Qiang, E.~Pasiliao, and Q.~Zheng.
+\newblock Target set selection in social networks with tiered influence and activation thresholds.
+\newblock {\em Journal of Combinatorial Optimization}, 45, 06 2023.
+
+\bibitem{Wang2011UnderstandingGS}
+T.~Wang, Y.~Chen, Z.~Zhang, T.~Xu, L.~Jin, P.~Hui, B.~Deng, and X.~Li.
+\newblock Understanding graph sampling algorithms for social network analysis.
+\newblock {\em 2011 31st International Conference on Distributed Computing Systems Workshops}, pages 123--128, 2011.
+
+\bibitem{yang2019influence}
+W.~Yang, L.~Brenner, and A.~Giua.
+\newblock Influence maximization in independent cascade networks based on activation probability computation.
+\newblock {\em IEEE Access}, 7:13745--13757, 2019.
+
+\end{thebibliography}

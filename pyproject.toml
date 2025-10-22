@@ -4,7 +4,7 @@ version = "0.0.1"
 authors = [{ name = "Antoni Zyla", email = "antoni.zyla@warwick.ac.uk" }]
 description = "Influence Modelling test suite project."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
@@ -17,5 +17,13 @@ Homepage = "https://github.com/antonizyla"
 Issues = "https://github.com/antonizyla"
 
 [build-system]
-requires = ["hatchling >= 1.26"]
+requires = ["hatchling >= 1.27"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+  "venv",
+  ".git",
+  "__pycache__",
+  "*.pyc"
+]

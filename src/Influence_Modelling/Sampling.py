@@ -1,169 +1,145 @@
+import math
 import random
-from random import shuffle
-from typing import Any, Set
+from typing import Any, List
 
 import networkx as nx
 
 
-def bfs_sample(G: nx.DiGraph, S, n: int):
+def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
-    From the set of seed nodes add nodes using bfs until qutoa is reached.
+    Generate a sample from the set of seed nodes add nodes using bfs until the quota is
+    reached.
 
     :param nx.Digraph G: The graph to be sampled
     :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    # early termination when no sample required
     if G.number_of_nodes() <= n:
         return G
 
-    H: nx.DiGraph = nx.empty_graph(0)
-    working_set = set()
-    while H.number_of_nodes() < n:
-        for node in S:
-            working_set.add(node)
-            for adjacent in G.adj[node]:
-                working_set.add(adjacent)
-        H.add_nodes_from(working_set)
-        S = working_set
-    return G.remove_nodes_from([node for node in G.nodes() if node not in H.nodes()])
+    layers = [
+        layer for layer in nx.bfs_layers(G, random_element([v for v in G.nodes()]))
+    ]
+    subgraph = set()
+    while len(subgraph) < n and len(layers) > 0:
+        layer = layers[0]
+        layers = layers[1::]
+        for v in layer:
+            subgraph.add(v)
+    return G.subgraph([v for v in subgraph])
 
 
-def snowball_sample(G: nx.DiGraph, S, n: int):
+def snowball_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Following from BFS until quota is reached, if adding another bfs layer
     would put over the quota then a random selection would be added instead.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    # early termination when no sample required
     if G.number_of_nodes() <= n:
         return G
 
-    H: nx.DiGraph = nx.empty_graph(0)
-    H.add_nodes_from(S)
-    layer: Set[Any] = set()
-    while H.number_of_nodes() < n:
-        for node in S:
-            for adjacent in G.adj[node]:
-                layer.add(adjacent)
-        if len(layer) > (n - H.number_of_nodes()):
-            H.add_nodes_from(random_sample([x for x in layer], n - H.number_of_nodes()))
-            return H
-        H.add_nodes_from(layer)
-        S: Set[Any] = layer
-        layer = set()
-    return G.remove_nodes_from([node for node in G.nodes() if node not in H.nodes()])
+    layers = [
+        layer for layer in nx.bfs_layers(G, random_element([v for v in G.nodes()]))
+    ]
+    subgraph = set()
+    while len(subgraph) < n and len(layers) > 0:
+        layer = layers[0]
+        layers = layers[1::]
+        for v in layer:
+            subgraph.add(v)
+            if len(subgraph) == n:
+                return G.subgraph([v for v in subgraph])
+    return G.subgraph([v for v in subgraph])
 
 
-def random_walk_sample(G: nx.DiGraph, S, n: int):
+def random_walk_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Nodes are chosen following a random traversal, every node has an equal
     chance of being chosen at each step.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    layer: set[Any] = subgraph_nodes
-    while True:
-        layer_walked_one: set[Any] = set()
-        for v in layer:
-            if len(subgraph_nodes) >= n:
-                return G.remove_nodes_from(
-                    [node for node in G.nodes() if node not in subgraph_nodes]
-                )
-            # choose a neighbour of v to go to as the next step of walk
-            adj = G.adj[v]
-            next = random.choice(adj)
-            layer_walked_one.add(next)
-        subgraph_nodes.add(layer)
-        layer = layer_walked_one
+    path = [p for p in nx.generate_random_paths(G, 1, n)][0]
+    return G.subgraph([v for v in path])
 
 
-def mhrw_sample(G: nx.DiGraph, S, n: int):
+def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Metropolis-Hastings Random Walk. A random walk sample with a bias
     towards high degree locations aiming to preserve them inside the sample.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    explored = subgraph_nodes
-    from_explored = set()
+    if n >= len(list(G.nodes())):
+        return G
+
+    xt = random_element([v for v in G.nodes()])  # generate x_0 in effect
+    subgraph_nodes = set()
+
     while len(subgraph_nodes) < n:
-        for e in explored:
-            # choose random neighbour of e based on probability from degrees
-            neighbours = G.adj[e]
-            samples = []
-            for n in neighbours:
-                for _ in G.degree(n):  # type: ignore
-                    samples.append(n)
-            selection = random_sample(samples, 1)[
-                0
-            ]  # our chose next step based on degree of neighbours
-            from_explored.add(selection)
-        subgraph_nodes.add(explored)
-        explored = from_explored
-        from_explored = set()
-    return G.remove_nodes_from(
-        [node for node in G.nodes() if node not in subgraph_nodes]
-    )
+        p = random.random()
+
+        # this turns it into O(n^2) at minimum
+        j = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
+
+        # if j is None:
+        # j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
+
+        if p <= min(1, G.degree(xt) / G.degree(j)):
+            xt = j
+            subgraph_nodes.add(j)
+
+    return G.subgraph([n for n in subgraph_nodes])
 
 
-def mhda_sample(G: nx.DiGraph, S, n: int):
+def mhda_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Metropolis-Hastings Random Walk With Delayed Acceptance. An extension
     of MHRW with a modification to transition functions to reduce revisiting of
     the same locations.
 
     :param nx.Digraph G: The graph to be sampled
-    :param S: List of nodes which are our seed nodes
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    subgraph_nodes: set[Any] = set()
-    for seed in S:
-        subgraph_nodes.add(seed)
-    explored = subgraph_nodes
-    from_explored = set()
+    yt = None
+    xt = random_element([v for v in G.nodes()])
+    subgraph_nodes = set()
     while len(subgraph_nodes) < n:
-        for e in explored:
-            # choose random neighbour of e based on probability from degrees
-            neighbours = G.adj[e]
-            samples = []
-            for n in neighbours:
-                if n in from_explored or n in explored or n in subgraph_nodes:
-                    samples.append(n)
+        p = random.random()
+        i = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
+        if i is None:
+            i = random_element([n for n in G.nodes() if n not in subgraph_nodes])
+        if p <= min(1, G.degree(xt) / G.degree(i)):
+            if yt == i and G.degree(xt) > 1:
+                k = random_element([n for n in G.adj[xt] if n is not i])
+                q = random.random()
+                if q <= min(
+                    1,
+                    min(1, (G.degree(xt) / G.degree(k)) ** 2)
+                    * max(1, (G.degree(i) / G.degree(xt)) ** 2),
+                ):
+                    yt = xt
+                    xt = k
                 else:
-                    for _ in G.degree(n):  # type: ignore
-                        samples.append(n)
-            selection = random_sample(samples, 1)[
-                0
-            ]  # our chose next step based on degree of neighbours
-            from_explored.add(selection)
-        subgraph_nodes.add(explored)
-        explored = from_explored
-        from_explored = set()
-    return G.remove_nodes_from(
-        [node for node in G.nodes() if node not in subgraph_nodes]
-    )
+                    yt = xt
+                    xt = i
+            else:
+                yt = xt
+                xt = i
+        subgraph_nodes.add(xt)
+    return G.subgraph([n for n in subgraph_nodes]).copy()
 
 
-def ablatross_sample(G: nx.DiGraph):
+def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
     """
     Albatross Sampling. A random walk with an chance to randomly jump to a
     disjoint location within the graph and gain greater coverage of disjoint
@@ -174,14 +150,41 @@ def ablatross_sample(G: nx.DiGraph):
     :param int n: Number of nodes to be selected in our sample.
     :return: Subgraph of G following the algorithm
     """
-    pass
+    sample = set()
+    p = 0.02
+    sample.add(random_sample(G.nodes(), 1)[0])
+    last_added = [v for v in sample][0]
+    while len(sample) < n:
+        if random.random() < p:
+            # choose a random non connected vertex
+            available = [v for v in G.nodes() if v not in [u for u in sample]]
+            selected = random.shuffle(available).pop(0)
+            sample.add(selected)
+            last_added = selected
+        else:
+            # choose edge linked to last_added
+            u = last_added
+            v = random_sample(G.adj[u], 1).pop(0)
+            if random.random() < G.in_degree(u) / G.in_degree(v):
+                last_added = v
+                sample.add(v)
+            else:
+                sample.add(u)
+    return sample
 
 
-def random_sample(collection: list[Any], n) -> list[Any]:
-    if n >= collection:
+def random_sample(collection: list[Any], n: int) -> list[Any]:
+    if n >= len(collection):
         return collection
-    s: set[Any] = {}  # type: ignore
+    s: set[Any] = set()
     while len(s) < n:
-        shuffle(collection)
+        random.shuffle(collection)
         s.add(collection.pop(0))
     return [x for x in s]
+
+
+def random_element(xs: list[Any]) -> Any:
+    length = len(xs)
+    if length <= 0:
+        return None
+    return xs[math.floor(random.random() * length)]
