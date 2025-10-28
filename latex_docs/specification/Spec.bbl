@@ -39,16 +39,6 @@ D.~Kempe, J.~Kleinberg, and {\'E}.~Tardos.
 C.-H. Lee, X.~Xu, and D.~Y. Eun.
 \newblock Beyond random walk and metropolis-hastings samplers: Why you should not backtrack for unbiased graph sampling, 2012.
 
-\bibitem{satorras2008scalefree}
-R.~Pastor-Satorras and A.~Vespignani.
-\newblock Epidemic spreading in scale-free networks.
-\newblock {\em Physical review letters}, 86:3200--3, 05 2001.
-
-\bibitem{qiang23tieredInfluence}
-Z.~Qiang, E.~Pasiliao, and Q.~Zheng.
-\newblock Target set selection in social networks with tiered influence and activation thresholds.
-\newblock {\em Journal of Combinatorial Optimization}, 45, 06 2023.
-
 \bibitem{Wang2011UnderstandingGS}
 T.~Wang, Y.~Chen, Z.~Zhang, T.~Xu, L.~Jin, P.~Hui, B.~Deng, and X.~Li.
 \newblock Understanding graph sampling algorithms for social network analysis.
