@@ -72,9 +72,7 @@ res = cursor.execute(
     "Create table nodes (nodeId integer primary key asc, nodeVal unique Text)"
 )
 
-res = cursor.execute(
-    "Insert into nodes select distinct inNode from edges"
-)
+res = cursor.execute("Insert into nodes select distinct inNode from edges")
 
 cursor.close()
 con.close()

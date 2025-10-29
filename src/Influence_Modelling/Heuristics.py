@@ -38,13 +38,65 @@ def deg_discount_h(G, n: int = 2) -> list:
     """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
-    H: nx.DiGraph = G
+    H: nx.DiGraph = G.copy()
     vertices = []
-    while n != 0:
+    while len(vertices) < n:
         degrees = H.degree()
-        maximal_deg = max([v for (u, v) in degrees])
-        vertex = [u for (u, v) in degrees if v == maximal_deg][0]
+        maximal_deg = max([degree for (_, degree) in H.degree()])
+        vertex = [vertex for (vertex, degree) in degrees if degree == maximal_deg][0]
         vertices.append(vertex)
         H.remove_node(vertex)
-        n -= 1
     return vertices
+
+
+def __neighbour_deg(G, node):
+    neighbour_degrees = [G.degree(n) for n in G.adj[node]]
+    if neighbour_degrees == []:
+        return 0
+    return sum(neighbour_degrees) / len(neighbour_degrees)
+
+
+def mean_neighbour_deg_h(G, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    nodes = []
+    for node in G.nodes():
+        nodes.append((__neighbour_deg(G, node), node))  # type: ignore
+    nodes.sort(reverse=True)
+    return [x[1] for x in nodes[:n]]
+
+
+def local_clustering_coefficient_h(G, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    coefficients = nx.clustering(G)
+    node_coefficients = [(coefficients[node], node) for node in G.nodes()]
+    node_coefficients.sort(reverse=True)
+    return [x[1] for x in node_coefficients[:n]]
+
+
+def betweenness_centrality_h(G, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    coefficients = nx.betweenness_centrality(G)
+    node_coefficients = [(coefficients[node], node) for node in G.nodes()]
+    node_coefficients.sort(reverse=True)
+    return [x[1] for x in node_coefficients[:n]]
+
+
+def average_shortest_path_length_h(G, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    coefficients = nx.average_shortest_path_length(G)
+    node_coefficients = [(coefficients[node], node) for node in G.nodes()]
+    node_coefficients.sort(reverse=True)
+    return [x[1] for x in node_coefficients[:n]]
+
+
+def eigenvector_centrality_h(G, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    coefficients = nx.eigenvector_centrality(G)
+    node_coefficients = [(coefficients[node], node) for node in G.nodes()]
+    node_coefficients.sort(reverse=True)
+    return [x[1] for x in node_coefficients[:n]]

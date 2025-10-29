@@ -82,7 +82,7 @@ class Network:
         return True
 
     def run_DCC(
-        self, seed_nodes, p: float = 0.5, dec_func=lambda x: x * 0.7
+        self, seed_nodes, p: float = 0.1, dec_func=lambda x: x * 0.7
     ) -> tuple[int, nx.DiGraph]:
         """
         Run a simulation of the decreasing cascade model on the network.
@@ -90,7 +90,7 @@ class Network:
         :param list seed_nodes: The set of nodes which start the spread in
         the network
         :param lambda dec_func: A single variable lambda function which
-        denotes how the likelyhood of a node being influence changes every
+        denotes how the likelyhood of a node being influenced changes every
         time it is attempted.
         :return: A tuple in the form `(i, G)`, where `i` is the number of
         iterations before the network could no longer change in influence
@@ -140,7 +140,8 @@ class Network:
         and `G` is the final graph after `i` iterations
         """
         self.__H = self.__G
-
+        number_infected_0 = 0
+        number_infected_1 = 0
         if seed_nodes is None or seed_nodes == []:
             print(
                 f"""[Linear Threshold Model] on network: 
@@ -155,21 +156,32 @@ class Network:
             )
         for seed in seed_nodes:
             self.__H.add_node(seed, status="active")
+            number_infected_0 += 1
 
         i = 0
-        while not self.__all_nodes_complete() and i < self.__limit:
+        while not self.__all_nodes_complete() and i < 100:
+            number_infected_1 = number_infected_0
             i += 1
-            for node in self.__H.nodes.data():
-                if node["status"] == "inactive":
+            for node, data in self.__H.nodes.data():
+                if data["status"] == "inactive":
                     # check neighbours for percentage > threshold
                     active_neighbours = 0
+                    total_neighbours = 0
                     for adj in self.__H.adj[node]:
                         if self.__H.nodes[adj]["status"] == "active":
                             active_neighbours += 1
-                    if (active_neighbours / len(self.__H.adj[node])) > self.__H.nodes[
-                        node
-                    ]["prob"]:
+                        total_neighbours += 1
+                    if (
+                        total_neighbours > 0
+                        and (active_neighbours / total_neighbours)
+                        > self.__H.nodes[node]["prob"]
+                    ):
                         self.__H.add_node(node, status="active")
+                        number_infected_1 += 1
+            if number_infected_1 - number_infected_0 == 0:
+                break
+            else:
+                number_infected_0 = number_infected_1
         return (i, self.__H)
 
     def __active_nodes(self) -> list:

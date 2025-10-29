@@ -90,8 +90,8 @@ def mhrw_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
         # this turns it into O(n^2) at minimum
         j = random_element([n for n in G.adj[xt] if n not in subgraph_nodes])
 
-        # if j is None:
-        # j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
+        if j is None:
+            j = random_element([v for v in G.nodes() if v not in subgraph_nodes])
 
         if p <= min(1, G.degree(xt) / G.degree(j)):
             xt = j

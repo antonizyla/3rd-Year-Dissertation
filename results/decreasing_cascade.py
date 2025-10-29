@@ -12,7 +12,7 @@ from Influence_Modelling import Heuristics, Network, Sampling, XsvNetwork
 output_folder_path = ""
 
 
-def single_run_icc(
+def single_run_dcc(
     dataset_name: str,
     network: nx.DiGraph,
     heuristic_name: str,
@@ -27,14 +27,16 @@ def single_run_icc(
 
     if sampling_function is not None and sample_size is not None:
         network = sampling_function(network, sample_size)
+
+    seeds = heuristic_method(network, seed_size)
     start_coverage = seed_size / len(list(network.nodes()))
     N = Network.Network("", "", False)
     N.set_nx(network)
-    iterations, final = N.run_ICC(
-        heuristic_method(network, seed_size), 0.1, maximum_iterations
+    iterations, final = N.run_DCC(
+        seeds, 0.1
     )
     end_coverage = len(
-        [(v, n) for n, v in final.nodes().data() if v["status"] == "inactive"]  # pyright: ignore[reportAttributeAccessIssue]
+        [data for _, data in final.nodes().data() if data['status'] != 'inactive']
     ) / len(list(final.nodes()))
     end_time = time.time_ns()
     result = pd.DataFrame(
@@ -47,6 +49,9 @@ def single_run_icc(
                 end_coverage,
                 iterations,
                 end_time - start_time,
+                len([node for (node, data) in final.nodes().data() if data['status'] == 'active']),
+                len([node for (node, data) in final.nodes().data() if data['status'] == 'inactive']),
+                len([node for (node, data) in final.nodes().data() if data['status'] == 'used'])
             ]
         ],
         columns=[
@@ -57,10 +62,13 @@ def single_run_icc(
             "end_coverage",
             "iterations",
             "time_taken_ns",
+            "active_nodes",
+            "inactive_nodes",
+            "used_nodes"
         ],
     )
     filepath: str = (
-        f"{output_folder_path}/ICC-{heuristic_name}-{seed_size}-{trial}.pickle"
+        f"{output_folder_path}/DCC-{heuristic_name}-{seed_size}-{trial}.pickle"
     )
     with open(filepath, "wb") as handle:
         pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -85,6 +93,9 @@ def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
             "iterations_std": [rows["iterations"].to_numpy().std()],
             "time_taken_ns": [rows["time_taken_ns"].to_numpy().mean()],
             "time_taken_std_ns": [rows["time_taken_ns"].to_numpy().std()],
+            "number_rows": [len(rows)],
+            "infected_nodes": [rows["used_nodes"].mean()],
+            "infected_nodes_std": [rows["used_nodes"].std()],
         }
     )
     heuristic_name = df["heuristic"][0]
@@ -105,10 +116,9 @@ if __name__ == "__main__":
     pd.options.display.max_rows = None
     pd.options.display.expand_frame_repr = False
 
-    parser = argparse.ArgumentParser("python independent.py")
+    parser = argparse.ArgumentParser("python decreasing_cascade.py")
     parser.add_argument(
         "--output_location",
-        "-o",
         "-o",
         help="Folder to output all intermediate data. Default will be to create a folder called log.",
         type=str,
@@ -144,16 +154,21 @@ if __name__ == "__main__":
     ################################################################################
     datasets = [
         # (Label, Networkx Datastructure, Sampling Method, number of nodes to sample)
-        # ("Enron-No-Sampling", enron_data.get_nx(), None, None),
-        ("Enron-MHDA-1000", enron_data.get_nx(), Sampling.mhda_sample, 1000),
+        ("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
+        ("Enron-MHDA-1024", enron_data.get_nx(), Sampling.mhda_sample, 1024),
+        #("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
     ]
     heuristics = [
         ("Random", Heuristics.random_h),
         ("Degree", Heuristics.deg_h),
-        ("Degree Discount", Heuristics.deg_discount_h),
+        ("Discount", Heuristics.deg_discount_h),
+        ("Neighbour", Heuristics.mean_neighbour_deg_h),
+        ("Betweeeness", Heuristics.betweenness_centrality_h),
+        ("LocalClustering", Heuristics.local_clustering_coefficient_h),
         # (Name, Function)
     ]
-    seed_sizes = [10, 20, 30, 40, 50, 75, 100, 125, 150]
+
+    seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512] 
     #################################################################################
 
     runs = []
@@ -178,7 +193,7 @@ if __name__ == "__main__":
                     )
 
     rows = []
-    all_rows = p.starmap(single_run_icc, runs)
+    all_rows = p.starmap(single_run_dcc, runs)
 
     # take mean and std dev of each combo of dataset and sample method
     df = pd.concat(all_rows)
@@ -200,10 +215,10 @@ if __name__ == "__main__":
                 )
 
     print(concatenated)
-    filepath = f"{output_folder_path}/Concatenated-Individual-Runs-ICC.pickle"
+    filepath = f"{output_folder_path}/Concatenated-Individual-Runs-DCC.pickle"
     with open(filepath, "wb") as handle:
         pickle.dump(concatenated, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        print(f"Completed Concatenation ICC runs and saved to `{filepath}`")
+        print(f"Completed Concatenation DCC runs and saved to `{filepath}`")
 
     datasets = concatenated["dataset"].unique()
     heuristics = concatenated["heuristic"].unique()
@@ -217,10 +232,10 @@ if __name__ == "__main__":
             ]
             tables.append(table)
             print(table)
-            filepath = f"{output_folder_path}/Compiled-ICC-{dataset}-{heuristic}.pickle"
+            filepath = f"{output_folder_path}/Compiled-DCC-{dataset}-{heuristic}.pickle"
             with open(filepath, "wb") as handle:
                 pickle.dump(table, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    filepath = f"{output_folder_path}/All-Compiled-Tables.pickle"
+    filepath = f"{output_folder_path}/All-DCC-Compiled-Tables.pickle"
     with open(filepath, "wb") as handle:
         pickle.dump(tables, handle, protocol=pickle.HIGHEST_PROTOCOL)
