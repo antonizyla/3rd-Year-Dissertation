@@ -1,6 +1,8 @@
 import argparse
+import math
 import os
 import pickle
+import random
 import time
 from multiprocessing import Pool
 
@@ -12,7 +14,7 @@ from Influence_Modelling import Heuristics, Network, Sampling, XsvNetwork
 output_folder_path = ""
 
 
-def single_run_icc(
+def single_run(
     dataset_name: str,
     network: nx.DiGraph,
     heuristic_name: str,
@@ -22,19 +24,30 @@ def single_run_icc(
     trial: int,
     sampling_function,
     sample_size: int,
+    model
 ):
     start_time = time.time_ns()
 
     if sampling_function is not None and sample_size is not None:
         network = sampling_function(network, sample_size)
+    elif isinstance(network, str):
+        with open(f"{output_folder_path}/networks/{network}", "rb") as f:
+            network = pickle.load(f)
 
     seeds = heuristic_method(network, seed_size)
     start_coverage = seed_size / len(list(network.nodes()))
     N = Network.Network("", "", False)
     N.set_nx(network)
-    iterations, final = N.run_ICC(
-        seeds, 0.1, maximum_iterations
-    )
+    iterations, final = None, None
+    
+    if model not in ["ICC", "DCC", "LTM"]:
+        model = "ICC"
+    
+    if model == "ICC":
+        iterations, final = N.run_ICC(
+            seeds, 0.1, maximum_iterations
+        )
+    
     end_coverage = len(
         [data for _, data in final.nodes().data() if data['status'] != 'inactive']
     ) / len(list(final.nodes()))
@@ -68,7 +81,7 @@ def single_run_icc(
         ],
     )
     filepath: str = (
-        f"{output_folder_path}/ICC-{heuristic_name}-{seed_size}-{trial}.pickle"
+        f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
     )
     with open(filepath, "wb") as handle:
         pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -77,6 +90,8 @@ def single_run_icc(
         )
     return result
 
+def sample_helper(sampling_method, base, size, label):
+    return (sampling_method(base, size), label)
 
 def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
     # columns=["heuristic", "n", "start_coverage", "end_coverage", "iterations"],
@@ -138,6 +153,13 @@ if __name__ == "__main__":
         type=int,
         default=30,
     )
+    parser.add_argument(
+        "--samples",
+        "-s",
+        help="The number of samples of each network to run trials over. 0 will denote running a sample for each trial",
+        type=int,
+        default=10,
+    )
     args = parser.parse_args()
 
     # create the intermediate output folder
@@ -146,6 +168,10 @@ if __name__ == "__main__":
         os.makedirs(args.output_location)
     threads = args.processes
     trials = args.trials
+    samples = args.samples
+    if samples > 0:
+        if not os.path.exists(f"{output_folder_path}/networks"):
+            os.makedirs(f"{output_folder_path}/networks")
     logfile = f"{output_folder_path}/log.txt"
 
     enron_data = XsvNetwork.XsvNetwork("", "", "enron")
@@ -160,19 +186,39 @@ if __name__ == "__main__":
     ]
     heuristics = [
         ("Random", Heuristics.random_h),
-        ("Degree", Heuristics.deg_h),
-        ("Discount", Heuristics.deg_discount_h),
-        ("Neighbour", Heuristics.mean_neighbour_deg_h),
-        ("Betweeeness", Heuristics.betweenness_centrality_h),
-        ("LocalClustering", Heuristics.local_clustering_coefficient_h),
-        ("EigenvectorCentrality", Heuristics.eigenvector_centrality_h),
+        #("Degree", Heuristics.deg_h),
+        #("Discount", Heuristics.deg_discount_h),
+        #("Neighbour", Heuristics.mean_neighbour_deg_h),
+        #("Betweeeness", Heuristics.betweenness_centrality_h),
+        #("LocalClustering", Heuristics.local_clustering_coefficient_h),
+        #("EigenvectorCentrality", Heuristics.eigenvector_centrality_h),
         # (Name, Function)
+        ("Greedy", Heuristics.greedy_h),
+        ("Celf", Heuristics.celf_h)
     ]
     seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512] 
     #################################################################################
 
     runs = []
     p = Pool(threads)
+
+    # speedup based on the computing the samples in parallel
+    sampled_networks = {}
+    if samples > 0:
+        for label, _, _, _ in datasets:
+            sampled_networks[label] = []
+        samples_pool = []
+        for label, base, method, size in datasets:
+            # only compute the sample of the network if it's not already stored on disk
+            for k in range(samples):
+                if not os.path.exists(f"{output_folder_path}/networks/{label}-{k}"):
+                    samples_pool.append((method, base, size, f"{label}-{k}"))
+                sampled_networks[label] += [f"{label}-{k}"]
+        sampled_nets = p.starmap(sample_helper, samples_pool)
+        for sample, label_k in sampled_nets:
+            with open(f"{output_folder_path}/networks/{label_k}", "wb") as f:
+                pickle.dump(sample, f, protocol=pickle.HIGHEST_PROTOCOL)
+        print(sampled_nets)
 
     for dataset_name, dataset_network, sampling_method, sample_size in datasets:
         for heuristic_name, heuristic_function in heuristics:
@@ -181,19 +227,20 @@ if __name__ == "__main__":
                     runs.append(
                         (
                             dataset_name,
-                            dataset_network,
+                            dataset_network if sampled_networks == {} else sampled_networks[dataset_name][math.floor(random.random() * samples)],
                             heuristic_name,
                             heuristic_function,
                             seed_size,
-                            1000,
+                            1000, # Iteration limit, possibly too small for some networks
                             trial,
-                            sampling_method,
+                            sampling_method if sampled_networks == {} else None,
                             sample_size,
+                            "ICC"
                         )
                     )
 
     rows = []
-    all_rows = p.starmap(single_run_icc, runs)
+    all_rows = p.starmap(single_run, runs)
 
     # take mean and std dev of each combo of dataset and sample method
     df = pd.concat(all_rows)
