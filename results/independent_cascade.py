@@ -24,7 +24,7 @@ def single_run(
     trial: int,
     sampling_function,
     sample_size: int,
-    model
+    model,
 ):
     start_time = time.time_ns()
 
@@ -39,17 +39,15 @@ def single_run(
     N = Network.Network("", "", False)
     N.set_nx(network)
     iterations, final = None, None
-    
+
     if model not in ["ICC", "DCC", "LTM"]:
         model = "ICC"
-    
+
     if model == "ICC":
-        iterations, final = N.run_ICC(
-            seeds, 0.1, maximum_iterations
-        )
-    
+        iterations, final = N.run_ICC(seeds, 0.1, maximum_iterations)
+
     end_coverage = len(
-        [data for _, data in final.nodes().data() if data['status'] != 'inactive']
+        [data for _, data in final.nodes().data() if data["status"] != "inactive"]
     ) / len(list(final.nodes()))
     end_time = time.time_ns()
     result = pd.DataFrame(
@@ -62,9 +60,27 @@ def single_run(
                 end_coverage,
                 iterations,
                 end_time - start_time,
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'active']),
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'inactive']),
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'used'])
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "active"
+                    ]
+                ),
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "inactive"
+                    ]
+                ),
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "used"
+                    ]
+                ),
             ]
         ],
         columns=[
@@ -77,12 +93,10 @@ def single_run(
             "time_taken_ns",
             "active_nodes",
             "inactive_nodes",
-            "used_nodes"
+            "used_nodes",
         ],
     )
-    filepath: str = (
-        f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
-    )
+    filepath: str = f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
     with open(filepath, "wb") as handle:
         pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
         print(
@@ -90,8 +104,10 @@ def single_run(
         )
     return result
 
+
 def sample_helper(sampling_method, base, size, label):
     return (sampling_method(base, size), label)
+
 
 def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
     # columns=["heuristic", "n", "start_coverage", "end_coverage", "iterations"],
@@ -180,23 +196,23 @@ if __name__ == "__main__":
     ################################################################################
     datasets = [
         # (Label, Networkx Datastructure, Sampling Method, number of nodes to sample)
-        #("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
+        # ("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
         ("Enron-MHDA-1024", enron_data.get_nx(), Sampling.mhda_sample, 1024),
-        #("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
+        # ("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
     ]
     heuristics = [
         ("Random", Heuristics.random_h),
-        #("Degree", Heuristics.deg_h),
-        #("Discount", Heuristics.deg_discount_h),
-        #("Neighbour", Heuristics.mean_neighbour_deg_h),
-        #("Betweeeness", Heuristics.betweenness_centrality_h),
-        #("LocalClustering", Heuristics.local_clustering_coefficient_h),
-        #("EigenvectorCentrality", Heuristics.eigenvector_centrality_h),
-        # (Name, Function)
+        ("Degree", Heuristics.deg_h),
+        ("Discount", Heuristics.deg_discount_h),
+        ("Neighbour", Heuristics.mean_neighbour_deg_h),
+        ("Betweeeness", Heuristics.betweenness_centrality_h),
+        ("LocalClustering", Heuristics.local_clustering_coefficient_h),
+        ("EigenvectorCentrality", Heuristics.eigenvector_centrality_h),
         ("Greedy", Heuristics.greedy_h),
-        ("Celf", Heuristics.celf_h)
+        ("Celf", Heuristics.celf_h),
+        # (Name, Function)
     ]
-    seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512] 
+    seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
     #################################################################################
 
     runs = []
@@ -227,15 +243,19 @@ if __name__ == "__main__":
                     runs.append(
                         (
                             dataset_name,
-                            dataset_network if sampled_networks == {} else sampled_networks[dataset_name][math.floor(random.random() * samples)],
+                            dataset_network
+                            if sampled_networks == {}
+                            else sampled_networks[dataset_name][
+                                math.floor(random.random() * samples)
+                            ],
                             heuristic_name,
                             heuristic_function,
                             seed_size,
-                            1000, # Iteration limit, possibly too small for some networks
+                            1000,  # Iteration limit, possibly too small for some networks
                             trial,
                             sampling_method if sampled_networks == {} else None,
                             sample_size,
-                            "ICC"
+                            "ICC",
                         )
                     )
 

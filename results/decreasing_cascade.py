@@ -32,11 +32,9 @@ def single_run_dcc(
     start_coverage = seed_size / len(list(network.nodes()))
     N = Network.Network("", "", False)
     N.set_nx(network)
-    iterations, final = N.run_DCC(
-        seeds, 0.1
-    )
+    iterations, final = N.run_DCC(seeds, 0.1)
     end_coverage = len(
-        [data for _, data in final.nodes().data() if data['status'] != 'inactive']
+        [data for _, data in final.nodes().data() if data["status"] != "inactive"]
     ) / len(list(final.nodes()))
     end_time = time.time_ns()
     result = pd.DataFrame(
@@ -49,9 +47,27 @@ def single_run_dcc(
                 end_coverage,
                 iterations,
                 end_time - start_time,
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'active']),
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'inactive']),
-                len([node for (node, data) in final.nodes().data() if data['status'] == 'used'])
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "active"
+                    ]
+                ),
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "inactive"
+                    ]
+                ),
+                len(
+                    [
+                        node
+                        for (node, data) in final.nodes().data()
+                        if data["status"] == "used"
+                    ]
+                ),
             ]
         ],
         columns=[
@@ -64,7 +80,7 @@ def single_run_dcc(
             "time_taken_ns",
             "active_nodes",
             "inactive_nodes",
-            "used_nodes"
+            "used_nodes",
         ],
     )
     filepath: str = (
@@ -156,7 +172,7 @@ if __name__ == "__main__":
         # (Label, Networkx Datastructure, Sampling Method, number of nodes to sample)
         ("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
         ("Enron-MHDA-1024", enron_data.get_nx(), Sampling.mhda_sample, 1024),
-        #("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
+        # ("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
     ]
     heuristics = [
         ("Random", Heuristics.random_h),
@@ -168,7 +184,7 @@ if __name__ == "__main__":
         # (Name, Function)
     ]
 
-    seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512] 
+    seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
     #################################################################################
 
     runs = []
