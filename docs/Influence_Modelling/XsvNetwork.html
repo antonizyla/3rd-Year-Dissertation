@@ -65,17 +65,17 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 
                         <label class="view-source-button" for="mod-XsvNetwork-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">importlib.resources</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">import</span> <span class="nn">ast</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">import</span> <span class="nn">importlib.resources</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">import</span> <span class="nn">os</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">Influence_Modelling.Network</span><span class="w"> </span><span class="kn">import</span> <span class="n">Network</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span> <span class="nn">Influence_Modelling.Network</span> <span class="kn">import</span> <span class="n">Network</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XsvNetwork</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span> <span class="nc">XsvNetwork</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    XsvNetwork Class: Load networks from CSV/TSV files or preloaded datasets.</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
@@ -101,7 +101,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        net = XsvNetwork(&quot;project&quot;, &quot;my_network&quot;, &quot;data.tsv&quot;, separator=&quot;\t&quot;)</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>        <span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -127,7 +127,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__sep</span> <span class="o">=</span> <span class="n">separator</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__read_file_to_str</span><span class="p">())</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">__read_file_to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="k">def</span> <span class="nf">__read_file_to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="c1"># Packaged with the library</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filepath</span> <span class="o">==</span> <span class="s2">&quot;airports&quot;</span><span class="p">:</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
@@ -161,7 +161,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>            <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filepath</span><span class="p">)</span>
 </span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">def</span> <span class="nf">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">:</span>
 </span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 </span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>            <span class="c1"># line is of the format 1. `u v {data: ...}`</span>
@@ -198,7 +198,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[SV Network] Error Reading row with content `</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
 </span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__H</span>
 </span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="k">def</span> <span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        Returns the networkx graph object.</span>
 </span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -218,7 +218,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 
     </div>
     <a class="headerlink" href="#XsvNetwork"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork-12"><a href="#XsvNetwork-12"><span class="linenos"> 12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XsvNetwork</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork-12"><a href="#XsvNetwork-12"><span class="linenos"> 12</span></a><span class="k">class</span> <span class="nc">XsvNetwork</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
 </span><span id="XsvNetwork-13"><a href="#XsvNetwork-13"><span class="linenos"> 13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="XsvNetwork-14"><a href="#XsvNetwork-14"><span class="linenos"> 14</span></a><span class="sd">    XsvNetwork Class: Load networks from CSV/TSV files or preloaded datasets.</span>
 </span><span id="XsvNetwork-15"><a href="#XsvNetwork-15"><span class="linenos"> 15</span></a>
@@ -244,7 +244,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="XsvNetwork-35"><a href="#XsvNetwork-35"><span class="linenos"> 35</span></a><span class="sd">        net = XsvNetwork(&quot;project&quot;, &quot;my_network&quot;, &quot;data.tsv&quot;, separator=&quot;\t&quot;)</span>
 </span><span id="XsvNetwork-36"><a href="#XsvNetwork-36"><span class="linenos"> 36</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="XsvNetwork-37"><a href="#XsvNetwork-37"><span class="linenos"> 37</span></a>
-</span><span id="XsvNetwork-38"><a href="#XsvNetwork-38"><span class="linenos"> 38</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="XsvNetwork-38"><a href="#XsvNetwork-38"><span class="linenos"> 38</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
 </span><span id="XsvNetwork-39"><a href="#XsvNetwork-39"><span class="linenos"> 39</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="XsvNetwork-40"><a href="#XsvNetwork-40"><span class="linenos"> 40</span></a>        <span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="XsvNetwork-41"><a href="#XsvNetwork-41"><span class="linenos"> 41</span></a>        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -270,7 +270,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="XsvNetwork-61"><a href="#XsvNetwork-61"><span class="linenos"> 61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__sep</span> <span class="o">=</span> <span class="n">separator</span>
 </span><span id="XsvNetwork-62"><a href="#XsvNetwork-62"><span class="linenos"> 62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__read_file_to_str</span><span class="p">())</span>
 </span><span id="XsvNetwork-63"><a href="#XsvNetwork-63"><span class="linenos"> 63</span></a>
-</span><span id="XsvNetwork-64"><a href="#XsvNetwork-64"><span class="linenos"> 64</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">__read_file_to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="XsvNetwork-64"><a href="#XsvNetwork-64"><span class="linenos"> 64</span></a>    <span class="k">def</span> <span class="nf">__read_file_to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 </span><span id="XsvNetwork-65"><a href="#XsvNetwork-65"><span class="linenos"> 65</span></a>        <span class="c1"># Packaged with the library</span>
 </span><span id="XsvNetwork-66"><a href="#XsvNetwork-66"><span class="linenos"> 66</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filepath</span> <span class="o">==</span> <span class="s2">&quot;airports&quot;</span><span class="p">:</span>
 </span><span id="XsvNetwork-67"><a href="#XsvNetwork-67"><span class="linenos"> 67</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
@@ -304,7 +304,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="XsvNetwork-95"><a href="#XsvNetwork-95"><span class="linenos"> 95</span></a>            <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filepath</span><span class="p">)</span>
 </span><span id="XsvNetwork-96"><a href="#XsvNetwork-96"><span class="linenos"> 96</span></a>        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="XsvNetwork-97"><a href="#XsvNetwork-97"><span class="linenos"> 97</span></a>
-</span><span id="XsvNetwork-98"><a href="#XsvNetwork-98"><span class="linenos"> 98</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="XsvNetwork-98"><a href="#XsvNetwork-98"><span class="linenos"> 98</span></a>    <span class="k">def</span> <span class="nf">__edge_list_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="XsvNetwork-99"><a href="#XsvNetwork-99"><span class="linenos"> 99</span></a>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">:</span>
 </span><span id="XsvNetwork-100"><a href="#XsvNetwork-100"><span class="linenos">100</span></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 </span><span id="XsvNetwork-101"><a href="#XsvNetwork-101"><span class="linenos">101</span></a>            <span class="c1"># line is of the format 1. `u v {data: ...}`</span>
@@ -341,7 +341,7 @@ Influence_Modelling<wbr>.XsvNetwork    </h1>
 </span><span id="XsvNetwork-132"><a href="#XsvNetwork-132"><span class="linenos">132</span></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[SV Network] Error Reading row with content `</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
 </span><span id="XsvNetwork-133"><a href="#XsvNetwork-133"><span class="linenos">133</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__G</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__H</span>
 </span><span id="XsvNetwork-134"><a href="#XsvNetwork-134"><span class="linenos">134</span></a>
-</span><span id="XsvNetwork-135"><a href="#XsvNetwork-135"><span class="linenos">135</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="XsvNetwork-135"><a href="#XsvNetwork-135"><span class="linenos">135</span></a>    <span class="k">def</span> <span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="XsvNetwork-136"><a href="#XsvNetwork-136"><span class="linenos">136</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="XsvNetwork-137"><a href="#XsvNetwork-137"><span class="linenos">137</span></a><span class="sd">        Returns the networkx graph object.</span>
 </span><span id="XsvNetwork-138"><a href="#XsvNetwork-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -391,7 +391,7 @@ net = XsvNetwork("project", "my_network", "data.tsv", separator="       ")
 
     </div>
     <a class="headerlink" href="#XsvNetwork.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork.__init__-38"><a href="#XsvNetwork.__init__-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork.__init__-38"><a href="#XsvNetwork.__init__-38"><span class="linenos">38</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
 </span><span id="XsvNetwork.__init__-39"><a href="#XsvNetwork.__init__-39"><span class="linenos">39</span></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="XsvNetwork.__init__-40"><a href="#XsvNetwork.__init__-40"><span class="linenos">40</span></a>        <span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="XsvNetwork.__init__-41"><a href="#XsvNetwork.__init__-41"><span class="linenos">41</span></a>        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -446,7 +446,7 @@ net = XsvNetwork("project", "my_network", "data.tsv", separator="       ")
 
     </div>
     <a class="headerlink" href="#XsvNetwork.get_nx"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork.get_nx-135"><a href="#XsvNetwork.get_nx-135"><span class="linenos">135</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XsvNetwork.get_nx-135"><a href="#XsvNetwork.get_nx-135"><span class="linenos">135</span></a>    <span class="k">def</span> <span class="nf">get_nx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="XsvNetwork.get_nx-136"><a href="#XsvNetwork.get_nx-136"><span class="linenos">136</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="XsvNetwork.get_nx-137"><a href="#XsvNetwork.get_nx-137"><span class="linenos">137</span></a><span class="sd">        Returns the networkx graph object.</span>
 </span><span id="XsvNetwork.get_nx-138"><a href="#XsvNetwork.get_nx-138"><span class="linenos">138</span></a><span class="sd">        &quot;&quot;&quot;</span>
@@ -463,7 +463,8 @@ net = XsvNetwork("project", "my_network", "data.tsv", separator="       ")
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="Network.html#Network">Influence_Modelling.Network.Network</a></dt>
-                                <dd id="XsvNetwork.set_nx" class="function"><a href="Network.html#Network.set_nx">set_nx</a></dd>
+                                <dd id="XsvNetwork.get_name" class="function"><a href="Network.html#Network.get_name">get_name</a></dd>
+                <dd id="XsvNetwork.set_nx" class="function"><a href="Network.html#Network.set_nx">set_nx</a></dd>
                 <dd id="XsvNetwork.run_ICC" class="function"><a href="Network.html#Network.run_ICC">run_ICC</a></dd>
                 <dd id="XsvNetwork.run_DCC" class="function"><a href="Network.html#Network.run_DCC">run_DCC</a></dd>
                 <dd id="XsvNetwork.run_LTM" class="function"><a href="Network.html#Network.run_LTM">run_LTM</a></dd>

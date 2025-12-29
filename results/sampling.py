@@ -10,7 +10,7 @@ import networkx as nx
 import pandas as pd
 import logging
 
-from Influence_Modelling import NetworkMetrics, Sampling, XsvNetwork
+from Influence_Modelling import Metrics, Sampling, XsvNetwork
 
 output_folder_path: str = ""
 logger = logging.getLogger(__name__)
@@ -66,11 +66,11 @@ def single_row(
         sample = method_function(dataset_network, nodes)
     result = pd.DataFrame(
         data={
-            "nodes": [NetworkMetrics.s_1_number_nodes(sample)],
-            "edges": [NetworkMetrics.s_2_number_edges(sample)],
-            "mean_degree": [NetworkMetrics.s_3_mean_degree(sample)],
-            "cc": [NetworkMetrics.s_4_clustering_coefficient(sample)],
-            "centralization": [NetworkMetrics.s_6_centralization(sample)],
+            "nodes": [Metrics.s_1_number_nodes(sample)],
+            "edges": [Metrics.s_2_number_edges(sample)],
+            "mean_degree": [Metrics.s_3_mean_degree(sample)],
+            "cc": [Metrics.s_4_clustering_coefficient(sample)],
+            "centralization": [Metrics.s_6_centralization(sample)],
             # "diameter": NetworkMetrics.s_5_diameter(sample),
         }
     )
