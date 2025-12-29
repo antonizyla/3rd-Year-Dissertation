@@ -1,0 +1,516 @@
+\documentclass{article} 
+\usepackage[a4paper, margin=3.5cm]{geometry}
+
+\usepackage{cite}
+
+\usepackage{hyperref}
+
+\usepackage{pgfgantt}
+\usepackage{pdflscape}
+
+\usepackage{tikz}
+
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\lstset{basicstyle=\ttfamily}
+
+\usepackage{tabularx}
+\usepackage{colortbl}
+
+\usepackage{graphicx}
+
+\def\image#1#2#3#4{
+	\begin{figure}
+		\begin{center}
+			\includegraphics[#2]{#1}
+			\caption{#3}
+			\label{#4}
+		\end{center}
+	\end{figure}
+}
+
+\title{\textbf{Influence Maximization Analysis; Progress Report}} 
+\author{Antoni Zyla \and Supervised by Nathan Griffiths}
+\date{}
+
+\begin{document}
+
+\maketitle
+\linespread{1.25}
+
+\tableofcontents
+
+
+\section{Introduction}
+
+Social networks \cite{sadasd}, interactions \cite{asdsad} and email chains \cite{enrondas} can all be modelled as a graph in the $G = (V,E)$ sense.
+
+Just as in a social setting concepts or ideas can spread through networks, for example if someone in a friend group takes up a new hobby then they have a higher chance of influencing their closest friends to try it than someone who they don't know.
+This idea leads directly into the independent cascade model (ICC), each node is able to infect every one of it's direct connections once with probability $p$.
+Those that it infects are then able to continue the cascade until there are no more active nodes.
+
+An extension of the ICC model is the decreasing cascade model (DCC), wherein the probability of a node being 'turned' by it's neighbors decreases each time it is attempted.
+If you see an advertisement for a certain product a very large amount of time you may be less likely to purchase or use the product due to overstauration/annoyyance.
+The rate at which we decrease the probability of infection is defined by a function $f(G, n) = p \in [0, 1]$.
+
+Another way of considering these problems is to consider a model where a node may adopt a concept after a certain proportion of it's neighbours have it.
+This models things such as immunity from diseases quite well.
+Each node is given it's own $t \in T$ where $T \sim  U(0, 1)$, once the node's proportion of infected neighbours reach $t$ then the node becomes infected.
+
+%\subsection{Definitions}
+%\begin{enumerate}
+%	\item Let $G = (V,E)$ be a simple directed graph where $|V| = n$ and $|E| = m$
+%	\item The graph is strongly connected; $\forall u, v \in V \hspace{0.5em} \exists (e_1, e_{2},..., e_{k})$ where $e_i = u$ and $e_k = v$ and $k \leq diam(G)$
+%	\item $N(u) = |\{v \in V \hspace{0.5em} | \hspace{0.5em} (u,v) \in E \}|$
+%	\item $diam(G)$ is the longest shortest path between any two nodes $u, v \in G$
+%\end{enumerate}
+
+%The report should be a self-contained document, so you should provide an introduction to the problem or area the work is addressing. You may wish to include some comments on your motivation for this such as the importance/timeliness of the investigation.
+
+%You should include a copy of the original Project Specification as an appendix and can refer to this when appropriate.
+
+%Make sure the objectives of your project are clear and clarify why this is a significant undertaking of suitable level for a third year project in your subject.
+
+\section{Background Research}
+
+%You will have done a good deal of finding out about the project area by reading articles, books, websites, technical manuals and so on. You may have tested other related systems to provide ideas. You need to show that you have a good understanding of the background area and how your project fits into the existing landscape.
+
+
+%There may be no room for a full literature review in the Progress Report, but you should give an indication of how you have gained background information. It would be appropriate to mention just a few citations which you view as key sources for your project. References should be provided as a formal reference list at the end of your report. Check if your supervisor has a preferred format. If not, you can choose your own style, but be consistent.
+
+I have conducted my research in this topic from a wide range of sources.
+Primarily in the form of articles about the research area.
+
+\subsection{Brief Literature Review}
+
+\subsection{Models}
+First introduced in 2003 by \cite{kempe2003} the problem of influence maximization in social networks has been an active research area since it's introduction.
+Independent cascade and linear threshold models were introduced and a base greedy algorithm was introduced.
+
+\section{Current Status}
+
+Overall good progress has been made, a good portion of the desired objectives have been achieved.
+The codebase is in average shape, documentation from docstrings is automatically generated into a navigable website that links between functions classes with examples of how use each function.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|p{5.8cm}|p{2.9cm}|p{5cm}|}
+		\hline
+		\textbf{Objective}                     & \textbf{Status}    & \textbf{Notes}                                             \\
+		\rowcolor{green}
+		\hline
+		1. Import and Export of Graphs         & Complete           & Not implemented unit testing                               \\
+		\hline
+		\rowcolor{green}
+		2. Generation of Synthetic Graphs      & Complete           &                                                            \\
+		\hline
+		\rowcolor{green}
+		3. Influence Models                    & Complete           &                                                            \\
+		\hline
+		\rowcolor{yellow}
+		4. Sampling Methods                    & Partially Complete & TODO: Albatross Sampling                                   \\
+		\hline
+		\rowcolor{red}
+		5a. Cost based analysis heuristics     & Incomplete         & Would be the most complex, may not implement if not needed \\
+		\hline
+		\rowcolor{yellow}
+		5b. Minimum Nodes heuristics           & Incomplete         &                                                            \\
+		\hline
+		\rowcolor{yellow}
+		5c. Rate vs Absolute change heuristics & Partially Complete & TODO: Rate Analysis                                        \\
+		\hline
+		\rowcolor{green}
+		6. Packaging                           & Complete           &                                                            \\
+		\hline
+		\rowcolor{green}
+		7. Parallelisation                     & Complete           &                                                            \\
+		\hline
+		\rowcolor{yellow}
+		8. Documentation                       & Partially Complete &                                                            \\
+		\hline
+	\end{tabular}
+	\caption{Current Status Summarised}
+	\label{statusOverview}
+\end{table}
+
+Overall as from \ref{statusOverview} the project is in good shape to achieve all objectives by the end of term 2.
+
+\subsection{Working with Networks}
+
+As listed in objective \ref{objimportexport} my project needs the ability to import and export networks.
+I have implemented the ability to import networks from a file as commonly found online \cite{}, custom delimiters are able to be used.
+To make getting started with my program quick and easy I have included some networks inside of the python package, they are listed below in \ref{includedNets} along with some information about them.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		\textbf{Name} & \textbf{Nodes} & \textbf{Edges} & \textbf{Mean Deg.} & \textbf{Cluster. Coef.} & \textbf{Diam.} & \textbf{Centralization} \\
+		\hline
+		Enron         & 36692          & 183831         & 10.020             & 0.497                   & 13             &                         \\
+		\hline
+		P2P           & 10876          & 39994          & 7.355              & 0.006                   &                &                         \\
+		\hline
+		Airports      & 1574           & 17215          & 21.874             & 0.504                   &                &                         \\
+		\hline
+	\end{tabular}
+	\caption{Statistics on Included Networks with my package, to 3 d.p. when applicable.}
+	\label{includedNets}
+\end{table}
+
+\subsection{Synthetic Networks}
+Some papers (\cite{franks2014learning} and \cite{}) commonly compare synthetic networks to sampled networks from realworld structures.
+As part of Objective \ref{objsynthetics} I have implemented the creation of both Kleinberg and Eppstein generators.
+Examples of some networks produced by them are listed in the table below.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		\textbf{Name} & \textbf{Nodes} & \textbf{Edges} & \textbf{Mean Deg.} & \textbf{Clust. Coef.} & \textbf{Diam.} & \textbf{Centralization} \\
+		\hline
+		Kleinberg1000 & 961            & 4486           & 9.336              & 0.052                 & 14             & -0.0066                 \\
+		\hline
+		Kleinberg5000 & 4900           & 23390          & 9.547              & 0.0385                & 16             & -0.0013                 \\
+		\hline
+		Eppstein1000  &                &                &                    &                       &                &                         \\
+		\hline
+		Eppstein5000  &                &                &                    &                       &                &                         \\
+		\hline
+	\end{tabular}
+	\caption{Statistics on example synthetic networks with my package, to 3 d.p. when applicable.}
+	\label{syntheticGenerators}
+\end{table}
+
+The data in both table \ref{syntheticGenerators} and table \ref{includedNets} was easily generated in just a few lines of code and outputted a formatted table in the form of a pandas data frame as demonstrated below in the code for table \ref{syntheticGenerators}.
+
+\begin{lstlisting}[caption=Code to generate table \ref{syntheticGenerators}]
+nets = [
+    im.Network(name="Kleinberg1000"),
+    im.Network(name="Kleinberg5000"),
+    im.Network(name="Eppstein1000"),
+    im.Network(name="Eppstein5000"),
+]
+
+nets[0].kleinbergs_generator(100)
+nets[1].kleinbergs_generator(500)
+nets[2].eppstein_generator(1000)
+nets[3].eppstein_generator(5000)
+
+rows = [Metrics.generate_tabular_row(net) for net in nets]
+table = pd.concat(rows)
+\end{lstlisting}
+
+\subsection{Cascade and Threshold Models}
+
+As written in point \ref{objmodels}, Independent Cascade, Decreasing Cascade and Linear Threshold models have been implemented.
+Code for automated running of trials, testing of heuristics on each of these has been written.
+The required computations perform well when ran on the department's compute cluster.
+Data is output in both tabular and graphical formats, below is an example of some early runs.
+
+\image{models.png}{width=\textwidth}{Examples of Early Running of Models with heuristics}{earlyRuns}
+
+There are a few things we can garner from figure \ref{earlyRuns}:
+
+\begin{enumerate}
+	\item Degree based heuristics are highly correlated to the spread of a set of seed nodes, in relation to their computational cost.
+	\item Clustering Coefficient is very effective, however only after a certain number of seeds, this could be due to how clustering and degree are presented, a high degree node may be connected to a significant proportion of the network whereas a node with a high clustering coefficient doesn't necessarily have a high possible number of effected neighbors.
+	\item The asymptotic behavior of degree based heuristics shows that the network topology is being respected by the MHDA sampling in regards to the distribution of node degree.
+	\item There being minimal spread beyond the based starting nodes in the decreasing cascade and a convergence of the heuristics demonstrates that there may need to be some adjustment to the loss in turning a node per attempt.
+	\item The linear threshold model shows a similar pattern to the independent cascade where the heuristics are partitioned into two groups, naive and slight more complex. ..
+\end{enumerate}
+
+Following figure \ref{earlyRuns} I implemented a few more heuristics as well as the naive greedy algorithm and the improved celf version.
+
+\image{all_heuristics_icc.png}{width=\textwidth}{Currently Implemented Heurstics on ICC}{icc_all_heuristics}
+
+\subsection{Evaluation of Sampling Methods}
+
+As written in section \ref{probDiscSampling} of the specification, sampling methods 1 to 5 have been implemented.
+Running multiple samples, collecting and collating the results has been written.
+Tables similar to \ref{includedNets} or \ref{syntheticGenerators} are output with data about their mean and standard deviations.
+
+\subsection{Packaging}
+
+I am utilising an open source python library packaging tool called Hatchling, allowing me to package the entirety of the code into a \texttt{.tar.gz} and a \texttt{.whl} distributable.
+Python3.10 and above is required due to the introduction of union types in the type annotation system.
+I have attempted to use PyPy (the JIT compiling interpreter) however there were some issues with the multiprocessing code so I have decided to not focus on this aspect.
+
+After the project has been packaged it's trivial to install and use on any system with a recent python installation.
+
+\begin{lstlisting}[caption=Utilising my code]
+shell> pip install Influence_Modelling.whl 
+
+from Infleunce_Modelling import Network as im 
+import networkx as nx
+
+net = im.Network("test-network")
+net.set_nx(nx.complete_graph(10))
+iters, final = net.run_icc()
+\end{lstlisting}
+
+\subsection{Parallelisation}
+
+Running trials and generating samples of networks has been implemented using pools and python's multiprocessing library.
+Performance is good when it's shared across a single node, splitting across multiple physical servers resulted in a minor speedup at the expense of much higher communication cost.
+
+This is not a large problem as I can split my running of the testing into sepearate invocations of my scripts on the different nodes.
+
+\subsection{Documentation}
+
+As part of the projects packaging phase automatic documentation is generated from the usage of python docstrings, this is done using an opensource library called pdoc \footnote{https://pdoc.dev/}.
+
+Using github actions this build steps runs on every commit to the main branch of the repository and this generates a navigable and searchable documentation base as shown in figure \ref{pdoc-example-screenshot}.
+
+\image{example-pdoc-documentation.png}{width=\textwidth}{Example of automated documentation site}{pdoc-example-screenshot}
+
+
+
+
+%Provide an overview of your work so far. This should include:
+
+%Technical Content - what work have you done? You should provide a meaningful discussion of the significant aspects rather than simply saying "I did x, y and z". This is necessary to show you've actually done it and in order for your assessor to award marks according to the assessment criteria.
+
+%Progress - review your progress against the original timetable. If unexpected problems or delays have occurred, how have you dealt with the problem?
+
+\subsection{Technical Content}
+Talk about code structure, data collection, processing of data, saving intermediate steps in all computations, using the hpc cluster, typical performance of runs.
+
+\subsubsection{Code Structure}
+
+The primary code is structured in an object oriented fashion, for example a network is a class which is then extended into a network that reads or writes csv files. 
+
+Each of various sections I need to use are split into multiple files and these all have to be imported separately when being used.
+
+Most of the code is used in interactive notebook environments.
+
+My test scripts are standalone scripts that simply require the packaged library to be installed alongside some other libraries, these are the scripts which produce the results as displayed in all the tables and figures so far in this document.
+
+\subsection{Performance}
+
+For every run of a cascade, sampling method or any action I record the time taken, if running overa  large number of samples I also automatically take the mean and standard deviation of the running time and this is an extra column at the end of each of the tabular outputs for any aggregate process.
+
+\section{Upcoming Goals}
+
+Talk about being on track with the goals from the gannt chart in spec, need to implement some more stuff and actually do some independent testing and evaluation of my own ideas.
+
+\subsection{Areas I will Investigate}
+
+An iterative approach based on a combination of greedy and heuristic methods.
+For example choose seeds by degree, redo degree but don't include any nodes that that node has spread to over a few iterations of the cascade model.
+
+Combinations of some heuristics such as clustering coefficient and betweenness.
+
+
+%You may have changed your plans for the remainder of the project. 
+%At the very least, you are likely to have a much clearer idea of how things will proceed and the timings needed to complete each stage.
+
+%Outline your plans for the remainder of your work on the project, and any alterations to your original ideas.
+
+%Provide an updated timetable with as much detail as possible.
+
+\section{Reflection}
+
+%What is your assessment on how things have gone so far? 
+
+%Are there lessons learned that you can use to make the work run more smoothly during your remaining work on the project?
+
+\section{Project Management}
+
+%How have you managed the project so far? You may be using a formal methodology (e.g. for software development or management of code versions). It may also be appropriate to refer to less formal ways of keeping on track, for example, regular timetable reviews with your supervisor.
+
+Overall as shown through this document so far progress is on track with the proposed timelines. 
+Software and technology used has not changed, there has not been a large shift in goals or requirements.
+
+
+\section{Legal, Social, Ethical and Professional Considerations}
+
+As per section \ref{lsep} of the specification there have been no changes to this.
+
+\appendix
+
+\section*{Appendix: Project Specification}
+\section{Abstract} \label{abstract}
+
+A network is a weakly connected directed graph about which we reason.
+Influence is the measure of how ideas or properties spread through this graph based on certain models;
+choosing the seed set of nodes from which to begin the model determines how quickly and how far the ideas will propagate.
+Social networks \cite{yang2019influence}, infectious diseases and behaviors \cite{archbold2024cvd} can be studied by using such an approach and can be used to inform decision making in many areas.
+
+Finding a subset of nodes of the network which produce the greatest influence spread after a given time period could be used to determine those who'd best promote a product or be at greatest risk of spreading an infectious disease \cite{archbold2024cvd}.
+Finding this subset is difficult and known to be NP-Hard, as a reduction from Vertex Cover \cite{kempe2005influential}.
+Using certain heuristics such as the degree of a node to choose the seed nodes is significantly more efficient running in polynomial time \cite{chen2009efficient}.
+
+Using real world networks to perform this analysis on is not only difficult to obtain but also very large and computationally intensive \cite{Wang2011UnderstandingGS}.
+I will aim to create a tool which can be used to evaluate and compare different heuristics and sampling methodologies against different types of networks.
+I will then use this tool to find a more representative sampling method on networks, or a heuristic which works more effectively on a certain set of topologies.
+
+\section{Problem Discussion} \label{probDiscussion}
+
+I will define a network upon which the models below will work on as a weakly connected directed graph.
+Doing so allows for modelling of networks in which the relationships are bidirectional (undirected) by simply creating two edges to represent that relationship, and for modelling directed networks such as email chains that have a clear sender and recipient.
+To be used for analysis, the network needs to be connected, as an idea cannot directly propagate between two disjoint components.
+
+\subsection{Models} \label{probDiscModels}
+\begin{enumerate}
+	\item Independent Cascade Model (ICM) - a node can be 'active' or 'inactive' and has a constant probability of infecting each of it's neighbours.
+	      Every infectious node has one attempt to infect it's neighbours before becoming inactive \cite{kempe2005influential}.
+	\item Decreasing Cascade Model (DCM) - an extension of the IC model the probability of infecting a node is determined by previous attempts, modelling how subsequent attempts are less likely to be successful after failed attempts \cite{kempe2006influential}.
+	\item Linear Threshold Model (LTM) - A model where each node has a certain 'threshold' required to infect it, considering the cumulative effect of the already infected nodes on the node determines if it will become infected \cite{kempe2005influential}.
+\end{enumerate}
+
+\subsection{Sampling Methods} \label{probDiscSampling}
+
+Some real world datasets are far too large to efficiently compute these models on.
+Sampling these networks allows us to find a smaller network that encapsulates their features but is much more efficient to perform computations on.
+Those listed below I have researched and feel would be able to implement and use to evaluate against one another, as research progresses I may choose to add more methods or to not use a certain method.
+
+\begin{enumerate}
+	\item Breadth First Search (BFS) - A natural exploration of the graph from a random node in layers \cite{franks2014learning}.
+	\item Snowball Sample (SNS) - An extension of BFS which will stop once the desired sample size is reached \cite{franks2014learning}.
+	\item Random Walk (RW) - Starting at a random node in the network chooses where to go onwards based on the the node's neighbours being chosen at random.
+	\item Metropolis Hastings Random Walk (MHRW) - A random walk with a modification to the probability function used to determine the subsequent node. This is to generate a uniform distribution of node degrees by favouring lower degree nodes \cite{gjoka11practicalreco}.
+	\item Metropolis Hastings Random Walk with Delayed Acceptance (MHDA) - A further modification of MHRW in which the probability of backtracking to the previous node is reduced \cite{lee2012randomwalkmetropolishastingssamplers}.
+	\item Albatross Sampling (AS) - A random walk with a chance of jumping to other locations in the network to find connected components \cite{jin2011albatross}.
+\end{enumerate}
+
+\subsection{Heuristics} \label{probDiscHeuristics}
+
+Choosing which nodes to start the models on will affect how quickly the influence will propagate and how far it will spread to.
+A greedy approach may be close to optimal, however on larger datasets is inefficient and potentially intractable \cite{griffiths17LimitiingConcept}.
+The following are some of the methods by which I will investigate, during the research phase I may add more or I may exclude some.
+
+\begin{enumerate}
+	\item Random - As a baseline choose $k$ random nodes.
+	\item Degree - Choose nodes with the highest degree.
+	\item Degree Discount - A modification of the degree heuristic but with a lower chance of choosing a node if it's neighbour is in the seed set \cite{chen2009efficient}.
+	\item Local Clustering Coefficient - The extent to which neighbours are connected to one another \cite{franks2014learning}.
+	\item Average Neighbour Degree - Measuring the average degree of a node's neighbours may allow for communicating with high influence nodes \cite{franks2014learning}.
+	\item Betweenness Centrality - Measuring how many shortests path's in the network pass throuhg a point \cite{franks2014learning}.
+	\item Average Shortest Path Length - A measure of centrality by taking the mean length of the shortest path from the node to every other node \cite{franks2014learning}.
+	\item Edge Embeddedness - For an edge $(u,v)$ is the size of the intersection of the neighbourhoods of both $u$ and $v$ \cite{franks2014learning}. This serves as a measure of how tightly packed a network is around a certain area.
+	\item Edge Overlap - For an edge $(u,v)$ the edge overlap is the ratio of it's embeddedness to the size of the union of the neighbourhoods of $u$ and $v$. This can be used to determine the 'location' of an edge, for example if it connects connected components it may have a low overlap whilst a very high embeddedness may indicate not only is the agent well connected inside it's cluster it's also connected to other clusters \cite{franks2014learning}.
+	      % \item Maximum Probable Gain - Used in research about spreading an inhibiting concept (against a target concept in ICMs) by choosing nodes with a high expected number of activations for the target concept \cite{griffiths17LimitiingConcept}.
+	\item Traditional Greedy Algorithm (Select Top $k$ in \cite{yang2019influence}) - Choose greedily from nodes which have the highest influence \cite{kempe2005influential}. This is inefficient due to requiring running a cascade for each node. It approaches within $(1-1/e)$ of the optimal solution so will be used to compare against heuristics.
+\end{enumerate}
+
+\subsection{Application to research} \label{implementation}
+Utilising the above concepts, possible pieces of research in this area may include:
+\begin{itemize}
+	\item Finding a more effective or representative heuristic for finding seed nodes in a network.
+	\item Optimising a heuristic's running time whilst maintaining performance in regards to representation.
+	\item Finding a more representative sampling method for varied network topologies.
+	\item Finding a correlation between certain topological features and the effectiveness of one sampling method or heuristic over another, particularly in relation to that network feature.
+\end{itemize}
+
+\section{Objectives} \label{objectives}
+
+The exact goal of my project is not fully decided, however there are some requirements for the code.
+With these features I would be able to perform much of the computation and comparison of various papers.
+Ideally I would be able to find something new or improve on existing techniques as described in section \ref{implementation}.
+
+\begin{enumerate}
+	\item Facilitate import and export of different graph formats. \label{objimportexport}
+	\item Generation of synthetic graphs using graph generators for consistent analysis when real world datasets could be too large to run quick computations on. \label{objsynthetics}
+	\item Running and evaluation of the Independent Cascade Model, Decreasing Cascade Model and  Linear Threshold Model. \label{objmodels}
+	      Allowing for evaluation of different heuristics against these models on different graphs.
+	\item Creation and evaluation of new sampling methods. \label{objNewSampling}
+	      \begin{itemize}
+		      \item Evaluate the running time of sampling algorithms in practice, finding the real world constant factors.
+		      \item Allow for evaluation of influence spread on the same network with different samples and how they affect it.
+	      \end{itemize}
+	\item Creation and evaluation of new heuristics for selection of seed nodes against benchmark algorithms.
+	      \begin{itemize}
+		      \item A 'cost' based strategy could be to give each algorithm a total cost, and each node has a value with the aim to find the subset that produces the greatest spread from nodes within a certain total 'cost'.
+		      \item	A 'minimum nodes' strategy to meet some spread metric, for example finding the lowest number of nodes that will produce a $\delta$\% spread after $x$ iterations.
+		      \item Investigation of heuristics focused on overall growth in influence or rate of change in influence - this would involve charting the growth rate of various heuristics against eachother with trendlines etc.
+	      \end{itemize}
+	\item Python \textbf{whl} and \textbf{tarball} packaging to allow for easy installation on various systems.
+	\item Programming with parallelisation in mind.
+	      Some results may take hours to compute on a personal device but are able to be ran in parallel on a cluster or more powerful system.
+	      I will attempt to use the batch compute system to produce any results.
+	\item Fully document all code, usage examples, parallelisation examples, and everything required to produce any results in my final report.
+\end{enumerate}
+
+\section{Methods and Methodology} \label{methods}
+%How are you going to approach your project?
+% If system development is required, how will you be managing that?
+% Is it appropriate to apply an accepted development methodology? 
+%If so, which one? If not, how are you approaching the development? 
+%If you're investigating a business topic, what methods will you be using? 
+%Common ones might be literature review, case study, survey and interview. If you're conducting a survey, are you aware of good survey design? If you're planning interviews, what methodology will you use to analyse and represent the responses? 
+%Whatever the nature of your project - what methods are you using to ensure that it stays on track and achieves its goals?
+
+The project will be broken up into three main stages; research, implementation, and evaluation.
+During each stage I will be in contact with my supervisor to ensure that I am on the right track and to keep me accountable.
+
+\begin{enumerate}
+
+	\item The research stage will require a detailed literature review of articles and papers pertaining to network influence modelling, methods, heuristics and sampling.
+	      I will identify the validity and applications of each source and find whether there are any gaps in the presented knowledge to research further.
+	      I will repeat this process until my supervisor and I are happy the full scope of the project has been thoroughly reviewed.
+
+	\item The implementation stage of the project will require a methodology that can be adapted to changing requirements or a shift in focus based on information learnt in the later stages of the research phase.
+	      I will use an agile-like methodology, of one to two week sprints determined by meetings with my supervisor, with any changes to requirements determined during these meetings with future sprints based on the previous.
+
+	\item I will use my framework to replicate the results of the researched papers, showcasing how to create new sampling methods and heuristics, and how to compare the results of different sampling, heuristics and models on different networks.
+
+	\item Finally, I will attempt to improve upon a sampling method or heuristic and use my framework to do so. This will demonstrate that my tool is applicable to real world research uses and potentially find something interesting or noteworthy.
+
+\end{enumerate}
+
+
+\section{Timeline} \label{timeline}
+
+The schedule is not fully decided at this point as the research phase is yet to be completed and the further points maybe change.
+Some points such as writing the report in the month leading to the deadline are certain, however the contents and direction of that report is not yet concrete.
+The purple bars on the gantt chart are the deliverables and the yellow bars are the main sub-tasks associated with those deliverables.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{../../images/9octGanntChart.png}
+	\caption{Gantt Chart of Expected Timeline}
+\end{figure}
+
+\section{Resources and Risks} \label{risks}
+
+%%What resources does your project rely on? 
+%For example, the list might include the hardware to be used, any non-standard software, data that a company has promised to provide or even subjects to take part in an interview. 
+%Have you thought about what would happen if any of these resources became unavailable? What is your back-up plan? 
+%This part of the Project Specification should show that you've thought these issues through and that you have appropriate back-up plans in place where necessary. 
+%For more discussion on resources and managing risk, check out the information on equipment and other resources.
+
+\subsection{Resources} \label{resources}
+\begin{enumerate}
+	\item Python and Standard Libraries - NetworkX, NumPy, Pandas, Matplotlib, Build tools.
+	      These are all commonly available on a variety of systems, are open source, and can be built from source in case PyPI is unavailable.
+
+	\item Large Graph Datasets - Enron emails, airport traffic data, Gnutella data, Twitter tweet data and any other data sets as research progresses.
+	      The data is available from multiple sources on the internet, as well as being stored in the repository of my program under version control.
+
+	\item Batch Compute System - Department of Computer Science (DCS).
+	      The datasets I will be working with are large but not unmanageable on a typical desktop.
+	      The batch compute system will be used to learn and utilise good practice for scientific computing, as well as allowing for faster computation.
+\end{enumerate}
+
+\subsection{Risks} \label{riskDetails}
+\begin{enumerate}
+	\item Failure to find a new heuristic or sampling method that is measurably better than those currently written about.
+	      In this case the project would still be a success as it would show that it allows for evaluation of heuristics effectively to be able to show that it is not statistically better.
+
+	\item Lost or damaged device containing code and documents.
+	      Using GitHub to be a remote mirror of local git repository and regularly committing code will prevent issues from lost work arising.
+	      DCS machines are more than adequate for processing needs.
+\end{enumerate}
+
+\section{Legal, Social, Ethical and Professional Considerations} \label{lsep}
+
+At this stage there are no legal, social, ethical or professional considerations to take into account.
+The project will not be using, processing or interacting with personal data or information.
+
+\newpage
+%\nocite{*}
+\bibliographystyle{abbrv}
+\bibliography{../sources}{}
+
+\end{document}

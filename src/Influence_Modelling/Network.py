@@ -18,7 +18,10 @@ class Network:
     def get_nx(self):
         return self.__G
 
-    def __init__(self, project: str, name: str, verbose: bool = False) -> None:
+    def get_name(self):
+        return self.__name
+
+    def __init__(self, name: str, verbose: bool = False) -> None:
         """
         Initialise a new empty Graph.
         :param str project: Name of Project - links to sqlite file
