@@ -33,7 +33,13 @@ def single_run(
     elif isinstance(network, str):
         with open(f"{output_folder_path}/networks/{network}", "rb") as f:
             network = pickle.load(f)
+        
+    filepath: str = f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
 
+    if os.path.isfile(filepath):
+        print("Terminating Trial early, already completed")
+        return # already computd this no point redoing
+        
     seeds = heuristic_method(network, seed_size)
     start_coverage = seed_size / len(list(network.nodes()))
     N = Network.Network("", "", False)
@@ -96,7 +102,6 @@ def single_run(
             "used_nodes",
         ],
     )
-    filepath: str = f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
     with open(filepath, "wb") as handle:
         pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
         print(
@@ -196,7 +201,7 @@ if __name__ == "__main__":
     ################################################################################
     datasets = [
         # (Label, Networkx Datastructure, Sampling Method, number of nodes to sample)
-        # ("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
+        ("Enron-MHDA-4096", enron_data.get_nx(), Sampling.mhda_sample, 4096),
         ("Enron-MHDA-1024", enron_data.get_nx(), Sampling.mhda_sample, 1024),
         # ("Enron-MHRW-1024", enron_data.get_nx(), Sampling.mhrw_sample, 1024),
     ]

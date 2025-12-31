@@ -17,7 +17,7 @@ source /etc/profile.d/modules.sh
 source /etc/profile.d/conda.sh
 
 source ../venv/bin/activate
-python independent_cascade.py -p 128 -o ICC-512 -t 512
-python decreasing_cascade.py -p 128 -o DCC-512 -t 512
-python linear_threshold.py -p 128 -o LTM-512 -t 512
+python independent_cascade.py -p 128 -o ICC-25 -t 256
+#python decreasing_cascade.py -p 128 -o DCC-512 -t 512
+#python linear_threshold.py -p 128 -o LTM-512 -t 512
 

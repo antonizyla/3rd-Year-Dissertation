@@ -52,7 +52,7 @@ class XsvNetwork(Network):
         :param str separator: Field separator (default ",")
         :param bool verbose: Enable verbose logging (default False)
         """
-        super().__init__(project, name, verbose)
+        super().__init__(name, verbose)
         self.__filepath = filepath
         self.__G = nx.empty_graph()
         self.__v = verbose

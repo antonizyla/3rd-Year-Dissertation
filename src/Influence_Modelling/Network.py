@@ -37,6 +37,179 @@ class Network:
         self.__G = G
         self.__H = self.__G.copy()
 
+    def run_ICC_find_min_nodes(
+        self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
+    ):
+        return self.__run_find_min_nodes(
+            self.run_ICC, heuristic, target_propogation, quick, p, iteration_limit
+        )
+
+    def run_DCC_find_min_nodes(
+        self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
+    ):
+        return self.__run_find_min_nodes(
+            self.run_DCC, heuristic, target_propogation, quick, p, iteration_limit
+        )
+
+    def run_LTM_find_min_nodes(
+        self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
+    ):
+        return self.__run_find_min_nodes(
+            self.run_LTM, heuristic, target_propogation, quick, p, iteration_limit
+        )
+
+    def __run_find_min_nodes(
+        self,
+        model,
+        heuristic,
+        target_propogation,
+        quick=False,
+        p=0.1,
+        iteration_limit=None,
+    ):
+        assert type(model).__name__ == "method"
+        assert type(heuristic).__name__ == "function"
+        assert type(target_propogation) is float or target_propogation == 1
+        assert target_propogation >= 0 and target_propogation <= 1
+        assert p >= 0 and p <= 1 and type(p) is float
+        assert iteration_limit is None or (
+            type(iteration_limit) is int and iteration_limit >= 0
+        )
+        assert type(quick) is bool
+
+        # follow an exponential increase in the number of seed nodes to overshoot target
+        # from n_overshoot and n_undershoot perform binary search to find closest right of n
+        # n_over = 2*n_under, maximum of n_over is |V| so will binary perform log(V) trials,
+        # and on average log(V) to get the detailed point.
+
+        # produce a list [1, 2, 4, 16, ..., |V|]
+        seed_numbers = [
+            int(math.pow(2, x))
+            for x in range(math.floor(math.log(len(self.__G.nodes()))))
+        ] + [len(self.__G.nodes())]
+
+        under_index, over_index = 0, 0
+        for i, seed_num in enumerate(seed_numbers):
+            iters, final = model(heuristic(self.__G, seed_num), p, iteration_limit)
+            coverage = len(
+                [
+                    data
+                    for _, data in final.nodes().data()
+                    if data["status"] != "inactive"
+                ]
+            ) / len(list(final.nodes()))
+            if coverage >= target_propogation:
+                over_index = i
+                break
+
+        # in the case the that 1 seed is enough
+        if over_index == under_index:
+            return seed_numbers[over_index]
+
+        # when want a quick definite bound
+        if quick:
+            return seed_numbers[over_index]
+
+        inbetween = [
+            i for i in range(seed_numbers[under_index], seed_numbers[over_index] + 1, 1)
+        ]
+        left, right = 0, len(inbetween)
+        while left <= right:
+            mid = math.floor((left + right) / 2)
+            iters, final = self.run_ICC(
+                heuristic(self.__G, inbetween[mid]), p, iteration_limit
+            )
+            coverage = len(
+                [
+                    data
+                    for _, data in final.nodes().data()
+                    if data["status"] != "inactive"
+                ]
+            ) / len(list(final.nodes()))
+            if coverage >= target_propogation:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return inbetween[right]
+
+    def run_ICC_find_min_nodes(
+        self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
+    ):
+        """
+        Find the minimum number of nodes to achieve target_propogation spread using ICC
+
+        :param heuristic: Function used to select seed nodes
+        :param target_propogation: Value in range [0, 1] to aim for as overall infection target
+        :param quick: Whether to perform BFS between the coarse grained search steps
+        :param p: Propogation probability in ICC model.
+        :param iteration_limit: Limit to number of iterations of cascade.
+        """
+        assert type(heuristic).__name__ == "function"
+        assert type(target_propogation) is float or target_propogation == 1
+        assert target_propogation >= 0 and target_propogation <= 1
+        assert p >= 0 and p <= 1 and type(p) is float
+        assert iteration_limit is None or (
+            type(iteration_limit) is int and iteration_limit >= 0
+        )
+        assert type(quick) is bool
+
+        # follow an exponential increase in the number of seed nodes to overshoot target
+        # from n_overshoot and n_undershoot perform binary search to find closest right of n
+        # n_over = 2*n_under, maximum of n_over is |V| so will binary perform log(V) trials,
+        # and on average log(V) to get the detailed point.
+
+        # produce a list [1, 2, 4, 16, ..., |V|]
+        seed_numbers = [
+            int(math.pow(2, x))
+            for x in range(math.floor(math.log(len(self.__G.nodes()))))
+        ] + [len(self.__G.nodes())]
+
+        under_index, over_index = 0, 0
+        for i, seed_num in enumerate(seed_numbers):
+            iters, final = self.run_ICC(
+                heuristic(self.__G, seed_num), p, iteration_limit
+            )
+            coverage = len(
+                [
+                    data
+                    for _, data in final.nodes().data()
+                    if data["status"] != "inactive"
+                ]
+            ) / len(list(final.nodes()))
+            if coverage >= target_propogation:
+                over_index = i
+                break
+
+        # in the case the that 1 seed is enough
+        if over_index == under_index:
+            return seed_numbers[over_index]
+
+        # when want a quick definite bound
+        if quick:
+            return seed_numbers[over_index]
+
+        inbetween = [
+            i for i in range(seed_numbers[under_index], seed_numbers[over_index] + 1, 1)
+        ]
+        left, right = 0, len(inbetween)
+        while left <= right:
+            mid = math.floor((left + right) / 2)
+            iters, final = self.run_ICC(
+                heuristic(self.__G, inbetween[mid]), p, iteration_limit
+            )
+            coverage = len(
+                [
+                    data
+                    for _, data in final.nodes().data()
+                    if data["status"] != "inactive"
+                ]
+            ) / len(list(final.nodes()))
+            if coverage >= target_propogation:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return inbetween[right]
+
     def run_ICC(
         self, seed_nodes, p: float = 0.1, iteration_limit=None
     ) -> tuple[int, nx.DiGraph]:

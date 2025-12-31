@@ -5,6 +5,10 @@ from typing import Any, List
 import networkx as nx
 
 
+def no_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
+    return G
+
+
 def bfs_sample(G: nx.DiGraph, n: int) -> nx.DiGraph:
     """
     Generate a sample from the set of seed nodes add nodes using bfs until the quota is
