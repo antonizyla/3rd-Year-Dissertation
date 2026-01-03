@@ -1,7 +1,9 @@
+import copy
 import math
 import random
 
 import networkx as nx
+import numpy as np
 from networkx.algorithms.graphical import is_graphical
 from networkx.utils.random_sequence import powerlaw_sequence
 
@@ -16,9 +18,19 @@ class Network:
     """
 
     def get_nx(self):
+        """
+        Docstring for get_nx
+
+        :param self: Description
+        """
         return self.__G
 
     def get_name(self):
+        """
+        Docstring for get_name
+
+        :param self: Description
+        """
         return self.__name
 
     def __init__(self, name: str, verbose: bool = False) -> None:
@@ -34,12 +46,28 @@ class Network:
         self.__limit: int = 10**5  # limit on the number of iterations reached
 
     def set_nx(self, G: nx.DiGraph):
-        self.__G = G
+        """
+        Docstring for set_nx
+
+        :param self: Description
+        :param G: Description
+        :type G: nx.DiGraph
+        """
+        self.__G = copy.deepcopy(G)
         self.__H = self.__G.copy()
 
     def run_ICC_find_min_nodes(
         self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
     ):
+        """
+        Find the minimum number of nodes to achieve target_propogation spread using ICC Model.
+
+        :param heuristic: Function used to select seed nodes
+        :param target_propogation: Value in range [0, 1] to aim for as overall infection target
+        :param quick: Whether to perform BFS between the coarse grained search steps
+        :param p: Propogation probability in ICC model.
+        :param iteration_limit: Limit to number of iterations of cascade.
+        """
         return self.__run_find_min_nodes(
             self.run_ICC, heuristic, target_propogation, quick, p, iteration_limit
         )
@@ -47,6 +75,14 @@ class Network:
     def run_DCC_find_min_nodes(
         self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
     ):
+        """
+        Find the minimum number of nodes to achieve target_propogation spread using DCC Model.
+
+        :param heuristic: Function used to select seed nodes
+        :param target_propogation: Value in range [0, 1] to aim for as overall infection target
+        :param quick: Whether to perform BFS between the coarse grained search steps
+        :param iteration_limit: Limit to number of iterations of cascade.
+        """
         return self.__run_find_min_nodes(
             self.run_DCC, heuristic, target_propogation, quick, p, iteration_limit
         )
@@ -54,6 +90,14 @@ class Network:
     def run_LTM_find_min_nodes(
         self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
     ):
+        """
+        Find the minimum number of nodes to achieve target_propogation spread using LTM Model.
+
+        :param heuristic: Function used to select seed nodes
+        :param target_propogation: Value in range [0, 1] to aim for as overall infection target
+        :param quick: Whether to perform BFS between the coarse grained search steps
+        :param iteration_limit: Limit to number of iterations of cascade.
+        """
         return self.__run_find_min_nodes(
             self.run_LTM, heuristic, target_propogation, quick, p, iteration_limit
         )
@@ -132,7 +176,7 @@ class Network:
                 left = mid + 1
         return inbetween[right]
 
-    def run_ICC_find_min_nodes(
+    def __run_ICC_find_min_nodes(
         self, heuristic, target_propogation, quick=False, p=0.1, iteration_limit=None
     ):
         """
@@ -212,7 +256,7 @@ class Network:
 
     def run_ICC(
         self, seed_nodes, p: float = 0.1, iteration_limit=None
-    ) -> tuple[int, nx.DiGraph]:
+    ) -> tuple[int, nx.DiGraph, np.ndarray]:
         """
         Run a simulation of the independant cascade model on the network.
         :param float p: Probability of a node turning a neighbouring node
@@ -242,6 +286,17 @@ class Network:
         if iteration_limit is not None:
             self.__limit = iteration_limit
         i: int = 0
+        history = [
+            len(
+                [
+                    data
+                    for _, data in self.__H.nodes().data()
+                    if data["status"] != "inactive"
+                ]
+            )
+            / len(list(self.__H.nodes()))
+        ]
+
         while not self.__all_nodes_complete() and i < self.__limit:
             for node in self.__active_nodes():
                 self.__H.add_node(node, status="used")
@@ -249,7 +304,19 @@ class Network:
                     if helper.turn(p) and self.__H.nodes[adj]["status"] == "inactive":
                         self.__H.add_node(adj, status="active")
             i += 1
-        return (i, self.__H)
+            # add coverage for each iteration to history
+            history.append(
+                len(
+                    [
+                        data
+                        for _, data in self.__H.nodes().data()
+                        if data["status"] != "inactive"
+                    ]
+                )
+                / len(list(self.__H.nodes()))
+            )
+
+        return (i, self.__H, np.array(history))
 
     def __all_nodes_complete(self) -> bool:
         for n in self.__H.nodes.data():

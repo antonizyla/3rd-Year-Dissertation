@@ -3,6 +3,20 @@ import networkx as nx
 from Influence_Modelling import Network, Sampling
 
 
+def all_heuristics():
+    return [
+        random_h,
+        deg_h,
+        deg_discount_h,
+        mean_neighbour_deg_h,
+        local_clustering_coefficient_h,
+        betweenness_centrality_h,
+        average_shortest_path_length_h,
+        eigenvector_centrality_h,
+        katz_centrality_h,
+    ]
+
+
 def random_h(G: nx.DiGraph, n: int = 2) -> list:
     """
     Find n random nodes in the network.
@@ -57,6 +71,16 @@ def __neighbour_deg(G, node):
 
 
 def mean_neighbour_deg_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for mean_neighbour_deg_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     nodes = []
@@ -67,6 +91,16 @@ def mean_neighbour_deg_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def local_clustering_coefficient_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for local_clustering_coefficient_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     coefficients = nx.clustering(G)
@@ -76,6 +110,16 @@ def local_clustering_coefficient_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def betweenness_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for betweenness_centrality_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     coefficients = nx.betweenness_centrality(G)
@@ -85,6 +129,16 @@ def betweenness_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def average_shortest_path_length_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for average_shortest_path_length_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     coefficients = nx.average_shortest_path_length(G)
@@ -94,6 +148,16 @@ def average_shortest_path_length_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def eigenvector_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for eigenvector_centrality_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     coefficients = nx.eigenvector_centrality(G)
@@ -103,6 +167,16 @@ def eigenvector_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def katz_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for katz_centrality_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
     coefficients = nx.katz_centrality_numpy(G)
@@ -112,15 +186,25 @@ def katz_centrality_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def greedy_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for greedy_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
 
-    net = Network.Network("", "")
+    net = Network.Network("")
     net.set_nx(G)
 
     seeds = [node for node in G.nodes()]
     for i in range(len(seeds)):
-        _, final = net.run_ICC([seeds[i], 0.1, 10000])
+        _, final, hist = net.run_ICC([seeds[i], 0.1, 10000])
         seeds[i] = (
             len(
                 [
@@ -138,12 +222,22 @@ def greedy_h(G: nx.DiGraph, n: int = 2) -> list:
 
 
 def celf_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    Docstring for celf_h
+
+    :param G: Description
+    :type G: nx.DiGraph
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     marginal_gain = []
     nodes = [v for v in G.nodes()]
-    net = Network.Network("", "")
+    net = Network.Network("")
     net.set_nx(G)
     for node in nodes:
-        iterations, final = net.run_ICC([node], 0.1, 100)
+        iterations, final, hist = net.run_ICC([node], 0.1, 100)
         marginal_gain.append(
             (
                 len(
@@ -167,7 +261,7 @@ def celf_h(G: nx.DiGraph, n: int = 2) -> list:
         check = False
         while not check:
             current = Q[0][1]
-            i, f = net.run_ICC(seeds + [current], 0.1, 100)
+            i, f, hist = net.run_ICC(seeds + [current], 0.1, 100)
             f_spread = len(
                 [x for (x, data) in f.nodes().data() if data["status"] == "used"]
             )

@@ -36,8 +36,6 @@ class XsvNetwork(Network):
 
     def __init__(
         self,
-        project: str,
-        name: str,
         filepath: str,
         separator: str = ",",
         verbose: bool = False,
@@ -52,7 +50,7 @@ class XsvNetwork(Network):
         :param str separator: Field separator (default ",")
         :param bool verbose: Enable verbose logging (default False)
         """
-        super().__init__(name, verbose)
+        super().__init__("", verbose)
         self.__filepath = filepath
         self.__G = nx.empty_graph()
         self.__v = verbose
@@ -132,7 +130,4 @@ class XsvNetwork(Network):
         self.__G = self.__H
 
     def get_nx(self):
-        """
-        Returns the networkx graph object.
-        """
         return self.__G

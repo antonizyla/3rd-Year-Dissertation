@@ -178,6 +178,16 @@ def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
 
 
 def random_sample(collection: list[Any], n: int) -> list[Any]:
+    """
+    Docstring for random_sample
+
+    :param collection: Description
+    :type collection: list[Any]
+    :param n: Description
+    :type n: int
+    :return: Description
+    :rtype: list[Any]
+    """
     if n >= len(collection):
         return collection
     s: set[Any] = set()
@@ -188,6 +198,14 @@ def random_sample(collection: list[Any], n: int) -> list[Any]:
 
 
 def random_element(xs: list[Any]) -> Any:
+    """
+    Docstring for random_element
+
+    :param xs: Description
+    :type xs: list[Any]
+    :return: Description
+    :rtype: Any
+    """
     length = len(xs)
     if length <= 0:
         return None
