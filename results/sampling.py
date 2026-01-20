@@ -28,12 +28,12 @@ def concatenate_individual_runs(rows: pd.DataFrame) -> pd.DataFrame:
             "edges_std": [rows["edges"].to_numpy().std()],
             "mean_degree": [rows["mean_degree"].to_numpy().mean()],
             "mean_degree_std": [rows["mean_degree"].to_numpy().std()],
-            "cc": [rows["cc"].to_numpy().mean()],
-            "cc_std": [rows["cc"].to_numpy().std()],
+         #   "cc": [rows["cc"].to_numpy().mean()],
+         #   "cc_std": [rows["cc"].to_numpy().std()],
             "centralization": [rows["centralization"].to_numpy().mean()],
             "centralization_std": [rows["centralization"].to_numpy().std()],
-            # "diameter": [df["diameter"].to_numpy().std],
-            # "diameter_std": [df["diameter"].to_numpy().std],
+            "diameter": [rows["diameter"].to_numpy().std],
+            "diameter_std": [rows["diameter"].to_numpy().std],
             "time_taken_ns": [rows["time_taken"].to_numpy().mean()],
             "time_taken_std_ns": [rows["time_taken"].to_numpy().std()],
             "maximum_memory_kb": [rows["maximum_memory"].to_numpy().mean()],
@@ -64,14 +64,16 @@ def single_row(
         sample = dataset_network
     else:
         sample = method_function(dataset_network, nodes)
+    if sample.number_of_nodes() == 0:
+        print("NON NODES IN THIS SHIT")
     result = pd.DataFrame(
         data={
             "nodes": [Metrics.s_1_number_nodes(sample)],
             "edges": [Metrics.s_2_number_edges(sample)],
             "mean_degree": [Metrics.s_3_mean_degree(sample)],
-            "cc": [Metrics.s_4_clustering_coefficient(sample)],
+          #  "cc": [Metrics.s_4_clustering_coefficient(sample)],
             "centralization": [Metrics.s_6_centralization(sample)],
-            # "diameter": NetworkMetrics.s_5_diameter(sample),
+            "diameter": [Metrics.s_5_diameter(sample)],
         }
     )
     memory_end: resource.struct_rusage = resource.getrusage(resource.RUSAGE_SELF)
@@ -138,9 +140,9 @@ if __name__ == "__main__":
     logfile = f"{output_folder_path}/log.txt"
     logging.basicConfig(filename=logfile, encoding="utf-8", level=logging.DEBUG)
 
-    enron_data = XsvNetwork.XsvNetwork("", "", "enron")
-    twitter_data = XsvNetwork.XsvNetwork("", "", "twitter")
-    p2p_data = XsvNetwork.XsvNetwork("", "", "p2p")
+    enron_data = XsvNetwork.XsvNetwork( "enron")
+    twitter_data = XsvNetwork.XsvNetwork( "twitter")
+    p2p_data = XsvNetwork.XsvNetwork("p2p")
 
     # THIS IS BIT TO EDIT
     #########################################################################
@@ -150,12 +152,12 @@ if __name__ == "__main__":
         # ("P2P", p2p_data.get_nx()),
     ]
     methods = [
-        ("None", None),
-        # ("BFS", Sampling.bfs_sample),
-        # ("SNS", Sampling.snowball_sample),
+        #("None", None),
+        ("BFS", Sampling.bfs_sample),
+        ("SNS", Sampling.snowball_sample),
         # ("RW", Sampling.random_walk_sample),
-        # ("MHRW", Sampling.mhrw_sample),
-        ("MHDA", Sampling.mhda_sample),
+        #("MHRW", Sampling.mhrw_sample),
+        #("MHDA", Sampling.mhda_sample),
         # ("Albatross", Sampling.albatross_sample),
     ]
     ##########################################################################

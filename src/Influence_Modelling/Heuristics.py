@@ -63,6 +63,42 @@ def deg_discount_h(G: nx.DiGraph, n: int = 2) -> list:
     return vertices
 
 
+def double_deg_discount_h(G: nx.DiGraph, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    H: nx.DiGraph = G.copy()
+    vertices = []
+    while len(vertices) < n:
+        degrees = H.degree()
+        maximal_deg = max([degree for (_, degree) in H.degree()])
+        vertex = [vertex for (vertex, degree) in degrees if degree == maximal_deg][0]
+        vertices.append(vertex)
+        to_remove = [vertex]
+        for vert in H.adj[vertex]:
+            to_remove.append(vert)
+        H.remove_nodes_from(to_remove)
+    return vertices
+
+
+def triple_deg_discount_h(G: nx.DiGraph, n: int = 2) -> list:
+    if n >= len(G.nodes()):
+        return [node for node in G.nodes()]
+    H: nx.DiGraph = G.copy()
+    vertices = []
+    while len(vertices) < n:
+        degrees = H.degree()
+        maximal_deg = max([degree for (_, degree) in H.degree()])
+        vertex = [vertex for (vertex, degree) in degrees if degree == maximal_deg][0]
+        vertices.append(vertex)
+        to_remove = [vertex]
+        for vert in H.adj[vertex]:
+            to_remove.append(vert)
+            for ver in H.adj[vert]:
+                to_remove.append(ver)
+        H.remove_nodes_from(to_remove)
+    return vertices
+
+
 def __neighbour_deg(G, node):
     neighbour_degrees = [G.degree(n) for n in G.adj[node]]
     if neighbour_degrees == []:

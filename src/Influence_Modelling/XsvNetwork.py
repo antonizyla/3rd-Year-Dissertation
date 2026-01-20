@@ -79,7 +79,7 @@ class XsvNetwork(Network):
             )
             return data.read().decode("utf-8").split("\n")
         elif self.__filepath == "twitter":
-            self.__sep = " "
+            self.__sep = "\t"
             data = importlib.resources.open_binary(
                 "Influence_Modelling.datasets", "twitter_combined.txt"
             )

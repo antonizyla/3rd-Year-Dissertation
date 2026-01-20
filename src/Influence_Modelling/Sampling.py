@@ -179,13 +179,13 @@ def albatross_sample(G: nx.DiGraph, S: List[Any], n: int) -> nx.DiGraph:
 
 def random_sample(collection: list[Any], n: int) -> list[Any]:
     """
-    Docstring for random_sample
+    Take a random sample of `n` elements from any list.
 
-    :param collection: Description
+    :param collection: Population to sample.
     :type collection: list[Any]
-    :param n: Description
+    :param n: Number of elements to sample.
     :type n: int
-    :return: Description
+    :return: Subset of the collection.
     :rtype: list[Any]
     """
     if n >= len(collection):
@@ -199,11 +199,11 @@ def random_sample(collection: list[Any], n: int) -> list[Any]:
 
 def random_element(xs: list[Any]) -> Any:
     """
-    Docstring for random_element
+    Select a single element at random from a list.
 
-    :param xs: Description
+    :param xs: Population to sample.
     :type xs: list[Any]
-    :return: Description
+    :return: A random element from xs.
     :rtype: Any
     """
     length = len(xs)

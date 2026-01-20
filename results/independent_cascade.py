@@ -33,13 +33,13 @@ def single_run(
     elif isinstance(network, str):
         with open(f"{output_folder_path}/networks/{network}", "rb") as f:
             network = pickle.load(f)
-        
+
     filepath: str = f"{output_folder_path}/ICC-{heuristic_name}-{network if isinstance(network, str) else dataset_name}-{seed_size}-{trial}.pickle"
 
     if os.path.isfile(filepath):
         print("Terminating Trial early, already completed")
-        return # already computd this no point redoing
-        
+        return  # already computd this no point redoing
+
     seeds = heuristic_method(network, seed_size)
     start_coverage = seed_size / len(list(network.nodes()))
     N = Network.Network("", "", False)

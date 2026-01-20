@@ -261,13 +261,13 @@ Influence_Modelling<wbr>.Sampling    </h1>
 </span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>
 </span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="k">def</span><span class="w"> </span><span class="nf">random_sample</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 </span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">    Docstring for random_sample</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">    Take a random sample of `n` elements from any list.</span>
 </span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">    :param collection: Description</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">    :param collection: Population to sample.</span>
 </span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">    :type collection: list[Any]</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">    :param n: Description</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">    :param n: Number of elements to sample.</span>
 </span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">    :type n: int</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">    :return: Description</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">    :return: Subset of the collection.</span>
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">    :rtype: list[Any]</span>
 </span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
@@ -281,11 +281,11 @@ Influence_Modelling<wbr>.Sampling    </h1>
 </span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>
 </span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="k">def</span><span class="w"> </span><span class="nf">random_element</span><span class="p">(</span><span class="n">xs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 </span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">    Docstring for random_element</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">    Select a single element at random from a list.</span>
 </span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">    :param xs: Description</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a><span class="sd">    :param xs: Population to sample.</span>
 </span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a><span class="sd">    :type xs: list[Any]</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">    :return: Description</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="sd">    :return: A random element from xs.</span>
 </span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="sd">    :rtype: Any</span>
 </span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
@@ -686,13 +686,13 @@ connected components.</p>
     <a class="headerlink" href="#random_sample"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="random_sample-181"><a href="#random_sample-181"><span class="linenos">181</span></a><span class="k">def</span><span class="w"> </span><span class="nf">random_sample</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 </span><span id="random_sample-182"><a href="#random_sample-182"><span class="linenos">182</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="random_sample-183"><a href="#random_sample-183"><span class="linenos">183</span></a><span class="sd">    Docstring for random_sample</span>
+</span><span id="random_sample-183"><a href="#random_sample-183"><span class="linenos">183</span></a><span class="sd">    Take a random sample of `n` elements from any list.</span>
 </span><span id="random_sample-184"><a href="#random_sample-184"><span class="linenos">184</span></a>
-</span><span id="random_sample-185"><a href="#random_sample-185"><span class="linenos">185</span></a><span class="sd">    :param collection: Description</span>
+</span><span id="random_sample-185"><a href="#random_sample-185"><span class="linenos">185</span></a><span class="sd">    :param collection: Population to sample.</span>
 </span><span id="random_sample-186"><a href="#random_sample-186"><span class="linenos">186</span></a><span class="sd">    :type collection: list[Any]</span>
-</span><span id="random_sample-187"><a href="#random_sample-187"><span class="linenos">187</span></a><span class="sd">    :param n: Description</span>
+</span><span id="random_sample-187"><a href="#random_sample-187"><span class="linenos">187</span></a><span class="sd">    :param n: Number of elements to sample.</span>
 </span><span id="random_sample-188"><a href="#random_sample-188"><span class="linenos">188</span></a><span class="sd">    :type n: int</span>
-</span><span id="random_sample-189"><a href="#random_sample-189"><span class="linenos">189</span></a><span class="sd">    :return: Description</span>
+</span><span id="random_sample-189"><a href="#random_sample-189"><span class="linenos">189</span></a><span class="sd">    :return: Subset of the collection.</span>
 </span><span id="random_sample-190"><a href="#random_sample-190"><span class="linenos">190</span></a><span class="sd">    :rtype: list[Any]</span>
 </span><span id="random_sample-191"><a href="#random_sample-191"><span class="linenos">191</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="random_sample-192"><a href="#random_sample-192"><span class="linenos">192</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
@@ -705,19 +705,19 @@ connected components.</p>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Docstring for random_sample</p>
+            <div class="docstring"><p>Take a random sample of <code>n</code> elements from any list.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>collection</strong>:  Description</li>
-<li><strong>n</strong>:  Description</li>
+<li><strong>collection</strong>:  Population to sample.</li>
+<li><strong>n</strong>:  Number of elements to sample.</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>Description</p>
+  <p>Subset of the collection.</p>
 </blockquote>
 </div>
 
@@ -736,11 +736,11 @@ connected components.</p>
     <a class="headerlink" href="#random_element"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="random_element-201"><a href="#random_element-201"><span class="linenos">201</span></a><span class="k">def</span><span class="w"> </span><span class="nf">random_element</span><span class="p">(</span><span class="n">xs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 </span><span id="random_element-202"><a href="#random_element-202"><span class="linenos">202</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="random_element-203"><a href="#random_element-203"><span class="linenos">203</span></a><span class="sd">    Docstring for random_element</span>
+</span><span id="random_element-203"><a href="#random_element-203"><span class="linenos">203</span></a><span class="sd">    Select a single element at random from a list.</span>
 </span><span id="random_element-204"><a href="#random_element-204"><span class="linenos">204</span></a>
-</span><span id="random_element-205"><a href="#random_element-205"><span class="linenos">205</span></a><span class="sd">    :param xs: Description</span>
+</span><span id="random_element-205"><a href="#random_element-205"><span class="linenos">205</span></a><span class="sd">    :param xs: Population to sample.</span>
 </span><span id="random_element-206"><a href="#random_element-206"><span class="linenos">206</span></a><span class="sd">    :type xs: list[Any]</span>
-</span><span id="random_element-207"><a href="#random_element-207"><span class="linenos">207</span></a><span class="sd">    :return: Description</span>
+</span><span id="random_element-207"><a href="#random_element-207"><span class="linenos">207</span></a><span class="sd">    :return: A random element from xs.</span>
 </span><span id="random_element-208"><a href="#random_element-208"><span class="linenos">208</span></a><span class="sd">    :rtype: Any</span>
 </span><span id="random_element-209"><a href="#random_element-209"><span class="linenos">209</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="random_element-210"><a href="#random_element-210"><span class="linenos">210</span></a>    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
@@ -750,18 +750,18 @@ connected components.</p>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Docstring for random_element</p>
+            <div class="docstring"><p>Select a single element at random from a list.</p>
 
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>xs</strong>:  Description</li>
+<li><strong>xs</strong>:  Population to sample.</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
-  <p>Description</p>
+  <p>A random element from xs.</p>
 </blockquote>
 </div>
 
