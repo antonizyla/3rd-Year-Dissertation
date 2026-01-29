@@ -92,24 +92,125 @@
   doi      = {10.1109/JSAC.2011.111011}
 }
 @inproceedings{griffiths17LimitiingConcept,
-       booktitle = {16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)},
-           title = {Limiting concept spread in environments with interacting concepts
-},
-            year = {2017},
-       publisher = {IFAAMAS},
-           pages = {1332--1340 },
-         journal = {Proceedings of the 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)},
-        abstract = {The propagation of concepts in a population of agents is a form of influence spread, which can be modelled as a cascade from an initial set of individuals. In real-world environments there may be many concepts spreading and interacting. Previous work does not consider utilising concept interactions to limit the spread of a concept. In this paper we present a method for limiting concept spread, in environments where concepts interact and do not block others from spreading. We define a model that allows for the interactions between any number of concepts to be represented and, using this model, develop a solution to the influence limitation problem, which aims to minimise the spread of a target concept through the use of a secondary inhibiting concept. We present a heuristic, called maximum probable gain, and compare its performance to established heuristics for manipulating influence spread in both simulated smallworld networks and real-world networks.},
-             url = {http://www.aamas2017.org/accepted-papers-main-track\%5faamas2017.php},
-          author = {Archbold, James and Griffiths, Nathan}
+  booktitle = {16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)},
+  title     = {Limiting concept spread in environments with interacting concepts
+               },
+  year      = {2017},
+  publisher = {IFAAMAS},
+  pages     = {1332--1340 },
+  journal   = {Proceedings of the 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)},
+  abstract  = {The propagation of concepts in a population of agents is a form of influence spread, which can be modelled as a cascade from an initial set of individuals. In real-world environments there may be many concepts spreading and interacting. Previous work does not consider utilising concept interactions to limit the spread of a concept. In this paper we present a method for limiting concept spread, in environments where concepts interact and do not block others from spreading. We define a model that allows for the interactions between any number of concepts to be represented and, using this model, develop a solution to the influence limitation problem, which aims to minimise the spread of a target concept through the use of a secondary inhibiting concept. We present a heuristic, called maximum probable gain, and compare its performance to established heuristics for manipulating influence spread in both simulated smallworld networks and real-world networks.},
+  url       = {http://www.aamas2017.org/accepted-papers-main-track\%5faamas2017.php},
+  author    = {Archbold, James and Griffiths, Nathan}
 }
 @article{qiang23tieredInfluence,
-author = {Qiang, Zhecheng and Pasiliao, Eduardo and Zheng, Qipeng},
-year = {2023},
-month = {06},
-pages = {},
-title = {Target set selection in social networks with tiered influence and activation thresholds},
-volume = {45},
-journal = {Journal of Combinatorial Optimization},
-doi = {10.1007/s10878-023-01023-8}
+  author  = {Qiang, Zhecheng and Pasiliao, Eduardo and Zheng, Qipeng},
+  year    = {2023},
+  month   = {06},
+  pages   = {},
+  title   = {Target set selection in social networks with tiered influence and activation thresholds},
+  volume  = {45},
+  journal = {Journal of Combinatorial Optimization},
+  doi     = {10.1007/s10878-023-01023-8}
 }
+@inproceedings{celf,
+  author    = {Leskovec, Jure and Krause, Andreas and Guestrin, Carlos and Faloutsos, Christos and VanBriesen, Jeanne and Glance, Natalie},
+  title     = {Cost-effective outbreak detection in networks},
+  year      = {2007},
+  isbn      = {9781595936097},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/1281192.1281239},
+  doi       = {10.1145/1281192.1281239},
+  abstract  = {Given a water distribution network, where should we place sensors toquickly detect contaminants? Or, which blogs should we read to avoid missing important stories?.These seemingly different problems share common structure: Outbreak detection can be modeled as selecting nodes (sensor locations, blogs) in a network, in order to detect the spreading of a virus or information asquickly as possible. We present a general methodology for near optimal sensor placement in these and related problems. We demonstrate that many realistic outbreak detection objectives (e.g., detection likelihood, population affected) exhibit the property of "submodularity". We exploit submodularity to develop an efficient algorithm that scales to large problems, achieving near optimal placements, while being 700 times faster than a simple greedy algorithm. We also derive online bounds on the quality of the placements obtained by any algorithm. Our algorithms and bounds also handle cases where nodes (sensor locations, blogs) have different costs.We evaluate our approach on several large real-world problems,including a model of a water distribution network from the EPA, andreal blog data. The obtained sensor placements are provably near optimal, providing a constant fraction of the optimal solution. We show that the approach scales, achieving speedups and savings in storage of several orders of magnitude. We also show how the approach leads to deeper insights in both applications, answering multicriteria trade-off, cost-sensitivity and generalization questions.},
+  booktitle = {Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  pages     = {420–429},
+  numpages  = {10},
+  keywords  = {graphs, information cascades, sensor placement, submodular functions, virus propagation},
+  location  = {San Jose, California, USA},
+  series    = {KDD '07}
+}
+@inproceedings{kempe2003,
+  author    = {Kempe, David and Kleinberg, Jon and Tardos, \'{E}va},
+  title     = {Maximizing the spread of influence through a social network},
+  year      = {2003},
+  isbn      = {1581137370},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/956750.956769},
+  doi       = {10.1145/956750.956769},
+  abstract  = {Models for the processes by which ideas and influence propagate through a social network have been studied in a number of domains, including the diffusion of medical and technological innovations, the sudden and widespread adoption of various strategies in game-theoretic settings, and the effects of "word of mouth" in the promotion of new products. Recently, motivated by the design of viral marketing strategies, Domingos and Richardson posed a fundamental algorithmic problem for such social network processes: if we can try to convince a subset of individuals to adopt a new product or innovation, and the goal is to trigger a large cascade of further adoptions, which set of individuals should we target?We consider this problem in several of the most widely studied models in social network analysis. The optimization problem of selecting the most influential nodes is NP-hard here, and we provide the first provable approximation guarantees for efficient algorithms. Using an analysis framework based on submodular functions, we show that a natural greedy strategy obtains a solution that is provably within 63\% of optimal for several classes of models; our framework suggests a general approach for reasoning about the performance guarantees of algorithms for these types of influence problems in social networks.We also provide computational experiments on large collaboration networks, showing that in addition to their provable guarantees, our approximation algorithms significantly out-perform node-selection heuristics based on the well-studied notions of degree centrality and distance centrality from the field of social networks.},
+  booktitle = {Proceedings of the Ninth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  pages     = {137–146},
+  numpages  = {10},
+  keywords  = {viral marketing, social networks, diffusion of innovations, approximation algorithms},
+  location  = {Washington, D.C.},
+  series    = {KDD '03}
+}
+@article{kuperman2013invited,
+  title={Invited review: Epidemics on social networks},
+  author={Kuperman, Marcelo N},
+  journal={Papers in physics},
+  volume={5},
+  number={1},
+  pages={0--0},
+  year={2013},
+  publisher={SciELO Argentina}
+}
+@article{sekara2016fundamental,
+  title={Fundamental structures of dynamic social networks},
+  author={Sekara, Vedran and Stopczynski, Arkadiusz and Lehmann, Sune},
+  journal={Proceedings of the national academy of sciences},
+  volume={113},
+  number={36},
+  pages={9977--9982},
+  year={2016},
+  publisher={National Academy of Sciences}
+}
+@inproceedings{gjoka2010,
+author = {Gjoka, Minas and Kurant, Maciej and Butts, Carter and Markopoulou, Athina},
+year = {2010},
+month = {04},
+pages = {1 - 9},
+title = {Walking in Facebook: A Case Study of Unbiased Sampling of OSNs},
+journal = {INFOCOM, 2010 Proceedings IEEE},
+doi = {10.1109/INFCOM.2010.5462078}
+}
+@misc{goyal2012competitivecontagionnetworks,
+      title={Competitive Contagion in Networks}, 
+      author={Sanjeev Goyal and Michael Kearns},
+      year={2012},
+      eprint={1110.6372},
+      archivePrefix={arXiv},
+      primaryClass={cs.GT},
+      url={https://arxiv.org/abs/1110.6372}, 
+}
+@article{powerlaw,
+  author       = {David Eppstein and
+                  Joseph Wang},
+  title        = {A steady state model for graph power laws},
+  journal      = {CoRR},
+  volume       = {cs.DM/0204001},
+  year         = {2002},
+  url          = {https://arxiv.org/abs/cs/0204001},
+  timestamp    = {Fri, 10 Jan 2020 12:59:11 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/cs-DM-0204001.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+@inproceedings{smallworld,
+author = {Kleinberg, Jon},
+title = {The small-world phenomenon: an algorithmic perspective},
+year = {2000},
+isbn = {1581131844},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/335305.335325},
+doi = {10.1145/335305.335325},
+booktitle = {Proceedings of the Thirty-Second Annual ACM Symposium on Theory of Computing},
+pages = {163–170},
+numpages = {8},
+location = {Portland, Oregon, USA},
+series = {STOC '00}
+}
+
+  

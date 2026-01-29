@@ -134,7 +134,7 @@ class Network:
 
         under_index, over_index = 0, 0
         for i, seed_num in enumerate(seed_numbers):
-            iters, final = model(heuristic(self.__G, seed_num), p, iteration_limit)
+            iters, final, _ = model(heuristic(self.__G, seed_num), p, iteration_limit)
             coverage = len(
                 [
                     data
@@ -160,7 +160,7 @@ class Network:
         left, right = 0, len(inbetween)
         while left <= right:
             mid = math.floor((left + right) / 2)
-            iters, final = self.run_ICC(
+            iters, final, _ = self.run_ICC(
                 heuristic(self.__G, inbetween[mid]), p, iteration_limit
             )
             coverage = len(
@@ -238,7 +238,7 @@ class Network:
         left, right = 0, len(inbetween)
         while left <= right:
             mid = math.floor((left + right) / 2)
-            iters, final = self.run_ICC(
+            iters, final, _ = self.run_ICC(
                 heuristic(self.__G, inbetween[mid]), p, iteration_limit
             )
             coverage = len(

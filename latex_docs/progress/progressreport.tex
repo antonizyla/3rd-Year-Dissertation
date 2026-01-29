@@ -53,27 +53,25 @@
 \newpage
 
 \section{Introduction}
-
 \subsection{What am I studying?}
 
 Influence is the idea of a concept or idea spreading throughout a network.
-It works well as a proxy for the spread of infectious diseases (SOURCE), behaviours (SOURCE) or even for helping with modelling physical processes (SOURCE CELF PAPER WATER LOSS)
+Influence can be used as a proxy for the spread of infectious diseases, behaviours \cite{archbold2024cvd} or even for helping with monitoring infrastructure \cite{celf}.
 
 Finding a subset $S$ of nodes from a network which have the greatest influence or spread is a well studied problem and there exist many models, algorithms and heuristics which help to efficiently achieve this goal.
-This is an active area of research ... (SOURCE HERE)
+This is an active area of research with new papers being regularly published and studied.
 
 \subsection{What do I hope to achieve?}
-To find a heuristic which works well on a broad range of networks, performing better than others available for the same computing power or performing the same with less computing power.
+To find a heuristic which works well on a broad range of networks, performing better than others available for the same computing power or performing the same with less computing power required.
 
 \subsection{Why is this a good project?}
 
 Systematic methods such as taking a greedy approach to find some set of influential nodes may seem like a good way to achieve a 'good enough' result.
-Even a simple approximation such as greedy can take over 10 times longer than even an expensive heuristic approach whilst at the same time often producing a result less than or equal to the much heuristic method.
+Even a simple approximation such as greedy can take over 10 times longer than even an expensive heuristic approach whilst at the same time often producing a result less than or equal to the much much faster heuristic method.
 
 The performance of any method for determining the seeds is highly dependent on the network topology, size, and required $k$.
-Being able to find a correlation between a topological property and an efficient seed selection method to produce high influences could allow for studies of (XXXX) to be made more efficient, more effective and (YYYY).
-Study in this field is incredibly useful in working on social platforms, recommendation systems, trend analysis or network anaylsis to find emerging trends (SOURCE).
-
+Being able to find a correlation between a topological property and an efficient seed selection method to produce high influences could for example allow for marketing campaigns to be made more efficient, more effective or cheaper to run.
+Study in this field is incredibly useful in working on social platforms, recommendation systems, trend analysis or network anaylsis to find emerging trends \cite{kempe2003}.
 
 %Social networks \cite{sadasd}, interactions \cite{asdsad} and email chains \cite{enrondas} can all be modelled as a graph in the $G = (V,E)$ sense.
 
@@ -106,91 +104,89 @@ Study in this field is incredibly useful in working on social platforms, recomme
 \section{Background Research}
 
 I have considered a wide range of sources so far including research papers, doctoral theses, open source datasets, articles and open source code.
-Each piece of information is cited and listed at the bottom of this document with as much information as I could include.
+Each piece of information is cited or linked as a footnote where appropriate.
 
 \subsection{Models of Influence Propogation}
 There are three main models through which influence is typically spread across networks.
 
 \begin{enumerate}
-	\item Independent Cascade Model (ICC) - Each node can take a state out of Active, Inactive and uninfected (SOURCE).
+	\item Independent Cascade Model (ICC) - Each node can take a state out of Active, Inactive and uninfected.
 	      Each active node has a probability $p$ to infect each of it's uninfected neighbors.
-	      Once a node has been infected this process starts again to all of it's neighbors, the node is in the active state once it is infected (SOURCE).
+	      Once a node has been infected this process starts again to all of it's neighbors, the node is in the active state once it is infected \cite{kempe2003}.
 	      Once a node has attempted to infect all of it's neighbors it becomes an inactive node.
-	      This is the simplest of the models but also mimics real life very well, weather it's the spread of a new software technology or a new restaurant becoming more popular.
-	\item Decreasing Cascade Model (DCC) - A modification of the ICC model where every attempt of a node to be influenced decreases the probability of it being influenced or infected. (SOURCE).
-	      This is able to be modelled using a function $f: (v, n) \to [0, 1]$.
-	      This could be analogous to a common experience, overreaching of advertisements or correspondence, such as marketing emails from the student union make me want to engage less with it due to being annoying and pushy.
-	\item Linear Threshold Model (LTM) - Every node $v$ is given a probability of being turned $p$ which is uniformly distributed across the interval $[0, 1]$. When the proportion of node $v$'s neighbors which are infected is greater than or equal to $p$, $v$ itself becomes infected. (SOURCE)
+	      This is the simplest of the models but also mimics real life well, weather it's the spread of a new software technology or a new restaurant becoming more popular.
+	\item Decreasing Cascade Model (DCC) - A modification of the ICC model where every attempt of a node to be influenced decreases the probability of it being influenced or infected \cite{kempe2005influential}.
+	      This could be analogous to a common experience, overreaching of advertisements or correspondence, such as marketing emails which have the opposite to intended effect due to annoyance.
+	\item Linear Threshold Model (LTM) - Every node $v$ is given a probability of being turned $p$ which is uniformly distributed across the interval $[0, 1]$. When the proportion of node $v$'s neighbors which are infected is greater than or equal to $p$, $v$ itself becomes infected \cite{kempe2003}.
 	      This models well another common experience, a group reaching a common view in regards to something, whether it's the adoption of a new game, or even a software tool that becomes the 'industry standard' this principle is at play.
 \end{enumerate}
 
-As described above the independent cascade model is able to be easily modelled using the decreasing cascade model,
-with the simple declaration of $\forall v \in V, f(v, n) = p, p \in [0, 1]$.
-
-Working on the property of the expected influence as a fraction of nodes is a monotonic and submodular function of the number of seed nodes. (SOURCE)
-\\
-
 Various papers have described modifications of each of these models in a multitude of ways,
-multiple concepts can be spread wherein they can inhibit the spread of eachother by allowing a node to only adopt a single concept (SOURCE).
-Vaccination or heard immunity can be modelled in this manner (SOURCE).
+multiple concepts can be spread wherein they can inhibit the spread of eachother by allowing a node to only adopt a single concept \cite{griffiths17LimitiingConcept,goyal2012competitivecontagionnetworks}.
+Vaccination or heard immunity can be modelled in this manner \cite{griffiths17LimitiingConcept}.
 
-There are other models which work in different manners, borrowing from biology models such as SI, SIS, SIR allow for modelling disease in a fine tuned manner (SOURCE). These are somewhat able to be modelled using the cascade models however full parity is not possible for example going from infected back to uninfected is not a behavior that is considered with the cascades and would possibly have large effects on the effectiveness of certain seed selection strategies (SOURCE).
+There are other models which work in different manners, borrowing from biology models such as SIR for modelling diseases more closely \cite{kuperman2013invited}. These are somewhat able to be modelled using the cascade models however full parity is not possible for example going from infected back to uninfected is not a behavior that is considered with the cascades and would possibly have large effects on the effectiveness of certain seed selection strategies.
 
-There are models where paths between nodes can be added or removed as part of the process (SOURCE), this can for example be used to model the evolution of social networks, rather than studying networks which are at a fixed point in their evolution.
-Similar cascade models can be used when studying these evolutions however this is an additional very large jump in complexity and scope which I would be unable to do in the time I have for this dissertation.
+There are models where paths between nodes can be added or removed as part of the process \cite{sekara2016fundamental}, this can for example be used to model the evolution of social networks, rather than studying networks which are at a fixed point in their evolution.
+Influence can be studied over these evolutions however this is an additional very large jump in complexity and scope which would be out of scope for this project.
 
-\subsubsection{Working with large networks}
+\subsection{Working with large networks}
 
-Some of the networks I will be studying are made up of tens of thousands of nodes with hundreds of thousands of edges, working on networks of this size is almost impossible.
-Most algorithms and processes are within polynomial time at the scale of the network they are not able to be feasibly used for most larger networks.
+Some of the networks I will be studying are made up of tens of thousands of nodes with hundreds of thousands of edges, working on networks of this size is very resource intensive.
 
-Sampling networks is a way of preserving the topological features and allows us to create strategies which generalise well to networks with a much greater size.
+Sampling networks is a way of preserving the topological features and allows us to create strategies which generalise well to networks of a much greater size.
 
 \subsubsection{Naive Approaches}
 A simple natural approach could be to take a node at random from the graph, call it $v$, and then perform a breadth first search in layers across the graph.
-A connected subset of size greater than or equal $k$ would be generated in $O(k)$, network topology is however unfortunately not well preserved.
-When a high degree node is encountered then each of it's neighbours would also be added, this will inflate the average degree of the network by tending to sample a subset with a higher mean degree (SOURCE).
+When a high degree node is encountered then each of it's neighbours would also be added, this will inflate the average degree of the network by tending to sample a subset with a higher mean degree \cite{Wang2011UnderstandingGS}.
 
-Working outwards from a start node in a layer by layer fashion does not preserve the distribution of shortest path distances between nodes well.
-For node located close to the root these values will remain quite accurate but as we move further and further out a node is less likely to appear before we have no more nodes needed (SOURCE) leading to a lower shorter mean path lenght over the base network or other sampling methods.
+Working outwards from a start node also does not preserve the distribution of shortest path distances between nodes or clustering coefficients well.
+For node located close to the root these values will remain quite accurate but as we move further and further out a node is less likely to appear before we have no more nodes needed leading to a lower shorter mean path length and a higher typical clustering coefficient over other methods \cite{gjoka2010}.
 
-Some papers describe BFS as adding the entire layer from which it explores, leading to oversized samples (SOURCE).
+Some papers describe BFS as adding the entire layer from which it explores, leading to oversized samples \cite{franks2014learning}.
+Taking BFS sample of 1000 nodes in the Enron dataset it produces on average a sample of over 12 thousand nodes which is in no way comparable to another method's 1000 node sample.
 This is not useful when comparing like for like network sizes and their respective topological features such as diameter which are closely dependent on overall network size.
-Snwoball sampling is a very simple variation on breadth first search,
-once the addition of the final layer would take the total number of sampled nodes over the threshold, nodes are simply added one at a time until the exact number of nodes is reached.
-In some networks taking a BFS sample of one thousand nodes may actually produce a sample of over twelve thousand nodes (REFERENCE Table somewhere below) which is in no way comparable to another methods 1000 node sample.
-\\
+
+Snowball sampling is a very simple variation on breadth first search,
+once the addition of the final layer would take the total number of sampled nodes over the threshold, nodes are simply added one at a time until the exact number of nodes is reached \cite{franks2014learning}.
 
 A random walk is another simple strategy for exploring a graph.
 Working on the basis of a standard random walk, starting from a node $v$ there is a $\frac{1}{deg(v)}$ probability of choosing the next node to be $u$ where $u$ is one of the neighbours of $v$.
-Intuitively this helps with our shortcomings from BFS and SNS, the distribution of degrees would be more balanced as the probability of venturing to a low degree node is the same as to a higher degree one (SOURCE).
+intuitively RW will suffer from the same problems as BFS with finding higher degree nodes much more often than lower degrees\cite{gjoka2010}, as a higher degree node has more connections that lead to it.
+
+\subsubsection{Smarter Sampling Methods}
+Utilising modified random walks is a standard method of achieving accurate and unbiased samples of large networks such as facebook \cite{gjoka2010}.
+Metropolis Hastings Random Walks and Random Walks with Delayed Acceptance (MHRW and MHDA) are two common methods used \cite{gjoka2010, gjoka11practicalreco}
 
 \subsubsection{Methods for finding seeds}
-There are a few methods which don't rely on a heuristic to determine the seed nodes.
+There are a few methods which don't rely on a heuristic or rule of thumb to determine the seed nodes.
 
 \begin{enumerate}
-	\item Brute Force - there are n choose k possible seed sets from which to choose from.
-	\item Greddy - Run a cascade from each node and then choose the $k$ highest influence nodes
-	\item CELF - A modification of greedy which performs a little worse but is much much quicker at expense of lower overall efficacy.
+	\item Brute Force - $n \choose k$ possible seed sets from which to choose from. This is incredibly inefficient and on the order of $O(n!)$ cascades.
+	\item Greedy - Run a cascade from each node and then choose the $k$ highest influence nodes \cite{kempe2005influential} giving a $1- 1/e$ approximation of opt whilst being $O(n)$ cascades.
+	\item Cost Effective Lazy Forward (CELF) - A much faster greedy based algorithm working on only recomputing data for each node when needed \cite{celf}.
 \end{enumerate}
 
-There are some approaches which I would like to consider that have been written about but not directly on the type of models that I am considering (INSERT INDIAN UNI PAPER + EXPLANATION).
+The above approaches are however incredibly slow to compute for any large networks.
+Utilising a heuristic or approximation between a characteristic of a node and it's significance in spreading across the network can be a much more performant way of extracting similar results but at a computationally feasibly scale.
 \\
 
-These approaches are a good estimation for the best possible result however are incredibly slow to run even on a modern processor.
-Utilising a heursitic or approximation between a characteristic of a node and it's siginificance in spreading across the network can be a much more performant way of extracting similar results but at a computationally feasibly scale.
+As detailed in section \ref{probDiscHeuristics} of the specification there are a large amount of heursitics which work well as a proxy for determining how influential a node is as shown by figure \ref{earlyRuns}.
 
-\textbf{TALK ABOUT THE HEURISTICS AND THE MAIN IDEAS AS TO WHY THEY WORK}
+I have primarily found two main groups of heuristics, simple heuristics which consider a node and potentially it's neighbours and some more complex heuristics which consider how a node fits into the wider structure of a network.
+\\
+As is quite easily seen in figure \ref{earlyRuns} and \ref{icc_all_heuristics} these two main types are quite apparent, the rates of growth and behaviour at low seed sizes is consistent between the propogation models and network sizes with the grouping behaviour even more visible in figure \ref{earlyRuns_abs}.
 
 %You will have done a good deal of finding out about the project area by reading articles, books, websites, technical manuals and so on. You may have tested other related systems to provide ideas. You need to show that you have a good understanding of the background area and how your project fits into the existing landscape.
 
 
 %There may be no room for a full literature review in the Progress Report, but you should give an indication of how you have gained background information. It would be appropriate to mention just a few citations which you view as key sources for your project. References should be provided as a formal reference list at the end of your report. Check if your supervisor has a preferred format. If not, you can choose your own style, but be consistent.
-
+\newpage
 \section{Current Status}
 
-Overall good progress has been made, a good portion of the desired objectives have been achieved.
-The codebase is in average shape, documentation from docstrings is automatically generated into a navigable website that links between functions classes with examples of how use each function.
+Overall good progress has been made, most of the desired objectives have been achieved.
+The codebase is in good shape, code could be written more clearly, cleanly and modularly however at this stage it works well and effectively.
+Documentation from docstrings is automatically generated into a navigable website that links between functions classes with examples of how use each function.
 
 \begin{table}[h]
 	\centering
@@ -233,8 +229,6 @@ The codebase is in average shape, documentation from docstrings is automatically
 	\label{statusOverview}
 \end{table}
 
-Overall as from \ref{statusOverview} the project is in good shape to achieve all objectives by the end of term 2.
-
 \subsection{Working with Networks}
 
 As listed in objective \ref{objimportexport} my project needs the ability to import and export networks.
@@ -256,26 +250,24 @@ To make getting started with my program quick and easy I have included some netw
 		Twitter       & 81306          & 1342310        & 33.019             & 0.565                   & 7              & 0.002114                \\
 		\hline
 	\end{tabular}
-	\caption{Statistics on Included Networks with my package, to 3 d.p. when applicable.}
+	\caption{Metrics for included networks}
 	\label{includedNets}
 \end{table}
 
 \begin{enumerate}
-	\item \textbf{Enron} Email network from Enron an energy company that shut down in 2001 due to fraud (source needed).
-	      Each email represents an edge, from the edgeset the network is then constructed (source of data).
+	\item \textbf{Enron} Email network from Enron an energy company that shut down in 2001 due to fraud.
+	      Each email represents an edge, from the edgeset the network is then constructed, created by SNAP \footnote{https://snap.stanford.edu/data/email-Enron.html}.
 	\item \textbf{P2P} Gnutella is a peer to peer (p2p) file sharing protocol created in 2000,
-	      this network compiled in 2002 by (SOURCE) relates each host as a node and any connection between two hosts as an edge.
-	      The protocol created some interesting topologies, with an overall goal of keeping the longest shortest path between any two nodes of at most 4 (source) it relied on a few nodes to act as an intermediate layer between the majority of clients. (MAYBE NOTE ON BEING SIMILAR TO KLEINBERG GRAPH WITH LEAFS ATTACHED)
-	\item \textbf{Airports} A dataset of all flight traffic between american airports in 2010 (source tore opsahl).
-	      This dataset is useful as due to the way it was gathered it will have likely a hub and spoke type topology due to the way airlines used to operate before small body airliners became commonplace (source needed).
-	\item \textbf{Twitter} A large collection of circles, a feature which allowed users to specify to whom their tweets would go to, restricting these tweets from being public (SOURCE What is a Circle?).
-	      It was obtained by crawling the website in 2012 by the Stanford SNAP research group (https://snap.stanford.edu/data/ego-Twitter.html).
+	      this network compiled in 2002 relates each host as a node and any connection between two hosts as an edge.
+	      The protocol created some interesting topologies, with an overall goal of keeping the longest shortest path between any two nodes of at most 4 it relied on a few nodes to act as an intermediate layer (Ultrapeers) between the majority of clients \footnote{https://rfc-gnutella.sourceforge.net/src/rfc-0\_6-draft.html}.
+	\item \textbf{Airports} A dataset of all flight traffic between american airports in 2010 \footnote{https://www.transtats.bts.gov/Homepage.asp}.
+	      This dataset is useful as it is a large network with likely a hub and spoke topology where certain nodes have much much higher traffic or degrees than others. It is visualised in figure \ref{airports-graph-image} and shows this quite well.
+	\item \textbf{Twitter} A large collection of circles, a feature which allowed users to specify to whom their tweets would go to, restricting these tweets from being public.
+	      It was obtained by crawling the website in 2012 by the Stanford SNAP research group \footnote{https://snap.stanford.edu/data/ego-Twitter.html}
 \end{enumerate}
 
 \subsection{Synthetic Networks}
-Some papers (\cite{franks2014learning} and \cite{}) commonly compare synthetic networks to sampled networks from realworld structures.
-As part of Objective \ref{objsynthetics} I have implemented the creation of both Kleinberg and Eppstein generators.
-Examples of some networks produced by them are listed in the table below.
+Many papers commonly compare synthetic networks to sampled networks from realworld structures, it is important for me to be able to replicate these trials.
 
 %\begin{table}[h]
 %	\centering
@@ -319,25 +311,23 @@ Examples of some networks produced by them are listed in the table below.
 \subsubsection{Navigable Small World Graphs}
 \imageh{example_3by3_kleinberg_graph.png}{width=0.5\textwidth}{Example of a 3 by 3 Navigable Small World Network}{example_kleiberg_image}
 
-A small world network is one that has a low mean shortest path between any two nodes and a high clustering coefficient.
+A small world network is one that has a low mean shortest path between any two nodes and a high clustering coefficient \cite{smallworld}.
 This means that there is a high likelihood that any two nodes in the network are able to form a path between themselves using very few nodes, an example of this is the six degrees of separation theory.
-\\
 
-(NEED TO ADD SOURCE  J. Kleinberg, The Small-World Phenomenon: An Algorithmic Perspective, in Proc. 32nd ACM Symp. Theory of Comp., 163-170, 2000. )
-\\
-
-Table \ref{syntheticGenerators} shows the networks from the Kleinberg small world generator have an interesting pattern in regards to the number of nodes.
-Both of the number of nodes are a square number, the networks constructed are $n \times n$ grids using the function within networkx, I did not implement an arbitrary $k$ node generator myself due to the additional time required, complexity and the likelihood of errors being introduced on my part.
+There are a few parameters \footnote{https://networkx.org/documentation/stable/reference/generated/networkx.generators.geometric.navigable\_small\_world\_graph.html} that allow for changing the shape and properties of these graphs, when applicable to compare to given results I will use the same or closest values.
 
 \subsubsection{Power Law Degree Distrubted Graphs}
 
-A power law graph means that the distribution of node degrees follows a power law distribution. (Source)
+A power law graph means that the distribution of node degrees follows a power law distribution \cite{powerlaw}, a very high degree node is much much rarer than a typical degree node following as the name suggests a powerlaw.
+This is also referred to as scale free and is a very close model of the airports network, academic paper authorship or other social networks.
 To form a graph with $k$ nodes a sequence of $k$ elements is created by sampling a power law distribution, the ability to form a graph from this sequence is then checked.
 The graph is then initialised from a randomly generated graph with node degrees that follow this sequence.
 
 \imageh{example_10_node_powerlaw_graph.png}{width=0.5\textwidth}{Example of a 10 node powerlaw graph}{example_eppstein_image}
 
-This is an incredibly expensive process in terms of computation, generating a singe $k$ node graph is at minimum $O(k \log_2(k))$
+Comparing the above image (Figure \ref{example_eppstein_image}) to the Airports in figure \ref{airports-graph-image} (Smallest of the included graphs) graph visualised with just edges some similarities are easily visible.
+
+\imageh{airports_graph_edges_image.png}{width=\textwidth}{Airports Graph Edges Visualised}{airports-graph-image}
 
 \subsection{Cascade and Threshold Models}
 
@@ -346,7 +336,7 @@ Code for automated running of trials, testing of heuristics on each of these has
 The required computations perform well when ran on the department's compute cluster.
 Data is output in both tabular and graphical formats, below is an example of some early runs.
 
-\image{../../results/early_hueristics_on_mhda_enron_2_sizes_all_models_abs_delta.png}{width=\textwidth}{Absolute Gains in Influence Compared}{earlyRuns}
+\image{../../results/early_hueristics_on_mhda_enron_2_sizes_all_models_abs_delta.png}{width=\textwidth}{Absolute Gains in Influence Compared}{earlyRuns_abs}
 
 \image{../../results/early_hueristics_on_mhda_enron_2_sizes_all_models.png}{width=\textwidth}{Early Running of Models with heuristics}{earlyRuns}
 
@@ -355,39 +345,42 @@ There are a few things we can garner from figure \ref{earlyRuns}:
 \begin{enumerate}
 	\item Degree based heuristics are very effective for how quick they are to compute.
 	\item Clustering Coefficient is very effective, however only after a certain number of seeds, this could be due to how clustering and degree are presented, a high degree node may be connected to a significant proportion of the network whereas a node with a high clustering coefficient doesn't necessarily have a high possible number of effected neighbors.
-	\item The asymptotic behavior of degree based heuristics is likely showing that the degree distribution of the network is one with a small number of very high degree nodes tightly packed. 
-	Requring a large number of new seeds to make significant strides in terms of spread may show that high degree nodes are closely clustered together.
+	\item The asymptotic behavior of degree based heuristics is likely showing that the degree distribution of the network is one with a small number of very high degree nodes tightly packed.
+	      Requiring a large number of new seeds to make significant strides in terms of spread may show that high degree nodes are closely clustered together.
 	\item There being minimal spread beyond the based starting nodes in the decreasing cascade and a convergence of the heuristics demonstrates that there may need to be some adjustment to the loss in turning a node per attempt.
-	\item The linear threshold model shows a similar pattern to the independent cascade model with regards to there being two distinct groups of heursitics in terms of their results and behaviour at low seed sizes.
+	\item The linear threshold model shows a similar pattern to the independent cascade model with regards to there being two distinct groups of heuristics in terms of their results and behaviour at low seed sizes.
 \end{enumerate}
 
-\textbf{EXPAND ON ALL OF THIS AND MAKE IT SOUND NOT AWFUL}
-
-Following figure \ref{earlyRuns} I implemented a few more heuristics as well as the naive greedy algorithm and the improved celf version.
+Following figure \ref{earlyRuns} I implemented a few more heuristics as well as the naive greedy algorithm and the improved CELF version.
 
 \image{../../results/all_heuristics_icc.png}{width=\textwidth}{Currently Implemented Heurstics on ICC}{icc_all_heuristics}
 
+\subsubsection{Heuristics}
+
+I have most of the described heuristics from part B.3 of the specification however I have not implemented numbers 7, 8 and 10 or Mean Shortest path length, Edge Embeddedness and Overlap.
+I am in the process of implementing these and using them to compare to others.
+Some heuristics are very complex to calculate empirically and there exist approximations which I am also looking into particularly for Betweenness and Eigenvector centrality.
+
 \subsection{Evaluation of Sampling Methods}
 
-As written in section \ref{probDiscSampling} of the specification, sampling methods 1 to 5 have been implemented.
-Running multiple samples, collecting and collating the results has been written.
-Tables similar to \ref{includedNets} or \ref{syntheticGenerators} are output with data about their mean and standard deviations.
+As written in section \ref{probDiscSampling} of the specification, sampling methods 1,2,4 and 5 have been implemented.
+Tables similar to \ref{includedNets} and \ref{enron_sample_methods_compared} are quickly output with data about their mean and standard deviations on any dataset.
 
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
-		\textbf{Method} & \textbf{Nodes}   & \textbf{Edges}     & \textbf{Mean Deg.} & \textbf{Cluster. Coef.} & \textbf{Centralization} & \textbf{Diam.} \\
+		\textbf{Method} & \textbf{Nodes} & \textbf{Edges} & \textbf{Mean Deg.} & \textbf{Cluster. Coef.} & \textbf{Centralization} & \textbf{Diam.} \\
 		\hline
-		Airports        & 1574             & 17215              & 21.874             & 0.504                   & 0.004334                & 8              \\
+		Airports        & 1574           & 17215          & 21.9               & 0.504                   & 0.004                   & 8              \\
 		\hline
-		MHDA            & 1000             & 13585.60	 (301.08) & 27.17 (0.60)       & 0.498023 (0.006)        & -0.010 	0.0008          & 7.93 	0.25     \\
+		MHDA            & 1000           & 13586	 (301)   & 27.2 (0.6)         & 0.50 (0.01)             & -0.01 (0.001)           & 8 (0.3)        \\
 		\hline
-		MHRW            & 1000             & 13575.87 (250.27)  & 27.15 	  (0.50)    & 0.50	(0.007)            & -0.010   0.0007         & 8.0 	0.0       \\
+		MHRW            & 1000           & 13576 (250)    & 27.2 (0.5)         & 0.50	(0.01)             & -0.01  (0.001)          & 8 (0)          \\
 		\hline
-		SNS             & 1000             & 15215.67	(312.83)  & 30.43 	  (0.63)    & 0.60 (0.02)             & -0.010 	0.001           & 4.47 	0.50     \\
+		SNS             & 1000           & 15216(313)     & 30.4 (0.6)         & 0.60 (0.02)             & -0.01 (0.001)           & 4 (0.5)        \\
 		\hline
-		BFS             & 1281.26 (132.39) & 16093.60  (652.30) & 25.30 (1.68)       & 0.55	(0.02)             & -0.0006	0.003           & 5.0	0.73       \\
+		BFS             & 1281 (132)     & 16094  (652)   & 25.3 (1.7)         & 0.55	(0.02)             & -0.001	(0.003)          & 5	(0.7)        \\
 		\hline
 	\end{tabular}
 	\caption{Various Sampling Methods on the Airports Dataset (15 Runs)}
@@ -396,9 +389,9 @@ Tables similar to \ref{includedNets} or \ref{syntheticGenerators} are output wit
 
 As shown in the above table \ref{enron_sample_methods_compared}; MHDA clearly shows that it is the closest method in terms of preserving the topology of the networks.
 
-These results are also consistent with the data found in \cite{franks2014learning}.
+These results are also consistent with the data found in \cite{franks2014learning,gjoka2010,gjoka11practicalreco}.
 
-In the project specification I outlined inclusion of Random Walk (RW) and Albatross (AS) sampling, I have not included those in this analysis as in comparison to MHDA there is little reason to use RW over the more advanced methods.
+In the project specification I outlined inclusion of Random Walk (RW) and Albatross (AS) sampling, they are not included in the analysis here as I have not yet got a fully working and complete implementation that I am happy with.
 
 \subsection{Minimum Node Analysis}
 
@@ -411,8 +404,7 @@ In the project specification I outlined inclusion of Random Walk (RW) and Albatr
 %Utilising the fact that on average the influence spread is proportionally increasing with seed sizes, I can assume that the influence of models started with seed sizes along this interval will be sorted.
 %This gives a maximum of $O(log|V|)$ cascades to find the 2 bounds and then $O(log\frac{1}{2}|V|)$ cascades to perform binary search along the $(n_{under}, n_{over})$ interval which has at most size $\frac{1}{2}|V|$.
 %To further optimise the performance of this I added a parameter \texttt{quick} which allows for skipping of the secondary binary search procedure to give a rough estimate.
-
-\textbf{INSERT GRAPH OF MINIMUM N's for heuristics and target proportion.}
+\image{./minimum_nodes_compared.png}{width=0.7\textwidth}{Minimum number of nodes analyisis, Enron MHDA Sample 1024 Nodes}{minimum_node_analysis}
 
 Working out the minimum number of nodes for a given target proportion is simple if using a naive approach.
 For a given network $G = (V,E)$ where $|V|=n$ and $|E|=m$ it would take $O(n)$ cascades to find such seed set size.
@@ -430,21 +422,26 @@ It may be easier to run binary search over the whole range $(0, 1, ..., n)$, the
 
 On a large network the cascades are a costly computation, some networks with high degree values can achieve almost $\frac{1}{3}$ of their total nodes infected by a single seed node.
 Iterating upwards turns this into a very quick computation rather than performing $\log(n)$ costly cascades to just find the first element.
+\\
 
+As shown in figure \ref{minimum_node_analysis} the patterns between how different heuristics behave on similar datasets begin to become quite clear, with the degree based heuristics being very fast growing but then tailing off compared to local clustering where the growth is slower but steadier and overall requiring less nodes for the same value.
 
 \subsection{Rate of Change Analysis}
 
-Running each of the models returns a triplet of the number of iterations, the final influenced graph, and an array of influenced proportion values $\in [0, 1]$ of length of the number of iterations.
+Running each of the models returns a triplet of the number of iterations, the final influenced graph, and an array of influenced proportion values in the range of 0 to 1 for each iteration.
+This is then easily plotted as seen in figure \ref{rate_analyis}.
 
-The data produced here mirrors the behaviour exhibited in some of the other graphs. In effect an iteration of a quickly spreading graph is just introducing more seeds so the behaviour should mimick that of the overall growth graphs.
+\imageh{rate_analysis.png}{width=0.7\textwidth}{Influence by Iteration}{rate_analyis}
 
-\textbf{INSERT TABLE OR GRAPH DEMONSTRATING THIS EFFECT}
+As seen in figure \ref{rate_analyis} analysis around the rate of change of influence (the gradient) of different heuristics is simple whilst also comparing their absolute spread over time.
+
+Attempting to find an optimal strategy if you only have 2 iterations is easily shown with this graph that a degree based approach would work much better than a clustering coefficient one even if the clustering coefficient would be much better if allowed to play out.
 
 \subsection{Packaging}
 
-I am utilising an open source python library packaging tool called Hatchling, allowing me to package the entirety of the code into a \texttt{.tar.gz} and a \texttt{.whl} distributable.
+I am utilising an open source python library packaging tool called Hatchling \footnote{Link: https://pypi.org/project/hatchling/}, allowing me to package the entirety of the code into a \texttt{.tar.gz} and a \texttt{.whl} distributable.
 Python3.10 and above is required due to the introduction of union types in the type annotation system.
-I have attempted to use PyPy (the JIT compiling interpreter) however there were some issues with the multiprocessing code so I have decided to not focus on this aspect.
+I have attempted to use PyPy \footnote{Link: https://doc.pypy.org/en/latest/} however there were some issues with the multiprocessing code so I have decided to not focus on this aspect.
 
 %Installing and running the code is simple on any environment with an installation of python 3.10 or newer as shown in the below snippet.
 
@@ -462,27 +459,17 @@ I have attempted to use PyPy (the JIT compiling interpreter) however there were 
 \subsection{Parallelisation and Performance}
 
 Performing hundreds of cascade processes on tens of networks on tens of sample methods with tens of different seed sizes requires a large amount of computation.
-
-Utilising the multiprocessing module in python it was relatively simple to implement multiprocessing in my testing and data generation scripts.
-Each task such as run a cascade on this network with this sampling method with this many seeds using this heuristic is created as a tuple of inputs into an array, using the \texttt{Pool.starmap} function it's easy to perform a catchall function on these and get the results using an arbitrary number of threads to complete the processing.
-
-One of the main challenges with regards to running these processes quickly is sampling of large scale networks, sample methods such as MHDA require a large amount of computation steps for each node that is added and each of these steps are at least linear with the size of the network.
-
-Saving a set of previously sampled networks and then running cascades on each of them is a simple way to make the overall performance of generating results much quicker.
+Each task such as run a cascade on this network with this sampling method with this many seeds using this heuristic is created as a tuple of inputs into an array, using the \texttt{Pool.starmap} \footnote{https://docs.python.org/3/library/multiprocessing.html} function it's easy to perform a catchall function on these and get the results using an arbitrary number of threads to complete the processing.
 \\
 
-When working in this manner performance is hugely increased, this will allow me to generate results much quicker and give a quicker feedback cycle of testing ideas from conception to results. 
-\textbf{INSERT A TABLE OF THIS ACTUALLY MAKING A DIFFERENCE}
+One of the main challenges with regards to running these processes quickly is sampling of large scale networks, sample methods such as MHDA require a large amount of computation steps for each node to actually expand the size of the current set.
+Saving a set of previously sampled networks and then running cascades on each of them is a simple way to make the overall performance of generating results more efficiently whilst also allowing for consistent results with fewer trials.
 
 %Running trials and generating samples of networks has been implemented using pools and python's multiprocessing library.
 %Performance is good when it's shared across a single node, splitting across multiple physical servers resulted in a minor speedup at the expense of much higher communication cost.
 %This is not a large problem as I can split my running of the testing into sepearate invocations of my scripts on the different nodes.
 
 \subsection{Documentation}
-
-JavaDocs style documentation is automatically generated on every commit using GitHub actions to run a CI pipeline.
-Key information is taken from docstrings enclosed by a triple set of inverted commas, detailing information such as what the function does, example usage, input and return types.
-
 A fully searchable and navigable set of static web pages is generated, in the future this could be embedded within a wider set of documentation including systems design, user guides, troubleshooting guides and various other resources.
 
 %As part of the projects packaging phase automatic documentation is generated from the usage of python docstrings, this is done using an opensource library called pdoc \footnote{https://pdoc.dev/}.
@@ -497,61 +484,72 @@ A fully searchable and navigable set of static web pages is generated, in the fu
 %Progress - review your progress against the original timetable. If unexpected problems or delays have occurred, how have you dealt with the problem?
 
 \subsection{Technical Content}
-Talk about code structure, data collection, processing of data, saving intermediate steps in all computations, using the hpc cluster, typical performance of runs.
+%Talk about code structure, data collection, processing of data, saving intermediate steps in all computations, using the hpc cluster, typical performance of runs.
 
 \subsubsection{Code Structure}
 
 The primary code is structured in an object oriented fashion, for example a network is a class which is then extended into a network that reads or writes csv files.
+Each set of functions is split into it's own file and can be imported separately.
 
-Each of various sections I need to use are split into multiple files and these all have to be imported separately when being used.
+%Most of the code is used in interactive notebook environments.
 
-Most of the code is used in interactive notebook environments.
-
-My test scripts are standalone scripts that simply require the packaged library to be installed alongside some other libraries, these are the scripts which produce the results as displayed in all the tables and figures so far in this document.
-
-\textbf{INSERT UML OR SIMILAR DIAGRAM}
+My test scripts are standalone scripts that simply require the packaged library to be installed, these are the scripts which produce the results as displayed in all the tables and figures so far in this document.
 
 \subsection{Performance}
 
 For every run of a cascade, sampling method or any action I record the time taken, if running over a large number of samples I also automatically take the mean and standard deviation of the running time and this is an extra column at the end of each of the tabular outputs for any aggregate process.
 
-This quite clearly shows how a more complex heuristic can be over a hundred times slower than a simple one like degree, with the greedy algorithm and celf being hundreds of times slower than even the slower heuristic.
+\imageh{heuristic_runtime_compared.png}{width=\textwidth}{Mean Log Base 2 of time to compute each line in figure \ref{icc_all_heuristics}}{heur_runtime_compared}
 
-\textbf{INSERT BAR CHART COMPARING PERFORMANCE BETWEEN DIFFERENT METHODS}
+Interestingly here CELF takes more time than Greedy to work on the same dataset.
+This is likely to be due to the overhead of using Python rather than a compiled language, array access in C or C++ is in effect  offsetting a pointer to the array by the index multiplied by the size of the datatype.
+In python accessing a single element requires following the pyobject that makes up the arrays to get the value.
+This is much much slower when dealing with multiple array accesses especially two dimensional chained accesses as in the CELF implementation over just Greedy.
 
 \subsection{Data Visualisation}
 
-Something that is not immediately clear is how to best present data to easily and accessibly show the results and conclusions I am trying to make. I did not set out any clear requirements for this as at the time of writing the specification I did not yet know the best ways of presenting data and what ways would be most relevant to my results.
+Something that is not immediately clear is how to best present data to easily and accessibly show the results and conclusions I am trying to make.
+I did not set out any clear requirements for this as at the time of writing the specification I did not yet know the best ways of presenting data and what ways would be most relevant to my results.
 
 Showing a busy graph with lots of lines may be good for a vague overview or rough ordering of performance characteristics of each heuristic but it is not very useful for detailed close comparisons.
 \\
 
-Following on advice from my supervisor I am in the process of implementing more intuitive visualisations. 
-So far I have the following.
+Following on advice from my supervisor I am in the process of implementing more intuitive visualisations.
+Those listed below are what I have currently implemented and how they help with conveying information.
 
-\textbf{ADD EXPLANATION FOR EACH OF THOSE BELOW}
 \begin{enumerate}
-	\item Total spread for each seed size and heuristics
-	\item Absolute gain in influence for seed size and heuristics
-	\item Tabular network data Statistics
-	\item Tabular total influence spread for each seed size and heuristics
-	\item Offset spread graphs using one of the lines as new 0 line and giving the others as above or below to show relative orderings.
+	\item Final spread for each seed size and heuristics - Allows for easily seeing how much a certain strategy will spread on average (Like in figure \ref{earlyRuns} or \ref{icc_all_heuristics}).
+	\item Absolute gain in influence for seed size and heuristics - Shows how much a strategy will gain by subtracting the starting proportion (Like in figure \ref{earlyRuns_abs}).
+	\item Tabular network data statistics - Useful for comparing sampling methods as well as seeing how they compare to the base network (Like in Table \ref{enron_sample_methods_compared}).
+	\item Offset spread graphs using one of the lines as new 0 line and giving the others as above or below to show relative orderings (Like in figure \ref{}).
+	\item Minimum Number of Nodes for a certain infected proportion - Figure \ref{minimum_node_analysis}
 \end{enumerate}
 
-\textbf{LIST OF NEW WAYS I WILL DEMONSTRATE AND SHOW DATA }
+Some new ways of presenting data that I have been considering and am partway through implementing are:
 
+\begin{enumerate}
+	\item Intersections of seed sets generated by different strategies. \label{todo-vis-intersections}
+	\item Proportional gain visualisations for different strategies - This is something that I have implemented but it doesn't produce clear or easy to understand graphs.
+	      On small seeds that produce an incredibly high change in influence graphs like \ref{earlyRuns_abs} this seem to fall apart when taking a log or dividing by the original seed proportion. Taking this into two axes with different scales could be a good way to display.
+	\item Histogram or similar diagram for the degree or connectivity of a set of nodes or network.
+\end{enumerate}
+
+All graphs are generated using matplotlib \footnote{https://matplotlib.org/} for the graph generation and scienceplots for ensuring consistent styling \footnote{https://github.com/garrettj403/SciencePlots}.
+
+\newpage
 \section{Upcoming Goals}
 
-Talk about being on track with the goals from the gannt chart in spec, need to implement some more stuff and actually do some independent testing and evaluation of my own ideas.
+i would like to explore an iterative approach based on a combination of greedy and heuristic methods.
+Choosing seeds iteratively by degree and not including those that the current set has spread to over $x$ iterations could be a simple start to this.
 
-\textbf{INSERT NEW GANT CHART MODIFIED WITH WHAT HAVE LEARNT SO FAR}
+Similar methods have been described in some papers \cite{} and show promise so I would like to explore this direction.
+\\
 
-\subsection{Areas I will Investigate}
-
-An iterative approach based on a combination of greedy and heuristic methods.
-For example choose seeds by degree, redo degree but don't include any nodes that that node has spread to over a few iterations of the cascade model.
-Similar methods have been described in some papers (SOURCE) but working on a different model with a much different set of comparison methods.
-
+I want to investigate further into the relationships between groups of nodes generated by different algorithms, for this I will need to program \ref{todo-vis-intersections} for analysing this effectively.
+I would like to see if I can find any sort of pattern or correlation which would then inform my direction in attempting to find a better heuristic for some type of network.
+\\
+I have explored some ideas regarding taking combinations of nodes that are both in a large cluster as well as those with a high betweenness, the results seem to be very network topology dependent creating a large variance in performance of the same algorithms with the difference stemming from individual network and sample variances.
+I would like to see if I can find out the exact topological structure that makes up this difference.
 %You may have changed your plans for the remainder of the project. 
 %At the very least, you are likely to have a much clearer idea of how things will proceed and the timings needed to complete each stage.
 
@@ -559,14 +557,14 @@ Similar methods have been described in some papers (SOURCE) but working on a dif
 
 %Provide an updated timetable with as much detail as possible.
 
+\imageh{../../images/progress_gantt.png}{width=\textwidth}{Updated Gantt Chart with new goals}{a}
+
 \section{Reflection}
 %What is your assessment on how things have gone so far
 In terms of the technical goals the project is doing quite well.
 Most functions are complete and work as intended, results are able to be generated and presented in graph or tabular form quite quickly and efficiently.
 
 I am concerned about my ability to actually create a new heuristic which will outperform those which have already been studied.
-I have explored some ideas regarding taking combinations of nodes that are both in a large cluster as well as those with a high betweeneess, the results seem to be very network topology dependent creating a large variance in performance of the same algorithms with the difference stemming from individual network and sample variances.
-Further study in all areas of this will be required and a deep analysis behind the why of this behaviour is found.
 \\
 
 Primarily in and around the middle of the first term I started to focus on my graduate job search which not only took a lot of time but also made me quite demotivated in general.
@@ -577,25 +575,21 @@ I find that when I have a new task to focus on I will hyper focus on that task a
 \section{Project Management}
 
 %How have you managed the project so far? You may be using a formal methodology (e.g. for software development or management of code versions). It may also be appropriate to refer to less formal ways of keeping on track, for example, regular timetable reviews with your supervisor.
-Progress is on track with what I specified in the specification.
-The gantt chart was relatively close to what happened and required little changes.
+
+The project was well suited to an incremental development strategy with fixed objectives at specific points in time with clear expectations.
 
 All code versions, results and documentation are held in a git repository.
-This is stored with a main repository stored by GitHub with my personal computer and the DCS lab machines holding up to date copies as I work on them.
+Stored on GitHub with my personal computer and the DCS lab machines also holding up to date copies as I work on them.
 
-Keeping track of tasks and goals for the immediate terms was quite difficult for me.
-I primarily kept track via a simple list in my notebook and by adding entries to my google calendar.
-
+To keep track of immediate tasks and goals I used a simple list in my notebook and by blocking time in my google calendar during the weeks.
 
 
 \section{Legal, Social, Ethical and Professional Considerations}
 
 As per section \ref{lsep} of the specification there have been no changes to this.
-% this removes the spec to check word count
-% \end{document}
+% this removes the spec to check word count \end{document}
 
 \newpage
-
 \appendix
 
 \section*{Appendix: Project Specification}
