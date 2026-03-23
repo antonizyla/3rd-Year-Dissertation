@@ -1,0 +1,98 @@
+\documentclass{article}
+
+\title{Final Report Plan}
+\author{Antoni Zyla}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+800-1000 words
+
+High level introduction to what the project is about also be clear about the aims and objectives of the project - include some hypothesis and what could be valuable - revisit as we go on through the report.
+
+\section{Literature Review}
+\subsection{The problem background}
+\begin{itemize}
+	\item What is Influence
+	\item Why is it NP hard to find maximally infleuntial seed sets.
+	\item Use cases for it e.g. social media campaigns
+	\item The models - extensions e.g into biological models etc
+\end{itemize}
+\subsection{Algorithmic Mehtods}
+\begin{itemize}
+	\item The greedy approximation
+	\item CELF and CELF++ actually get it correct this time
+	\item Talk about each of the heuristics in detail rather than 2 sentences. 
+\end{itemize}
+\subsection{Sampling and Networks I will use}
+Talk about why need to sample based on the speed of most of these algos, show that they produce a representative sample in most cases and topologies.
+Talk about each of the networks - can transplant from the progress report as already covered. Talk about exact methods used to obtain each of them.
+\subsection{Non Trivial Methods}
+\begin{itemize}
+	\item Hybrid Algorithms 
+	\item Community Aware Algorithms - detection of communities top down bottom up - CoFim
+	\item Algorithms working with limited context - eg. not able to see the whole network from a given point - based on the data that they have available around them in close proximity.
+\end{itemize}
+\section{Problem Formulation and definition}
+\begin{itemize}
+	\item Graph representations
+	\item Specific behaviour of each of the talked about models in my code e.g. threshold function etc..
+	\item Formally define seed select as a problem
+	\item Optional further constraints such as cost based, visible range of each node, number of accesses or computations per seed etc
+\end{itemize}
+
+\section{Proposed And explored algorithms}
+
+For all of these explain what they are, how they work, what gap they fill from literature review, why might they work, why might they not work, quick running time analysis etc..
+
+\subsection{Hybrid algos}
+e.g. basic take some degree and add some of another heuristic seem to work well on certain topologies. 
+
+Talk about using a kind of score for each vertex based on a factor of multiple heuristics and some relation.
+\subsection{Community Aware algos}
+
+Talk about the failure of trying to exploit the properties of the community detection Algorithms to gain some kind of basis for what is influential or not.
+
+\subsection{TODO investigate the effect of localized view algos}
+As discussed last week investigate how restricting the algorithms to only have a narrow view and make local decisions how close are they to the global optimum.
+
+\section{Experimental Methods}
+
+\subsection{Networks and Samples}
+Synthetics, Generators that match network topos in stats and performance, Real world networks sampled.
+Talk about variance of samples and running trials over a pool of networks.
+
+\subsection{Baseline Algorithms and visualisations}
+Kind of what I have already - Greedy, etc.. on some network and models and how they perform in general and what factors have a large effect on their performance.
+
+\subsection{Evaluation of Algos}
+Performance - mean time, std dev time, memory usage, extreme ends of time taken, actual spread from selected nodes, variance due to small changes in params
+
+\subsection{Hardware and software}
+The compute cluster - multithreading, pools, sample pools that trials run on, how well it works across multiple nodes on the dcs system.
+
+\section{Resulst and Analysis}
+
+Show the results of each of the ideas presented, try to explain why they are the way they are. Compare to other methods, benchmark time/mem perf and spread performance.
+
+- Stat significance to see if actually measurably better 
+
+- Test against different network topologies see how parameters affect them in different ways and try to explain why.
+
+- Compare how they perform for different values of $p$, function for dec cascade, or threshold's in threshold model. 
+
+\subsection{Discussion}
+Where are the different methods better or worse - are they worth using overall - is there a point to any of it.
+
+\section{Limitations}
+What do the methods not do.
+What could the methods do better or take into account or where could they be used that's more useful but harder to study etc.
+
+\section{Conclusion}
+Sum up that did not find a meaningful result or if did then very limited in scope and value.
+
+\section{References}
+Include all references as well as data source and likely all code as an appendix.
+
+\end{document}

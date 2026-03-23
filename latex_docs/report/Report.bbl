@@ -1,0 +1,57 @@
+\begin{thebibliography}{10}
+
+\bibitem{griffiths17LimitiingConcept}
+James Archbold and Nathan Griffiths.
+\newblock Limiting concept spread in environments with interacting concepts.
+\newblock In {\em 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)}, pages 1332--1340. IFAAMAS, 2017.
+
+\bibitem{franks2014learning}
+Henry Franks, Nathan Griffiths, and Sarabjot~Singh Anand.
+\newblock Learning agent influence in mas with complex social networks.
+\newblock {\em Autonomous Agents and Multi-Agent Systems}, 28:836--866, 2014.
+
+\bibitem{gjoka2010}
+Minas Gjoka, Maciej Kurant, Carter Butts, and Athina Markopoulou.
+\newblock Walking in facebook: A case study of unbiased sampling of osns.
+\newblock pages 1 -- 9, 04 2010.
+
+\bibitem{gjoka11practicalreco}
+Minas Gjoka, Maciej Kurant, Carter~T. Butts, and Athina Markopoulou.
+\newblock Practical recommendations on crawling online social networks.
+\newblock {\em IEEE Journal on Selected Areas in Communications}, 29(9):1872--1892, 2011.
+
+\bibitem{goyal2012competitivecontagionnetworks}
+Sanjeev Goyal and Michael Kearns.
+\newblock Competitive contagion in networks, 2012.
+
+\bibitem{kempe2003}
+David Kempe, Jon Kleinberg, and \'{E}va Tardos.
+\newblock Maximizing the spread of influence through a social network.
+\newblock In {\em Proceedings of the Ninth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '03, page 137–146, New York, NY, USA, 2003. Association for Computing Machinery.
+
+\bibitem{kempe2005influential}
+David Kempe, Jon Kleinberg, and {\'E}va Tardos.
+\newblock Influential nodes in a diffusion model for social networks.
+\newblock In {\em international colloquium on automata, languages, and programming}, pages 1127--1138. Springer, 2005.
+
+\bibitem{kuperman2013invited}
+Marcelo~N Kuperman.
+\newblock Invited review: Epidemics on social networks.
+\newblock {\em Papers in physics}, 5(1):0--0, 2013.
+
+\bibitem{celf}
+Jure Leskovec, Andreas Krause, Carlos Guestrin, Christos Faloutsos, Jeanne VanBriesen, and Natalie Glance.
+\newblock Cost-effective outbreak detection in networks.
+\newblock In {\em Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '07, page 420–429, New York, NY, USA, 2007. Association for Computing Machinery.
+
+\bibitem{sekara2016fundamental}
+Vedran Sekara, Arkadiusz Stopczynski, and Sune Lehmann.
+\newblock Fundamental structures of dynamic social networks.
+\newblock {\em Proceedings of the national academy of sciences}, 113(36):9977--9982, 2016.
+
+\bibitem{Wang2011UnderstandingGS}
+Tianyi Wang, Yang Chen, Zengbin Zhang, Tianyin Xu, Long Jin, Pan Hui, Beixing Deng, and Xing Li.
+\newblock Understanding graph sampling algorithms for social network analysis.
+\newblock {\em 2011 31st International Conference on Distributed Computing Systems Workshops}, pages 123--128, 2011.
+
+\end{thebibliography}

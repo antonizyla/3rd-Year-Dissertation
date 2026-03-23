@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: progressreport.aux
+The style file: abbrv.bst
+Database file #1: ../sources.bib
+Warning--I didn't find a database entry for ""
+Warning--I didn't find a database entry for "kempe2006influential"
+Warning--empty booktitle in gjoka2010
+Warning--empty journal in jin2011albatross
+You've used 18 entries,
+            2118 wiz_defined-function locations,
+            622 strings with 7657 characters,
+and the built_in function-call counts, 7551 in all, are:
+= -- 762
+> -- 372
+< -- 8
++ -- 149
+- -- 128
+* -- 504
+:= -- 1171
+add.period$ -- 57
+call.type$ -- 18
+change.case$ -- 118
+chr.to.int$ -- 0
+cite$ -- 20
+duplicate$ -- 312
+empty$ -- 545
+format.name$ -- 128
+if$ -- 1651
+int.to.chr$ -- 0
+int.to.str$ -- 18
+missing$ -- 16
+newline$ -- 91
+num.names$ -- 36
+pop$ -- 131
+preamble$ -- 1
+purify$ -- 100
+quote$ -- 0
+skip$ -- 273
+stack$ -- 0
+substring$ -- 452
+swap$ -- 124
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 72
+warning$ -- 2
+while$ -- 62
+width$ -- 20
+write$ -- 202
+(There were 4 warnings)

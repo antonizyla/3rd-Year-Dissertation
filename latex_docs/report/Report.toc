@@ -1,0 +1,29 @@
+\contentsline {section}{\numberline {1}Abstract}{3}{}%
+\contentsline {section}{\numberline {2}Introduction}{4}{}%
+\contentsline {section}{\numberline {3}Literature Review}{5}{}%
+\contentsline {subsection}{\numberline {3.1}Models of Influence Propogation}{5}{}%
+\contentsline {subsection}{\numberline {3.2}Working with large networks}{6}{}%
+\contentsline {subsubsection}{\numberline {3.2.1}Naive Approaches}{6}{}%
+\contentsline {subsubsection}{\numberline {3.2.2}Smarter Sampling Methods}{7}{}%
+\contentsline {subsection}{\numberline {3.3}Methods for finding seeds}{7}{}%
+\contentsline {subsection}{\numberline {3.4}CoFIM - Community Based Methods}{7}{}%
+\contentsline {subsubsection}{\numberline {3.4.1}Community Detection Algorithms}{8}{}%
+\contentsline {subsection}{\numberline {3.5}Working with multiple metrics}{8}{}%
+\contentsline {subsection}{\numberline {3.6}Approximations of metrics}{9}{}%
+\contentsline {section}{\numberline {4}Problem Formulation}{10}{}%
+\contentsline {section}{\numberline {5}Proposed Algorithms}{11}{}%
+\contentsline {subsection}{\numberline {5.1}Hybrid Algorithms}{11}{}%
+\contentsline {subsection}{\numberline {5.2}Community Aware Algorithms}{13}{}%
+\contentsline {subsubsection}{\numberline {5.2.1}Saturating or Connecting Communities}{13}{}%
+\contentsline {subsubsection}{\numberline {5.2.2}Exploiting Community Detection Algorithms}{14}{}%
+\contentsline {subsection}{\numberline {5.3}Limited Context Algorithms}{14}{}%
+\contentsline {section}{\numberline {6}Experimental Method and Setup}{16}{}%
+\contentsline {subsection}{\numberline {6.1}Datasets}{16}{}%
+\contentsline {subsection}{\numberline {6.2}Sampling Methods}{16}{}%
+\contentsline {subsection}{\numberline {6.3}Accounting for differences in network sampling}{16}{}%
+\contentsline {subsection}{\numberline {6.4}Evaluation Methods}{16}{}%
+\contentsline {subsection}{\numberline {6.5}Baseline Behaviours}{16}{}%
+\contentsline {subsection}{\numberline {6.6}Statistical Analysis}{17}{}%
+\contentsline {section}{\numberline {7}Results and Analysis}{18}{}%
+\contentsline {section}{\numberline {8}Limitations}{19}{}%
+\contentsline {section}{\numberline {9}Conclusion}{20}{}%

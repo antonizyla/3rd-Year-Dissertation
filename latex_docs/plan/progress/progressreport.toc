@@ -1,0 +1,44 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}What am I studying?}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}What do I hope to achieve?}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Why is this a good project?}{3}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Background Research}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Models of Influence Propogation}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Working with large networks}{4}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Naive Approaches}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Smarter Sampling Methods}{5}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Methods for finding seeds}{5}{subsubsection.2.2.3}%
+\contentsline {section}{\numberline {3}Current Status}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Working with Networks}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Synthetic Networks}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Navigable Small World Graphs}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Power Law Degree Distrubted Graphs}{7}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Cascade and Threshold Models}{8}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Heuristics}{9}{subsubsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.4}Evaluation of Sampling Methods}{9}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Minimum Node Analysis}{12}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Rate of Change Analysis}{13}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Packaging}{14}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Parallelisation and Performance}{14}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}Documentation}{15}{subsection.3.9}%
+\contentsline {subsection}{\numberline {3.10}Technical Content}{15}{subsection.3.10}%
+\contentsline {subsubsection}{\numberline {3.10.1}Code Structure}{15}{subsubsection.3.10.1}%
+\contentsline {subsection}{\numberline {3.11}Performance}{15}{subsection.3.11}%
+\contentsline {subsection}{\numberline {3.12}Data Visualisation}{16}{subsection.3.12}%
+\contentsline {section}{\numberline {4}Upcoming Goals}{18}{section.4}%
+\contentsline {section}{\numberline {5}Reflection}{18}{section.5}%
+\contentsline {section}{\numberline {6}Project Management}{18}{section.6}%
+\contentsline {section}{\numberline {7}Legal, Social, Ethical and Professional Considerations}{19}{section.7}%
+\contentsline {section}{\numberline {A}Abstract}{20}{appendix.A}%
+\contentsline {section}{\numberline {B}Problem Discussion}{20}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Models}{20}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}Sampling Methods}{20}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}Heuristics}{21}{subsection.B.3}%
+\contentsline {subsection}{\numberline {B.4}Application to research}{22}{subsection.B.4}%
+\contentsline {section}{\numberline {C}Objectives}{22}{appendix.C}%
+\contentsline {section}{\numberline {D}Methods and Methodology}{23}{appendix.D}%
+\contentsline {section}{\numberline {E}Timeline}{23}{appendix.E}%
+\contentsline {section}{\numberline {F}Resources and Risks}{23}{appendix.F}%
+\contentsline {subsection}{\numberline {F.1}Resources}{23}{subsection.F.1}%
+\contentsline {subsection}{\numberline {F.2}Risks}{24}{subsection.F.2}%
+\contentsline {section}{\numberline {G}Legal, Social, Ethical and Professional Considerations}{24}{appendix.G}%
