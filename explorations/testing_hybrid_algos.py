@@ -43,7 +43,37 @@ def inv_deg_lcc(G: nx.DiGraph, n:int):
        score.append(((G.degree(node)/(1e-6 + lccs[node])), node))
     score.sort(reverse=True)
     return [x[1] for x in score[:n]]
-  
+
+def inv_deg_mnd(G: nx.DiGraph, n:int):
+    def __neighbour_deg(G, node):
+        neighbour_degrees = [G.degree(n) for n in G.adj[node]]
+        if neighbour_degrees == []:
+            return 0
+        return sum(neighbour_degrees) / len(neighbour_degrees)
+    score = []
+    for node in G.nodes():
+      score.append((G.degree(node)/(1e-6 + __neighbour_deg(G, node)), node))
+    score.sort(reverse=True)
+    return [x[1] for x in score[:n]]
+
+def weighted_deg_mnd(G: nx.DiGraph, n:int):
+    def __neighbour_deg(G, node):
+        neighbour_degrees = [G.degree(n) for n in G.adj[node]]
+        if neighbour_degrees == []:
+            return 0
+        return sum(neighbour_degrees) / len(neighbour_degrees)
+    mnds = {}
+    maximal_mnd = 0
+    for node in G.nodes():
+      mnds[node] = __neighbour_deg(G, node)
+      if mnds[node] > maximal_mnd:
+        maximal_mnd = mnds[node]
+    score = []
+    for node in G.nodes():
+      score.append((G.degree(node)*( 1 - (1/(1e-6 + maximal_mnd))*mnds[node]), node))
+    score.sort(reverse=True)
+    return [x[1] for x in score[:n]]
+
 
 def single_run(
     dataset_name: str,
@@ -248,7 +278,9 @@ if __name__ == "__main__":
         ("deg(1-lcc)", factor_deg_lcc),
         ("deg_dv_lcc", inv_deg_lcc),
         ("Random", Heuristics.random_h),
-        ("Degree", Heuristics.deg_h)
+        ("Degree", Heuristics.deg_h),
+        ("MND_inv_deg", inv_deg_mnd),
+        ("MND_minus", weighted_deg_mnd)
         # (Name, Function)
     ]
     seed_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256]

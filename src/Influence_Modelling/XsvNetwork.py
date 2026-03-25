@@ -79,7 +79,7 @@ class XsvNetwork(Network):
             )
             return data.read().decode("utf-8").split("\n")
         elif self.__filepath == "twitter":
-            self.__sep = "\t"
+            self.__sep = " "
             data = importlib.resources.open_binary(
                 "Influence_Modelling.datasets", "twitter_combined.txt"
             )
@@ -96,7 +96,7 @@ class XsvNetwork(Network):
         for line in contents:
             line = line.replace("\r", "")
             # line is of the format 1. `u v {data: ...}`
-            split_line = line.split(self.__sep)
+            split_line = line.strip().split(self.__sep)
             if len(split_line) == 2:
                 self.__H.add_edge(split_line[0], split_line[1])
                 if self.__v:
@@ -126,7 +126,9 @@ class XsvNetwork(Network):
                               and {split_line[1]} with weight {split_line[2]}"""
                         )
             else:
-                print(f"[SV Network] Error Reading row with content `{line}`")
+                print(
+                    f"[SV Network] Erro dasdsadr Reading row with content `{repr(line)}`"
+                )
         self.__G = self.__H
 
     def get_nx(self):
