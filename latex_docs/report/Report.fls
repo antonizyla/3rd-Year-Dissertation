@@ -144,6 +144,11 @@ INPUT ./figures/all_heuristics_icc.png
 INPUT figures/all_heuristics_icc.png
 INPUT ./figures/all_heuristics_icc.png
 INPUT ./figures/all_heuristics_icc.png
+INPUT ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png
+INPUT ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png
+INPUT ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png
+INPUT ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png
+INPUT ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png
 INPUT ./Report.bbl
 INPUT Report.bbl
 INPUT ./Report.bbl

@@ -4,45 +4,45 @@ The top-level auxiliary file: Report.aux
 The style file: plain.bst
 Database file #1: ../sources.bib
 Warning--empty booktitle in gjoka2010
-You've used 11 entries,
+You've used 10 entries,
             2118 wiz_defined-function locations,
-            578 strings with 6518 characters,
-and the built_in function-call counts, 4889 in all, are:
-= -- 502
-> -- 227
-< -- 6
-+ -- 89
-- -- 78
-* -- 324
-:= -- 744
-add.period$ -- 36
-call.type$ -- 11
-change.case$ -- 72
+            571 strings with 6229 characters,
+and the built_in function-call counts, 4276 in all, are:
+= -- 436
+> -- 194
+< -- 5
++ -- 76
+- -- 66
+* -- 288
+:= -- 658
+add.period$ -- 32
+call.type$ -- 10
+change.case$ -- 63
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 207
-empty$ -- 358
-format.name$ -- 78
-if$ -- 1085
+cite$ -- 11
+duplicate$ -- 174
+empty$ -- 322
+format.name$ -- 66
+if$ -- 941
 int.to.chr$ -- 0
-int.to.str$ -- 11
-missing$ -- 10
-newline$ -- 57
-num.names$ -- 22
-pop$ -- 80
+int.to.str$ -- 10
+missing$ -- 9
+newline$ -- 52
+num.names$ -- 20
+pop$ -- 70
 preamble$ -- 1
-purify$ -- 61
+purify$ -- 53
 quote$ -- 0
-skip$ -- 182
+skip$ -- 149
 stack$ -- 0
-substring$ -- 315
-swap$ -- 89
-text.length$ -- 6
+substring$ -- 292
+swap$ -- 69
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 44
+type$ -- 40
 warning$ -- 1
-while$ -- 41
-width$ -- 13
-write$ -- 127
+while$ -- 38
+width$ -- 12
+write$ -- 113
 (There was 1 warning)

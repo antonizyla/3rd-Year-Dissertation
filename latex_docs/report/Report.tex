@@ -23,6 +23,12 @@ Approx 200 - 300 words as a very high level overview.
 \section{Introduction}
 Approx 600 - 900 words as a broad overview of the problem, challenged, direction investigated and results.
 
+If we were a marketer with access to a population of people and some information about the relationships between them, we may choose a subset of this population who would most effectively market our product.
+We can consider a population of people in a graph as nodes with relationships between them as edges.
+Using a model of conceptual contagion we can choose a subset of nodes to act as seeds from which ideas propogate, they may have a direct chance of propogating to their neighbours or another non direct effect.
+
+This selection problem is NP-Hard
+
 \newpage
 \section{Literature Review}
 I have considered a wide range of sources so far including research papers, doctoral theses, open source datasets, articles and open source code.
@@ -49,14 +55,15 @@ Vaccination or heard immunity can be modelled in this manner \cite{griffiths17Li
 
 There are other models which work in different manners, borrowing from biology models such as SIR for modelling diseases more closely \cite{kuperman2013invited}. These are somewhat able to be modelled using the cascade models however full parity is not possible for example going from infected back to uninfected is not a behavior that is considered with the cascades and would possibly have large effects on the effectiveness of certain seed selection strategies.
 
-There are models where paths between nodes can be added or removed as part of the process \cite{sekara2016fundamental}, this can for example be used to model the evolution of social networks, rather than studying networks which are at a fixed point in their evolution.
+Dynamic models of influence are models where paths between nodes can be added or removed as part of the process \cite{sekara2016fundamental}, this can for example be used to model the evolution of social networks, rather than studying networks which are at a fixed point in their evolution.
 Influence can be studied over these evolutions however this is an additional very large jump in complexity and scope which would be out of scope for this project.
 
 \subsection{Working with large networks}
 
-Some of the networks I will be studying are made up of tens of thousands of nodes with hundreds of thousands of edges, working on networks of this size is very resource intensive.
+Some of the networks I will be studying are made up of tens of thousands of nodes with millions, perfoming non trivial analysis on networks of this size is almost impossible with reasonable compuitng resources.
 
-Sampling networks is a way of preserving the topological features and allows us to create strategies which generalise well to networks of a much greater size.
+Sampling networks is a way of preserving topological features and general proprties of a network.
+Allowing us to create strategies which are able to generalise well to networks of a much greater size.
 
 \subsubsection{Naive Approaches}
 A simple natural approach could be to take a node at random from the graph, call it $v$, and then perform a breadth first search in layers across the graph.
@@ -66,45 +73,82 @@ Working outwards from a start node also does not preserve the distribution of sh
 For node located close to the root these values will remain quite accurate but as we move further and further out a node is less likely to appear before we have no more nodes needed leading to a lower shorter mean path length and a higher typical clustering coefficient over other methods \cite{gjoka2010}.
 
 Some papers describe BFS as adding the entire layer from which it explores, leading to oversized samples \cite{franks2014learning}.
-Taking BFS sample of 1000 nodes in the Enron dataset it produces on average a sample of over 12 thousand nodes which is in no way comparable to another method's 1000 node sample.
+For eaxmple taking a BFS sample of 1000 nodes in the Enron dataset it can easily produce a subgraph of over 12 thousand nodes which is in no way comparable to another method's 1000 node sample.
 This is not useful when comparing like for like network sizes and their respective topological features such as diameter which are closely dependent on overall network size.
 
 Snowball sampling is a very simple variation on breadth first search,
 once the addition of the final layer would take the total number of sampled nodes over the threshold, nodes are simply added one at a time until the exact number of nodes is reached \cite{franks2014learning}.
 
+\vspace{1em}
+
 A random walk is another simple strategy for exploring a graph.
 Working on the basis of a standard random walk, starting from a node $v$ there is a $\frac{1}{deg(v)}$ probability of choosing the next node to be $u$ where $u$ is one of the neighbours of $v$.
-intuitively RW will suffer from the same problems as BFS with finding higher degree nodes much more often than lower degrees\cite{gjoka2010}, as a higher degree node has more connections that lead to it.
+intuitively RW will suffer from the same problems as BFS with finding higher degree nodes much more often than lower degrees \cite{gjoka2010}, as a higher degree node has more connections that lead to it.
+
 
 \subsubsection{Smarter Sampling Methods}
 Utilising modified random walks is a standard method of achieving accurate and unbiased samples of large networks such as facebook \cite{gjoka2010}.
+
 Metropolis Hastings Random Walks and Random Walks with Delayed Acceptance (MHRW and MHDA) are two common methods used \cite{gjoka2010, gjoka11practicalreco}
 
-(TODO MAYBE ACTUALLY EXPLAIN THIS AT ALL?)
-
-\subsection{Methods for finding seeds}
-There are a few methods which don't rely on a heuristic or rule of thumb to determine the seed nodes.
-
 \begin{enumerate}
-	\item Brute Force - $n \choose k$ possible seed sets from which to choose from. This is incredibly inefficient and on the order of $O(n!)$ cascades.
-	\item Greedy - Run a cascade from each node and then choose the $k$ highest influence nodes \cite{kempe2005influential} giving a $1- 1/e$ approximation of opt whilst being $O(n)$ cascades.
-	\item Cost Effective Lazy Forward (CELF) - A much faster greedy based algorithm working on only recomputing data for each node when needed \cite{celf}.
+	\item MHRW - Sample a random uniform probability in the range 0 to 1 and call it $p$. If for a given node $p \leq \min{}$
+	\item MHDA
+	\item Albatross
 \end{enumerate}
 
-The above approaches are however incredibly slow to compute for any large networks.
-Utilising a heuristic or approximation between a characteristic of a node and it's significance in spreading across the network can be a much more performant way of extracting similar results but at a computationally feasibly scale.
-\\
+\subsubsection{Scale Free (or not) Networks}
+A scale free network is one where the distribution of individual node degrees could be modelled using an exponential function.
+In this case the probability of a node having a degree $k$ is modelled by the below equation.
+\begin{equation}
+	P(k) \sim k^{-\gamma}
+\end{equation}
+This means that there exists a few nodes with a very high number of connections with the majority of nodes having a low number of connections.
+Some examples of scale free networks are typical human social networks or even wikipedia articles.
+A simple way to visualise this is by looking at your facebook or instagram account, you and the majority of people may on average have maybe 20-50 friends or connections, checking the numbers for any actor or influential figure may yield values in the millions.
 
-As detailed in section \ref{probDiscHeuristics} of the specification there are a large amount of heursitics which work well as a proxy for determining how influential a node is as shown by figure \ref{earlyRuns}.
+\vspace{1em}
 
-I have primarily found two main groups of heuristics, simple heuristics which consider a node and potentially it's neighbours and some more complex heuristics which consider how a node fits into the wider structure of a network.
-\\
-As is quite easily seen in figure \ref{earlyRuns} and \ref{icc_all_heuristics} these two main types are quite apparent, the rates of growth and behaviour at low seed sizes is consistent between the propogation models and network sizes with the grouping behaviour even more visible in figure \ref{earlyRuns_abs}.
+If a large proportion of the network is able to quickly reached by these very high degree nodes then this informs that the value of a degree based heuristic may prove to be more valuable than any other heuristic.
 
-\textbf{HOW DID THIS EVER GET ABOVE 45\% THIS IS SO BAD}
-TODO TALK ABOUT THE DIFFERENT HEURISTICS, WHAT THEY DO, WHY SHOULD THEY PRODUCE A HIGH INFLUENCE, WHAT THEY ACTUALLY ARE MATHEMATICALLY.
+In contrast networks that do not exhibit this behaviour are often not as easily spread through using basic heuristics.
+Exploiting community structures may be more worthwhile or taking into account the nodes around a particular node.
 
+\subsection{Methods for finding seeds}
+There are a few methods which don't rely on a heuristic to determine the seed nodes.
 
+\begin{enumerate}
+	\item Brute Force - for a graph made up of $n$ nodes there are $n$ choose $k$ possible sets of starting seeds. Running a cascade for each of these would be incredibly inefficinet and impractical by being on the order of $n$ factorial. I have not been able to find reference of this being used to compare with other methods likely due to the required processing power.
+	\item Greedy - Starting with an empty seed set choose the node in the subgraph of the network bar our seeds which will produce the largest influence, add this node to our set of seeds and continue to add nodes until we have a set of our desired size. This achieves a $1-1/e$ approximation ratio to the optimal solution due to (TODO)
+	\item Cost Effective Lazy Forward (CELF)
+\end{enumerate}
+
+Other factors which can help us guage how influential a node may be with no global knowledge of the graph required are:
+\begin{enumerate}
+	\item Degree (Deg). In the ICC and DCC models a node has some chance $p$ of spreading a concept to it's neighbours it is clear that on average it would spread to an expected $p \deg(v)$ nodes.
+	      Likewise on threshold based models a high degree node being chosen will increase the proportion of infected nodes for it's very high number of neighbours triggering a likely large cascade.
+	\item Degree Discount (DD). It's known that high degree nodes tend to cluster together, choosing multiple tightly coupled high degree nodes is redundant and not as effective as it could be. Removing any neighbours of a selected node and then using degree is an effective way of minising the overlap of expected influence between chosen seed nodes.
+	      Requirign a factor of $\Delta$ more computation power than raw degree heuristic it is a performant option.
+	      There is a limitation with regards to networks which have a few very high degree nodes, by choosing just a few of these nodes there are often minimal nodes left to choose from and an appropriate sample is not able to obtained.
+	\item Mean Neighbour Degree (MND). Thinking about how the cascade will propogate, choosing nodes who's neighbours are very high degree nodes will result in gaining access to multiple influential nodes (those with high degree) from a single seed.
+	      Compared to raw degree this requries a factor of $\Delta^2$ more computation. For most graphs this is still a very performant option as those very high degree nodes are very rare.
+\end{enumerate}
+Those above are simple to work out with no global knowledge of the graph.
+\begin{enumerate}
+	\item Local Clustering Coefficient (LCC). Consider a node where each of it's neighbours is connected to every other neighbour, this would be a clique and a very highly clustered node. We are measuring how close a node is to being in a clique from it's neighbours by taking the proportion of neighbours connected to other neigbours from the total possible number.
+	      Computing this is relatively fast being just a factor of (TODO) more than a degree based metric. Performance is dependant upon network topology. On a very simple level a highly clustered node will perform well at spreading concepts, each of it's nieghbours will also be highly connected and help spread the concepts further. There are some cases where it may not be of use, if in a graph there exists a small almost unconnected clique of nodes of size greater than our seed size then choosing them all will not produce a good spread in the rest of the graph.
+	      \begin{equation}
+		      C(v) = \frac{2 T(v)}{\deg(v)(\deg(v) - 1)}
+	      \end{equation} (TODO)
+	\item Betweenness Centrality (BC). The proportion of shortest paths from any two nodes in the network which pass through the point. Take a graph of two communities with a single edge between them, the two nodes on either side of the edge would have a very high betweeneess as they are vital for the connection of the two communities. Most topologies will not exhibit this extreme a distribution in betweeness however it is still a useful metric for influence. As we need to compute the shortest path between each pair of nodes there is a running time on the order of $O(nm)$ (we can cache TODO). Localised approximations for betweneess have been show to be highly correlated with betweneess but only in certain network topologies.
+	      \begin{equation}
+		      B(v) = \sum_{s, t \in V, s \neq v \neq v} \frac{|\sigma(s, t | v)|}{|\sigma(s, t)|}
+	      \end{equation} where $\sigma(s,t)$ denotes the set of shortest paths from node $s$ to $t$, with the conditional on $v$ is shortest paths which include $v$.
+	      h-betweeneess is only taking into account shortest paths of length less than or equal to h, as h approaches the diameter of the network it becomes a slower but more accurate approximation.
+	      \begin{equation}
+		      B_h(v) = \sum_{s, t \in V, s \neq v \neq t} \frac{\{p | p \in \sigma(s, t | v) ,|p| \leq h \} }{\{ p | p \in \sigma(s,t), |p| \leq h \}}
+	      \end{equation}
+\end{enumerate}
 
 \subsection{CoFIM - Community Based Methods}
 Talk about community based method - Requires am already partitioned network.
@@ -114,22 +158,35 @@ HOW DO YOU DEAL WITH SIZING COMMUNITIES IN NETWORKS THAT DONT HAVE A VERY STRONG
 How do we define how strongly a network is split up into distinct communities?
 For a network partitioned into $c$ communities the modularity is defined as
 
-$$ Q={\frac {1}{(2m)}}\sum _{vw}\left[A_{vw}-{\frac {deg_{v}deg_{w}}{(2m)}}\right]\delta (c_{v},c_{w})=\sum _{i=1}^{c}(e_{ii}-a_{i}^{2})$$
+\begin{equation}
+	Q={\frac {1}{(2m)}}\sum _{vw}\left[A_{vw}-{\frac {deg_{v}deg_{w}}{(2m)}}\right]\delta (c_{v},c_{w})=\sum _{i=1}^{c}(e_{ii}-a_{i}^{2})
+\end{equation}
 
 where $e_{ij}$ is the proportion of edges connecting communities $i$ and $j$, $a_i$ is the fraction of ends of edges which end in community $i$.
 What is the null model in this scenario (TODO) - assuming a random graph where each vertex has a random probability of being connected to any other vertex.
 What we are finding via Q is how much different the proportion of edges between communities vs inside communities is in our network to the expectation of a random graph that has the same number of nodes and edges as our graph.
 
+\vspace{1em}
+
+If a network displays a strong community structure then that implies there exist subsets where it is hard for ideas to propogate between them.
+If you were to choose nodes in just a single community then you might be able to saturate a community with a concept, however this may not provide an optimal global spread of the concept in the network.
+
+In certain scenarios this behaviour may be a good thing, if a community structure was distinct in real world characteritics, maybe consumer spending power or education levels then to propogate ideas would require different approaches and we could model this in a more fine tuned manner.
+
 \subsubsection{Community Detection Algorithms}
 Talk about top down and bottom up methods - greedy modularity and girvan newman greedy - talk about effects of chosoing a different algorithm for ranking the removal/combination of edges.
 
-Introduced in 2006 by MEJ Newman it was found that there exists an $O(n^2 + nm)$ algorithm for community detection in networks based on the notion of maximizing modularity using a greedy method.
+Introduced in 2006 by MEJ Newman (SOURCE TODO) it was found that there exists an $O(n^2 + nm)$ algorithm for community detection in networks based on the notion of maximizing modularity using a greedy method.
 Starting from a spectral method (vectors and matrices???) to very roughly partition the network into a set of communities.
 From this find vertices which will have the greatest gain in modularity for the whole graph, continuing to change the community each vertex belongs to until you cannot increase the modularity of the graph further.
 
 \vspace{1em}
+Girvan-Newman algorithm introduced in 2002 works on the basis of identiifying edges which link communities.
+In the same way that a node can have a betweenness coefficient so can an edge, finding the edges with the highest betweenness (or being critical choke points for connecting sets of nodes).
+To find communities we can iteratively remove edges from the network until we have found the number of distinct communities
 
-Issues with partitioning a network into too many communities
+\vspace{1em}
+Depending upon network structure finding the number of communities which would be useful for working with influence models is a difficult problem.
 
 
 \subsection{Working with multiple metrics}
@@ -139,12 +196,31 @@ Is this good, bad? Time complexity, memory cost, size of constant factors?
 
 Can it be easily approximated with just combining naive heuristics in a single factor. Compare to hybrid influence scores like s(v) = deg(v)*1/lcc(v)
 
-\subsection{Approximations of metrics}
-Randomised approximation for betweeness centrality - How good is it. how much quicker is it. Is it worthwhile to use. Is betweeness a worthwhile measure
+\subsection{Evaluating network topology}
+As a network is a graph made up of nodes and edges it's obvious to consider the number of nodes and edges or how these edges are distributed between the nodes.
+There are many metrics we can use to gain an insight into the type of network topology we are working with.
+
+\begin{enumerate}
+	\item Diameter - The length of the longest shortest path from any two nodes in the network. Example uses are for example if a graph has a diameter of two then it could be a star graph or if it has a diameter equal to the number of nodes then it must be a ring.
+	      \begin{equation}
+		      D(G) = \max_{v, u \in V} \{ |shortestpath(u, v)| \}
+	      \end{equation}
+	\item Clustering Coefficient - The mean clustering coefficeint of each node in the network.
+	      \begin{equation}
+		      C = \frac{1}{n} \sum_{v \in V} {\frac{2T(v)}{deg(v)(deg(v)-1)}}
+	      \end{equation}
+	      where $T(v)$ denotes (TODO). This measures how closely clustered nodes are, it's a good measure of community structure with a high clustering coefficinet indicating that nodes can be split into distinct communtiies easily with a low coefficient indicating there is not much community structure.
+	\item Centralization - a measure in the range zero (0) to one (1) which determines how unequal the distribtion of node degrees is with a star newtork of the same size. A value of one indicates that the network is a star whereas a value of zero indicates that the each node has the exact same degree.
+	      $$
+		      Cent(G) = \frac{\max_{v \in V}(\deg (v))}{n} - \frac{mean(\deg_{v \in V}(v))}{n-1}
+	      $$
+	\item Mean degree - A very simple measure of the average degree of each node. High mean degree's show that a network is very dense and likewise low values indicate a sparse network. Small numbers of very high degree nodes do need to be considered as they will skew the average degree higher.
+\end{enumerate}
+
+\subsubsection{Approximations of metrics}
+Randomised approximation for betweenness centrality - How good is it. how much quicker is it. Is it worthwhile to use. Is betweeness a worthwhile measure
 
 Discouss the approxmations for local clustering - their runtimes, comparing to worst case of n cubed for high degree ndoes, how much worse do these perofrm, is it worth doing, is n cubed too slow to be useufl if more exact??
-
-
 
 
 \newpage
@@ -155,8 +231,13 @@ Discouss the approxmations for local clustering - their runtimes, comparing to w
 	\item $\deg(v) = |N(v)|$
 	\item $N_2(v) = \cup_{u \in N(v)}N(u)$ The two jump neighborhood of $v$
 	\item Independent cascade model - $S = \{active, inactive, used\}$, $p \sim U[0, 1]$, $t \in [0, 1]$, A node can change from inactive to active to used only. An active node has a $p$ chance of infecting each of it's neighbors
-	\item
+	\item Decreasing Cascade Model
+	\item Linear Threshold Model
+	\item $\sigma(s, t)$ is the set of shortest paths between $s$ and $t$.
+	\item $\sigma(s, t |v )$ is the set of shortest paths between $s$ and $t$ which contain the node $v$.
 \end{itemize}
+
+maximal\_influential\_set(Network, k) = return the subset of the network which will produce the greatest propogation of ideas if seeded from there.
 
 \newpage
 \section{Proposed Algorithms}
@@ -193,7 +274,7 @@ Discount approaches work by attempting to prevent clustering of high degree node
 
 There is a minimal overlap between the nodes chosen by clustering and betweeneess and that of degree (EXPLAIN WHY TODO).
 
-On a large enough network with a sufficiently small sample size and a power law distribtiomn of node degrees there should not be a measurable difference in the performance of degree discount or degree approaches.
+On a large enough network with a sufficiently small sample size and a power law distribution of node degrees there should not be a measurable difference in the performance of degree discount or degree approaches.
 We however are working with small to medium sized networks, as both a point of comparison with the standard in most papers but also to make computations take a reasonable amount of time.
 
 \vspace{1em}
@@ -206,15 +287,19 @@ I will investigate choosing nodes that have a high degree with a low clustering,
 TODO WHY WILL THESE BE EFFETIVE, HOW WILL I TEST THEM, WHAT PARAMETERS DO I NEED TO CHECK, TESTING THAT THEY ARE GOOD ACROSS NETWORKS, SIZES, MODELS ETC
 
 \begin{enumerate}
-	\item $s(v) = \deg(v)\times(1 - lcc(v))$. This will find nodes that are a combination of high degree and low clustering coefficient at the same time.
+	\item $s(v) = \deg(v)\times(1 - lcc(v))$. This will find nodes that are a combination of high degree and low clustering coefficient at the same time. Nodes with a low clustering coefficinet are relatively disconnected to the clique that would be formed by their neighbours, this would be an excellent way to find nodes which may have the greatest reach through the network in terms of distance and therefore distribution rather than immediate raw node counts.
 	\item $s(v) = \deg(v) \times \frac{1}{lcc(v)}$. Going to the reciprocal of clustering coefficient will weight the choices more towards the lower clustering nodes than that of degree as in (1).
 	\item $s(v) = \deg(v) \times \frac{1}{mnd(v)}$. Choosing the nodes with the highest ratio of degree to mean neighbour degrees is quite easy to see quite similar to choosing a low clustering coefficient node because each of the nodes it's connected to will have as low an average degree as possible.
 	\item $s(v) = \deg(v) \times (1 - \frac{1}{max_{u \in V}(mnd(u))}mnd(v))$. In a similar vein to the relationship between (1) and (2) choose this to weight further towards the degree of a node rather than mean neighbour degree.
 	\item $S(k) = \deg(\log(k)) \cup lcc(k - \log(k))$. Choosing a small proportion with degree and the remaining nodes with clustering coefificient is a nice naive way of choosing these nodes. From exploratory testing there seems to be minimal overalp between the two methods in the finalised spread over a network.
-	\item $S(k) = \deg(\log(k)) \cup bet(k - \log(k))$. As with (5) there is a similar behaviour for betweeneess where the final spread from a set of nodes of each method has a small intersection relative to the influenced area.
+	\item $S(k) = \deg(\log(k)) \cup bet(k - \log(k))$. As with (5) there is a similar behaviour for betweenness where the final spread from a set of nodes of each method has a small intersection relative to the influenced area.
 \end{enumerate}
 
-Note that $s(v)$ denotes a score for each node, to choose $k$ nodes simply choose the $k$ nodes with the highest score. $S(k)$ denotes the set of $k$ nodes made up of different sets. 
+Note that $s(v)$ denotes a score for each node, to choose $k$ nodes simply choose the $k$ nodes with the highest score. $S(k)$ denotes the set of $k$ nodes made up of different sets.
+
+Testing will be done using MHDA samples of each of the four networks with one thousand (1000) nodes, this is lower than the smallest size of our datasets. it will also provide a good comparison to most papers which use networks of around this size. At this scale performance of algorithms such as betweeneesss centrality is more than acceptable.
+Using larger sizes would require dedicating significant resources to the problem, using approximations for some metrics or using completely different methods that do not rely on these metrics.
+The naive greedy algorithm would not be feasibly to run on larger networks.
 
 \vspace{1em}
 
@@ -275,32 +360,51 @@ NEED TO TALK MUCH MUCH MORE ABOUT THIS - NEED TO ACTUALLY IMPLEMENT IN CODE
 \newpage
 \section{Experimental Method and Setup}
 
+This section describes the testing methodology used to conduct experiments, networks used and their properties, and any statistical methods.
+This is to ensure that each result described can be reproduced with the methods and reasoning clear and simple to understand.
+
 \subsection{Datasets}
-\begin{enumerate}
-	\item Enron - 1 or 2 sentences - What is it, why is it good to use, how obtained, size
-	\item Twitter - 1 or 2 sentences
-	\item P2p - 1 or 2 sentences
-	\item Airports - 1 or 2 sentences
-\end{enumerate}
+
+I have used the following real world datasets in my testing.
+As shown in the table they range in sizes from just over fifteen hundred (1500) nodes to just over eighty thousand (80000) with between seventeen thousand edges (17215) up to over one million and three hundred thousand (1342310).
+
+\begin{figure}[h]
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		Name     & Nodes & Edges   & Mean Deg. & Cluster Coef. & Diam. & Centralization \\
+		\hline
+		Enron    & 36692 & 183831  & 10.020    & 0.497         & 13    & 0.00725        \\
+		P2P      & 10876 & 39994   & 7.355     & 0.006         & 10    & 0.001899       \\
+		Airports & 1574  & 17215   & 21.874    & 0.504         & 8     & 0.004334       \\
+		Twitter  & 81306 & 1342310 & 33.019    & 0.565         & 7     & 0.002114       \\
+		\hline
+	\end{tabular}
+	\caption{Real world networks metrics}
+\end{figure}
+
+\begin{figure}
+	\includegraphics{../../explorations/overlayed_hisotgram_degree_dist_all_nets.png}
+	\caption{Comparison of Degree Distributions of Networks}
+\end{figure}
+
+There is more to these networks such as clustering coefficient, diameter and centralization, the provided datasets show a large range of values for each of these.
+Note that even though some metrics such as clustering coefficient are possible to be in the range of zero (0) to one (1) it is incredibly impractical to get anywhere close to either of the extreme points.
 
 \subsection{Sampling Methods}
 
 \begin{enumerate}
-	\item BFS  - 1 or 2 sentences on behaviours and expected results
-	\item MHDA  - 1 or 2 sentences
-	\item MHRW  - 1 or 2 sentences
+	\item BFS (Breadth First Search). Have a very significant tendancy to lead towards high degree nodes leading to globally non representative samples. We won't use BFS for general sampling however it does have uses for algorithms which may only required a localised view of the network from a certain point.
+	\item MHDA (Metropolis Hastings Random Walk with Delayed Acceptance). As described in the literature review this is a performant and representative sampling method. We will use this for all samples when comparing the performance of heursitics as it generates represnetative samples as well as being commonly used for this purpose in various papers (TODO CITE).
 \end{enumerate}
 
 \subsection{Accounting for differences in network sampling}
-(TODO INSERT A FIGURE OF VARIANCE BETWEEN SAMPLES AND THEIR GLOBAL METRICS)
+Performing analysis on a single (non deterministic) sample of a network will not create reproducible results.
+This is due to not producing a representative sample of the network by each sample having variances in topology, density, connectivity and therefore how well certain heuristics may work.
 
-As shown in the above table over fifteen (15) runs of a sampling algorithm on the same network the standard deviation between individual data points is quite large.
-With few runs and a unique sample for each one the introduction of random noise into the results may very well skew results such that a conclusion is drawn which would not be given a larger sample size.
+As most heuristics are deterministic in which seeds they will return for a given network and required size, running the same method on the same network is useful for finding out the noise from the diffusion model rather than variances between different methods.
 
-Using an approach where for a set of trials of selecting seed nodes and finding their influence on a network and model, some small number of samples are generated and then randomly selected by each trial.
-This has multiple benefits over running both a single sample and sampling each time.
-
-Working in this fashion lowers the value of the standard deviation across our runs whilst still preserving a relatively representative sample of the network.
+To perform any statistical analysis of say $k$ runs I will sample the network $k$ times and then each method will be run on each of these networks.
+This guarantees that the network is covered by each of the samples and will allow us to generalise to the whole network.
 
 \subsection{Evaluation Methods}
 Measuring Final Spread, Rate of Spread, Variability due to changes in parameters, Runtime. All metrics will have a mean, standard dev computed into a tabular format to allow for very quick evaluation of statistical significance.
@@ -313,17 +417,28 @@ Measuring Final Spread, Rate of Spread, Variability due to changes in parameters
 TOOD talk about why the behaviour shown in the above figures is - highlight the randomness between run to run, talk about cumulative effect of choosing algorithms for a specific network being highly flawed by selected a super high performing heuristic+sample combination on one net that performs very poorly on another.
 
 \subsection{Statistical Analysis}
-When comparing the spread of a set of heuristics over many samples, producing a set of continous values across the range zero (0) to one (1) we can check the likelhood that the two distributions are the same.
-If there is found to be a statistical significance to the difference in mean and standard deviation of the final influence of two methods it gives us confidence to say that one method is statistically 'better' or 'worse' than another.
+There are a few ways to compare our results, it is important that the analysis is rigorous and shows clear statistical significance.
 
-When comparing the influence produced by two methods it's important that we have a sufficient sample size to be able to determine a statistical significance.
-When using a t test we can use the formula $$ n = (TODO) $$ to determine the required number of samples based on the value of $d = (TODO)$, the smaller the difference in the distribution means the more samples are required to check if the variation is random based on the normal distribution of the datasets or a statistical difference.
+We are comparing the performance of a method across networks, we need to take into account usage of samples within those networks and random variability between runs of each algorithm on each sample.
+The number of unique samples is very important to have a number high enough.
+If we had 20 runs per sample with 5 samples of a network it might seem that we have 100 data points to compare.
+This is not the case, we know that network topology is slightly different between samples and network topology has a large effect on the results of a heuristics performance, each of the sets of 20 runs are correlated with eachother and so cannot be treated as indepeadnt trials.
+Due to this I will use a linear mixed effects model, for each run of a heuristic I will
 
-To initially determine $n$ we can run a pilot test of any method to determine a baseline mean and standard deviance, from this create a minimum number of runs required and round up to a nice even number. in most cases this is around 30.
+\subsubsection{The data is a curve}
+Consider a plot of final influence againse seed size as a curve or line. With such a plot there are a few
+\begin{enumerate}
+	\item Use the area under the curve. This might seem as the best way of comparing the performance of two methods however it is a very coarse grained approach and will not allow for analysis of performance at different seed size proportions.
+	\item Compare the heurisitcs at a selection of certain points. This is the approach we will use for the analysis, we may want to find a heuristic for a low seeded proportion and there may be a significant difference with regards to the performance of different methods.
+\end{enumerate}
 
 \newpage
 \section{Results and Analysis}
-THIS HAS ZERO RESULTS THAT ARE USEFUL OR NOVEL OR COULDNT BE THOUGHT ABOUT FOR A LITTLE BIT
+In this section we discuss the strategies proposed previously, how they perform across our range of networks, was this behaviour as expected and were there any outliers.
+We will also analyse each of the methods to test for statistical significance compared to known methods.
+
+\subsection{Hybrid Algorithms}
+
 
 \newpage
 \section{Limitations}

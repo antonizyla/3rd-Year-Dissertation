@@ -1,5 +1,5 @@
 \documentclass{article} 
-\usepackage[a4paper, margin=3cm]{geometry}
+%\usepackage[a4paper]{geometry}
 
 \usepackage{cite}
 
@@ -18,30 +18,49 @@
 
 \maketitle
 \linespread{1.25}
-    Which development methodology did you use?
-    How did you manage your time?
-    How did you manage your relationships with key stakeholders (e.g. your supervisor, your external advisor (if you have one), etc.)?
-    How did you manage risk?
-    Were there any unforeseen issues, and if so, how were they handled?
-    Were there any legal, ethical, social or professional issues associated with your project, and how did you handle them?
+Which development methodology did you use?
+How did you manage your time?
+How did you manage your relationships with key stakeholders (e.g. your supervisor, your external advisor (if you have one), etc.)?
+How did you manage risk?
+Were there any unforeseen issues, and if so, how were they handled?
+Were there any legal, ethical, social or professional issues associated with your project, and how did you handle them?
 
 \section{Development Methodology}
 
-This is primarily a research project with a large amount of code required, the development is split into two phases. 
-
-As described in the timeline in the earlier progress report the software development was focused towards the first half of the project timeline. 
-Scope was known from the research phase, challenges were identified early and goals were set in advance.
-This is most closely resembling a traditional waterfall development cycle, with periods of lots of development and then acceptance testing (in my case reproducing behaviour exhibited in various research papers) towards the end of the cycle.
+This project combines both research and software development.
+The primary aim was to investigate the influence maximization problem and develop new heuristics to expand on the current body of work.
 
 \vspace{1em}
 
-The second half of the project is to utilise my code and knowledge around working with networks and the problem space to idenitify a new or novel solution to the network influence maximization problem. 
-This follows more closely to a typical agile development methodology, implementing and quickly testing lots of different ideas to see if they are worthwhile and constantly changing the requirements based on what works so far and what doesn't.
+The first phase of the project was focused on primarily software development, implementing the diffusion models, network sampling methods, known heurstics and the greedy approach.
+The problme was explored through literature review and analysis of existing research, allowing the project scope to be clearly defined, with key challenged enabled.
+From this I created a plan for the coding section and aimed to have it completed before the start of the second term, I accomplished this by the progress report hand in date at the start of the term.
+
+This phase most closely resembled a traditional waterfall style methodology.
+Development tasks were clearly defined, expectations as to if they work as expected were quick to test.
+There was almost no changes required to what I was implementing as the needs were to be able to have the code required to reproduce a lot of the studies I had researched.
+The implemented code was tested by performing various trials and experimental runs of different algorithms, testing to see if results were similar to those exhibited in the papers I had researched.
+
+\vspace{1em}
+
+The second half of the project is to utilise my code and knowledge around working with networks and the problem space to idenitify a new or novel solution to the network influence maximization problem.
+This follows more closely to a typical iterative agile development methodology, implementing and quickly testing lots of different ideas to see if they are worthwhile and constantly changing the requirements based on what works so far and what doesn't.
+Potential ideas were implemented and explored rapidly and tested against existing methods to evaluate their effectiveness.
+Those methods with interesting or viable results were researched further while those which proved ineffective were discarded.
+
+\subsection{Version Control and Code Management}
+Version control was used throughout the project to manage the developemnt progress and to allow me to ensure that changes to the codebase could be tracked precisely.
+
+The project was maintained using git, hosted on github and used github actions to run linting, formatting and documentation generation.
 
 \section{Managing my time}
 
-Managing time between my other modules, my dissertation and part time work is challenging. 
+As with any project effective time management is an important aspect of achieving it's goals.
+At the start of the project a rough outline was made which split the project into two main sections.
+As time went on and we reached further and further into the project timespan the goals, requirements and challenges became more clear and able to be actioned.
 
+Regular weekly meetings with my supervisor were held, allowing me to talk about my progress, what my next steps are, what I did and why.
+This allowed my supervisor to give feedback or suggest alterntive approaches that may work better than things that I have tried.
 
 \section{Stakeholder Management}
 
@@ -49,15 +68,33 @@ No external stakeholders - Just supervisor and myself. - Meetings, progress chec
 
 \section{Risk Management}
 
-The main risk being that of not actually finding a novel result or something actually useful.
-- Documneting all reaseach process - Working through this and with supervisor to find ways that it can be made into something that doesn't yet exist
+The primary risk associated with the project was that there would be no meaningful new results found.
+We are studying an already dense and well reasearched problem, identiifying a slot where new constribtuions can be made is challenging.
+
+To mitigate this risk the research process was carefully documented throughout the project.
+All test scripts and notebooks were kept and version controlled.
+Unsuccesfful ideas or thoughts were still kept and allowed me to understand the problem space better even if they don't actually produce any worthwhile resutls.
+
+\subsection{Loss of code or data}
+All base code, scripts and exploratory notebooks were stored in version control under git, backed up on github and replicated on both my personal computer and the DCS systems.
 
 \section{Unforeseen Issues}
 
-No real unforeseen issues - talk about challenge of time Management, steering research in the right direction.
+There were no major unforeseen technical issues which arose during the project.
+However one of the main challenges that I encountered was ensuring that I remained focused, productive and on track.
+
+I found it hard to explore many different ideas at the same, becoming dis satisfied when results or ideas I was excited about to try did not produce worthwhile viable results was a difficult challenge to deal with.
+
+Regularly evaluating the usefulness and results produced throughout the project, including by discussing with my supervisor helped me to determine whether a path I was exploring was worth continuing or if it would be more productive to focus my attention in a another direction.
+
+Balancing my time between a very coursework heavy second term and a part time job alongside the dissertation was a very difficult challenge.
+Careful scheduling of tasks and prioritization was required to ensure that I continued to make progress throughout the project.
 
 \section{Legal, Ethical, Social and Professional Issues}
 
 As discussed in the specification and project report as this is primarily a research project there are no concerns in this field.
+
+No personal data is collected or used, no human participants are involved in the research or testing process.
+
 
 \end{document}
