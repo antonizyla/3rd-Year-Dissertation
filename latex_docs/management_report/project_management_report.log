@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  30 MAR 2026 20:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  30 MAR 2026 20:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -462,25 +462,39 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 20.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 20.
+ (./project_management_report.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
+)
+\tf@toc=\write5
+\openout5 = `project_management_report.toc'.
+
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./project_management_report.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Overfull \hbox (1.65799pt too wide) in paragraph at lines 87--89
+\OT1/cmr/m/n/10 time job along-side the dis-ser-ta-tion was a very dif-fi-cult chal-lenge. Care-ful schedul-
+ []
+
+[3] [4] (./project_management_report.aux)
 Package rerunfilecheck Info: File `project_management_report.out' has not changed.
-(rerunfilecheck)             Checksum: BCA79A231490137DD953F192C7B5C4A8;1399.
+(rerunfilecheck)             Checksum: BE6D44AA10B12867B1E4C248454C152D;2084.
  ) 
 Here is how much of TeX's memory you used:
- 20686 strings out of 477136
- 410775 string characters out of 5813391
+ 20708 strings out of 477136
+ 411130 string characters out of 5813391
  1861388 words of memory out of 6000000
- 40624 multiletter control sequences out of 15000+600000
- 516541 words of font info for 46 fonts, out of 8000000 for 9000
+ 40635 multiletter control sequences out of 15000+600000
+ 516849 words of font info for 47 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
  117i,6n,118p,507b,432s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on project_management_report.pdf (3 pages, 60115 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+Output written on project_management_report.pdf (4 pages, 78908 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
- 77 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 120 PDF objects out of 1000 (max. 8388607)
+ 104 compressed objects within 2 object streams
+ 19 named destinations out of 1000 (max. 500000)
+ 117 words of extra memory for PDF output out of 10000 (max. 10000000)
 

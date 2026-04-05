@@ -3,46 +3,49 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Report.aux
 The style file: plain.bst
 Database file #1: ../sources.bib
+Warning--entry type for "pandas" isn't style-file defined
+--line 261 of file ../sources.bib
+Warning--empty journal in SciencePlots
 Warning--empty booktitle in gjoka2010
-You've used 10 entries,
+You've used 16 entries,
             2118 wiz_defined-function locations,
-            571 strings with 6229 characters,
-and the built_in function-call counts, 4276 in all, are:
-= -- 436
-> -- 194
-< -- 5
-+ -- 76
-- -- 66
-* -- 288
-:= -- 658
-add.period$ -- 32
-call.type$ -- 10
-change.case$ -- 63
+            610 strings with 8220 characters,
+and the built_in function-call counts, 7919 in all, are:
+= -- 736
+> -- 555
+< -- 6
++ -- 219
+- -- 203
+* -- 644
+:= -- 1308
+add.period$ -- 49
+call.type$ -- 16
+change.case$ -- 148
 chr.to.int$ -- 0
-cite$ -- 11
-duplicate$ -- 174
-empty$ -- 322
-format.name$ -- 66
-if$ -- 941
+cite$ -- 18
+duplicate$ -- 247
+empty$ -- 479
+format.name$ -- 203
+if$ -- 1622
 int.to.chr$ -- 0
-int.to.str$ -- 10
-missing$ -- 9
-newline$ -- 52
-num.names$ -- 20
-pop$ -- 70
+int.to.str$ -- 16
+missing$ -- 14
+newline$ -- 81
+num.names$ -- 34
+pop$ -- 159
 preamble$ -- 1
-purify$ -- 53
+purify$ -- 132
 quote$ -- 0
-skip$ -- 149
+skip$ -- 203
 stack$ -- 0
-substring$ -- 292
-swap$ -- 69
-text.length$ -- 5
+substring$ -- 419
+swap$ -- 83
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 40
-warning$ -- 1
-while$ -- 38
-width$ -- 12
-write$ -- 113
-(There was 1 warning)
+type$ -- 64
+warning$ -- 2
+while$ -- 59
+width$ -- 18
+write$ -- 175
+(There were 3 warnings)

@@ -6,7 +6,7 @@
 
 
 \title{Network Influence Stuff} 
-\author{Antoni Zyla - Supervisor: Nathan Griffiths}
+\author{Antoni Zyla (u5527350) - Supervised by Nathan Griffiths}
 \date{Procrastinated forever}
 
 \begin{document}
@@ -53,17 +53,27 @@ Various papers have described modifications of each of these models in a multitu
 multiple concepts can be spread wherein they can inhibit the spread of eachother by allowing a node to only adopt a single concept \cite{griffiths17LimitiingConcept,goyal2012competitivecontagionnetworks}.
 Vaccination or heard immunity can be modelled in this manner \cite{griffiths17LimitiingConcept}.
 
-There are other models which work in different manners, borrowing from biology models such as SIR for modelling diseases more closely \cite{kuperman2013invited}. These are somewhat able to be modelled using the cascade models however full parity is not possible for example going from infected back to uninfected is not a behavior that is considered with the cascades and would possibly have large effects on the effectiveness of certain seed selection strategies.
+There are other models which work in different manners, borrowing from biological models such as SIR for modelling diseases more closely \cite{kuperman2013invited}. These are somewhat able to be modelled using the cascade models however full parity is not possible for example going from infected back to uninfected is not a behavior that is considered with the cascades and would possibly have large effects on the effectiveness of certain seed selection strategies.
+It is possible to take an agent based approach to influence giving each agent certain characteristics
 
-Dynamic models of influence are models where paths between nodes can be added or removed as part of the process \cite{sekara2016fundamental}, this can for example be used to model the evolution of social networks, rather than studying networks which are at a fixed point in their evolution.
-Influence can be studied over these evolutions however this is an additional very large jump in complexity and scope which would be out of scope for this project.
+\vspace{1em}
+
+Social networks, communication systems, power grids, logistics systems are constantly evolving systems.
+Nodes are constantly added or removed, connections between nodes are frequenrly added, removed or rerouted, working on a snapshot of an ever evolving network may not be the most effective method for real world problem solving.
+Dynamic models of influence are models where paths between nodes can be added or removed as part of the process \cite{sekara2016fundamental}, this can for example be used to model the evolution of social networks, and how influential nodes may become more or less influential based on different factors or topology, rather than studying networks which are at a fixed point in their evolution.
+Influence can be studied over these evolutions, however this is an additional very large jump in complexity and scope which would be out of scope for this project.
+
+\vspace{1em}
+
+Another way in which this field has evolved is the study of adversarial contagions.
+Analogous to the spread of a disease against a vaccination, two concepts/contagion spreading across the network at the same time, each node can only be infected with one and may or may not be turned from one to the other. (SOURCE)
 
 \subsection{Working with large networks}
 
 Some of the networks I will be studying are made up of tens of thousands of nodes with millions, perfoming non trivial analysis on networks of this size is almost impossible with reasonable compuitng resources.
 
-Sampling networks is a way of preserving topological features and general proprties of a network.
-Allowing us to create strategies which are able to generalise well to networks of a much greater size.
+Sampling networks is a way of preserving the topological features and general properties of a network.
+This allows us to create strategies by quickly testing on small networks to what works and what doesn't and then due to being a representative sample we know that they will generalise well to larger networks.
 
 \subsubsection{Naive Approaches}
 A simple natural approach could be to take a node at random from the graph, call it $v$, and then perform a breadth first search in layers across the graph.
@@ -73,7 +83,7 @@ Working outwards from a start node also does not preserve the distribution of sh
 For node located close to the root these values will remain quite accurate but as we move further and further out a node is less likely to appear before we have no more nodes needed leading to a lower shorter mean path length and a higher typical clustering coefficient over other methods \cite{gjoka2010}.
 
 Some papers describe BFS as adding the entire layer from which it explores, leading to oversized samples \cite{franks2014learning}.
-For eaxmple taking a BFS sample of 1000 nodes in the Enron dataset it can easily produce a subgraph of over 12 thousand nodes which is in no way comparable to another method's 1000 node sample.
+For example taking a BFS sample of 1000 nodes in the Enron dataset it can easily produce a subgraph of over 12 thousand nodes which is in no way comparable to another method's 1000 node sample.
 This is not useful when comparing like for like network sizes and their respective topological features such as diameter which are closely dependent on overall network size.
 
 Snowball sampling is a very simple variation on breadth first search,
@@ -92,9 +102,9 @@ Utilising modified random walks is a standard method of achieving accurate and u
 Metropolis Hastings Random Walks and Random Walks with Delayed Acceptance (MHRW and MHDA) are two common methods used \cite{gjoka2010, gjoka11practicalreco}
 
 \begin{enumerate}
-	\item MHRW - Sample a random uniform probability in the range 0 to 1 and call it $p$. If for a given node $p \leq \min{}$
-	\item MHDA
-	\item Albatross
+	\item Metrpolis Hastings Random Walk (MHRW) - Sample a random uniform probability in the range 0 to 1 and call it $p$. If for a given node $p \leq \min{}$
+	\item Metropolis Hastings Random Walk with Delayed Acceptance (MHDA). This is a further modification of MHRW where nodes with a high degree are less likely to be chosen. Overall producing a more representative sample of the network than MHRW with little extra performance cost.
+	\item Albatross Sampling (AS) - A random walk based sample with a probability of jumping to a random node within the network, this should allow for better capture of networks with disconnected or densely clustered components or communities on a very large scale.
 \end{enumerate}
 
 \subsubsection{Scale Free (or not) Networks}
@@ -184,6 +194,14 @@ From this find vertices which will have the greatest gain in modularity for the 
 Girvan-Newman algorithm introduced in 2002 works on the basis of identiifying edges which link communities.
 In the same way that a node can have a betweenness coefficient so can an edge, finding the edges with the highest betweenness (or being critical choke points for connecting sets of nodes).
 To find communities we can iteratively remove edges from the network until we have found the number of distinct communities
+
+Extendded into Clauset-Newman-Moore greedy algoirtmg for modularity maximisation we work on the basis that each node starts as it's own community.
+A pair of communtiies are identified which would produce the greatest gain in modularity for the overall network by combining them together.
+A benefit to this approach is that the algorithm will terminate when there is no more possible gain to modularity and so there is an inherent restriction on the number of communtiies.
+\\
+
+There exists another method to find such communities, take the edge betweeness of each edge, find the highest edge betweeness and cut that edge, continue this until you have reached your desired number of communtiies.
+An inherent weakness of this approach is that the number of communities is difficult to determine, the distribituion of node degrees is hard to discern without computation and it varies wildly between iterations of increasing community numbers.
 
 \vspace{1em}
 Depending upon network structure finding the number of communities which would be useful for working with influence models is a difficult problem.
@@ -282,17 +300,19 @@ We however are working with small to medium sized networks, as both a point of c
 \noindent Choosing nodes based on a 'score' that's made up of a combination of diffferent factors should allow for choosing nodes that will be a good overall node.
 If choosing some quota of nodes from one method and the remaining nodes from another the chosen set may be good individually but poor overall.
 
-I will investigate choosing nodes that have a high degree with a low clustering, this might seem counter to the results in figure \ref{enron-icc-mhda-all-example-heuristics-image} where groups of nodes with high clustering perform well.
+\vspace{1em}
 
-TODO WHY WILL THESE BE EFFETIVE, HOW WILL I TEST THEM, WHAT PARAMETERS DO I NEED TO CHECK, TESTING THAT THEY ARE GOOD ACROSS NETWORKS, SIZES, MODELS ETC
+The following are the ideas and reasoning behind them, which produced interesting results across at least one of the network topologies and methods.
 
 \begin{enumerate}
-	\item $s(v) = \deg(v)\times(1 - lcc(v))$. This will find nodes that are a combination of high degree and low clustering coefficient at the same time. Nodes with a low clustering coefficinet are relatively disconnected to the clique that would be formed by their neighbours, this would be an excellent way to find nodes which may have the greatest reach through the network in terms of distance and therefore distribution rather than immediate raw node counts.
-	\item $s(v) = \deg(v) \times \frac{1}{lcc(v)}$. Going to the reciprocal of clustering coefficient will weight the choices more towards the lower clustering nodes than that of degree as in (1).
-	\item $s(v) = \deg(v) \times \frac{1}{mnd(v)}$. Choosing the nodes with the highest ratio of degree to mean neighbour degrees is quite easy to see quite similar to choosing a low clustering coefficient node because each of the nodes it's connected to will have as low an average degree as possible.
-	\item $s(v) = \deg(v) \times (1 - \frac{1}{max_{u \in V}(mnd(u))}mnd(v))$. In a similar vein to the relationship between (1) and (2) choose this to weight further towards the degree of a node rather than mean neighbour degree.
-	\item $S(k) = \deg(\log(k)) \cup lcc(k - \log(k))$. Choosing a small proportion with degree and the remaining nodes with clustering coefificient is a nice naive way of choosing these nodes. From exploratory testing there seems to be minimal overalp between the two methods in the finalised spread over a network.
-	\item $S(k) = \deg(\log(k)) \cup bet(k - \log(k))$. As with (5) there is a similar behaviour for betweenness where the final spread from a set of nodes of each method has a small intersection relative to the influenced area.
+	\item Custom 1: $S(k) = \deg(\log(k)) \cup bet(k - \log(k))$. As with (5) there is a similar behaviour for betweenness where the final spread from a set of nodes of each method has a small intersection relative to the influenced area.
+	\item Custom 2: $S(k) = \deg(\log(k)) \cup lcc(k - \log(k))$. Choosing a small proportion with degree and the remaining nodes with clustering coefificient is a nice naive way of choosing these nodes. From exploratory testing there seems to be minimal overalp between the two methods in the finalised spread over a network.
+	\item Custom 3 $s(v) = \deg(v)\times(1 - lcc(v))$. This will find nodes that are a combination of high degree and low clustering coefficient at the same time. Nodes with a low clustering coefficinet are relatively disconnected to the clique that would be formed by their neighbours, this would be an excellent way to find nodes which may have the greatest reach through the network in terms of distance and therefore distribution rather than immediate raw node counts.
+	\item Custom 4  $s(v) = \deg(v) \times \frac{1}{lcc(v)}$. Going to the reciprocal of clustering coefficient will weight the choices more towards the lower clustering nodes than that of degree as in (1).
+	\item Custom 5 $s(v) = \deg(v) \times \frac{1}{mnd(v)}$. Choosing the nodes with the highest ratio of degree to mean neighbour degrees is quite easy to see quite similar to choosing a low clustering coefficient node because each of the nodes it's connected to will have as low an average degree as possible.
+	\item Custom 6 $s(v) = \deg(v) \times (1 - \frac{1}{max_{u \in V}(mnd(u))}mnd(v))$. In a similar vein to the relationship between (1) and (2) choose this to weight further towards the degree of a node rather than mean neighbour degree.
+	\item Custom 7: $s(v) = \deg(v) \times (1 - lcc(v)) \times mnd(v)$. The same logic as with taking high degree low clsutering nodes but weighting for a higher mean neighbour degree.
+	\item Custom 8: $s(v) = \deg(v) \times bet(v)$
 \end{enumerate}
 
 Note that $s(v)$ denotes a score for each node, to choose $k$ nodes simply choose the $k$ nodes with the highest score. $S(k)$ denotes the set of $k$ nodes made up of different sets.
@@ -302,7 +322,6 @@ Using larger sizes would require dedicating significant resources to the problem
 The naive greedy algorithm would not be feasibly to run on larger networks.
 
 \vspace{1em}
-
 
 
 \subsection{Community Aware Algorithms}
@@ -337,16 +356,19 @@ Investigating this is a good idea as depending upon the network we may not actua
 
 When communities are combined into a new community (particularly in high modularity metrics) the edges which are between them can indicate that they are some of the few (very) edges which are connecting individual communities.
 Using the endpoints of those edges that are combined would likely act as a proxy for nodes which when influenced can spread into multiple communities.
-I will investigate the addition of these nodes based on the endpoints of edges that are combined into a single community using (X) heuristics, the heuristics can give a good idea of the best node to choose with the added benefit of choosign ndoes that are uniquely situated within the edges of the community structure.
 
-TALK ABOUT HOW I DISSECTED THE COMMUNITY ALGORITHM TO FIND THE EDGES AND THEREFORE THE NODES WHICH I TRIED TO USE TO INFORM CHOOSING INFLUENTIAL NODES.
-
-This is the algorithm for the louvain method is.
-\begin{enumerate}
-	\item Consider each node to be it's own community.
-	\item For each node choose the neighboring community for which it will increase the modularity of the graph the most.
-	\item
-\end{enumerate}
+\begin{verbatim}
+function determine_edge_endings(G, k)
+	merged_edges = []
+	for ... (modularity maximisation loop)
+		merge_edges = [(x, y) for x in U for y in V is (u, v) in G]
+		merged_edges.append(merge_edges)
+	endpoints = []
+	for e in merged_edges:
+		endpoints.append(e[0])
+		endpoints.append(e[1])
+	return endpoints[:k]
+\end{verbatim}
 
 \subsection{Limited Context Algorithms}
 Consider a network analagous to a network graph held by google, facebook with billions of users, hundreds of connections between nodes.
@@ -410,9 +432,15 @@ This guarantees that the network is covered by each of the samples and will allo
 Measuring Final Spread, Rate of Spread, Variability due to changes in parameters, Runtime. All metrics will have a mean, standard dev computed into a tabular format to allow for very quick evaluation of statistical significance.
 
 \subsection{Baseline Behaviours}
-(INSERT A CUMULATIVE OR AVERAGE FIGURE FOR EACH HEURISTICS ON NETWORKS)
+Degree is a very good indicator of influence spread peformance.
+Single and double degree discount are also excellent.
 
-(INSERT A CUMULATIVE OR AVERAGE FIGURE FOR EACH SAMPLING METHOD ON NETWORKS)
+CELF performs worse than greedy in majority of circumstances, whilst being over 100 times faster.
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{ltm_all_nets_hybrid.png}
+	\caption{Baseline Performance overall all models on all networks}
+\end{figure}
 
 TOOD talk about why the behaviour shown in the above figures is - highlight the randomness between run to run, talk about cumulative effect of choosing algorithms for a specific network being highly flawed by selected a super high performing heuristic+sample combination on one net that performs very poorly on another.
 
@@ -432,15 +460,443 @@ Consider a plot of final influence againse seed size as a curve or line. With su
 	\item Compare the heurisitcs at a selection of certain points. This is the approach we will use for the analysis, we may want to find a heuristic for a low seeded proportion and there may be a significant difference with regards to the performance of different methods.
 \end{enumerate}
 
-\newpage
+\subsubsection{Generalising to networks in General}
+Using a linear mixed effects model to determine if a particular model is better than the baseline across all four of our test networks.
+
+\subsection{A note on perofrmance}
+The following is a log plot of the mean runtime of each of the hybrid methods against eachother in miliseconds across eaach of the seed sizes as discusessed.
+Note that this is the total time to compute the seed and then perform a cascade.
+There may be a small variance based on performance however the network is 1000 nodes so very unlikely to be such a vast diffrence.
+
+Greedy is over 110 times slower than CELF for 300 seed sizes.
+CELF is Tens of times slower than that of the betweness and clustering heurisitcs.
+
+Clustering and Betweeness are multiple times slower than the basic degree based heurisitics.
+
+\begin{figure}[h]
+	\includegraphics[width=0.8\textwidth]{Runtime_comparison.png}
+	\caption{Log Mean Runtime in miliseconds of each method}
+\end{figure}
+
+In numerical terms on a 64 core zen 5 server cpu on the compute cluster running each trial in a separate process running all of the hybrid heurisitcs took around 23 minutes, CELF took around 35 minutes whilst Greedy ballooned the runtime to 22 hours.
+
+
+\subsection{Tools and Libraries}
+For the data visualistaion we used the library Matplotlib \cite{matplotlib} along with Scienceplots \cite{SciencePlots} for creating consistent formatting and fonts.
+The following libraries were used in the code and statistical analysis: Numpy \cite{numpy}, Pandas \cite{pandas}, Scipy \cite{scipy}, Networkx \cite{networkx}
+
+\clearpage
 \section{Results and Analysis}
 In this section we discuss the strategies proposed previously, how they perform across our range of networks, was this behaviour as expected and were there any outliers.
 We will also analyse each of the methods to test for statistical significance compared to known methods.
 
 \subsection{Hybrid Algorithms}
 
+\subsubsection{Parameters}
+\begin{enumerate}
+	\item Networks: Each of Twitter, Enron, P2P, Airports networks sampled thirty (30) times using MHDA. Stored and saved to have the exact same networks for use with the 3 models.
+	\item Baseline Comparisons: Using greedy, CELF and degree as base heuristics to compare against the new hybrid heuristics.
+	\item Seed Sizes: Each network is made up of one thousand (1000) nodes, when comparing methods the seed sizes to compare will be from 50 to 300 in 50 node incremements with the addition of 10 nodes to represent incredibly small networks.
+\end{enumerate}
 
-\newpage
+In this section we discuss the general results across each model on each set of seed sizes. Any standout values are highlighted with comments on their significance or outlier noted.
+\subsubsection{ICC Analysis}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{icc_redone_all_nets_hybrid.png}
+		\caption{ICC Hybrid Heuristics Performance}
+	\end{center}
+\end{figure}
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Enron dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.314 (0.092) & 0.389 (0.028) & 0.433 (0.029) & 0.469 (0.031) & 0.529 (0.025) & 0.563 (0.030) & 0.594 (0.027) \\
+		CELF            & 0.342 (0.039) & 0.362 (0.040) & 0.370 (0.029) & 0.398 (0.029) & 0.415 (0.021) & 0.450 (0.022) & 0.487 (0.017) \\
+		Degree          & 0.331 (0.047) & 0.350 (0.037) & 0.360 (0.023) & 0.381 (0.032) & 0.400 (0.020) & 0.435 (0.022) & 0.464 (0.017)
+		\\
+		\hline
+		Custom 1        & 0.205 (0.160) & 0.356 (0.073) & 0.416 (0.041) & 0.458 (0.042) & 0.520 (0.035) & 0.560 (0.038) & 0.616 (0.025) \\
+		Custom 2        & 0.216 (0.158) & 0.355 (0.042) & 0.406 (0.069) & 0.471 (0.030) & 0.543 (0.037) & 0.584 (0.033) & 0.621 (0.036) \\
+		Custom 3        & 0.346 (0.043) & 0.342 (0.034) & 0.368 (0.027) & 0.379 (0.029) & 0.402 (0.026) & 0.442 (0.020) & 0.464 (0.018) \\
+		Custom 4        & 0.240 (0.155) & 0.375 (0.074) & 0.415 (0.037) & 0.425 (0.025) & 0.450 (0.025) & 0.472 (0.019) & 0.501 (0.020) \\
+		Custom 5        & 0.333 (0.042) & 0.359 (0.035) & 0.399 (0.038) & 0.450 (0.030) & 0.485 (0.022) & 0.517 (0.031) & 0.549 (0.020) \\
+		Custom 6        & 0.332 (0.035) & 0.353 (0.033) & 0.353 (0.028) & 0.386 (0.026) & 0.417 (0.024) & 0.443 (0.018) & 0.476 (0.020) \\
+		Custom 7        & 0.339 (0.041) & 0.333 (0.040) & 0.356 (0.035) & 0.366 (0.037) & 0.397 (0.021) & 0.426 (0.018) & 0.448 (0.018) \\
+		\hline
+	\end{tabular}
+	\label{enron_icc_table}
+	%\hspace*{1cm}
+\end{table}
+
+On the enron dataset as above in table \ref{enron_icc_table} the standout performers are Custom 2 and Custom 1, these are the two union methods taking a combination of degree and lcc as well as double degree discount and lcc.
+They have the best overall performance at seed sizes greater than 100 however are not able to consistently be better than CELF at the lower seed counts.
+
+Custom 5 takes into conisderation both degree and mean neighbour degree, making it incredibly simple to compute and producing a consistently better result than CELF past 100 nodes whilst being minimally worse than CELF at 10 and 50 nodes.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Twitter dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.188 (0.098) & 0.348 (0.069) & 0.428 (0.069) & 0.450 (0.036) & 0.509 (0.049) & 0.554 (0.032) & 0.605 (0.031) \\
+		CELF            & 0.154 (0.050) & 0.220 (0.064) & 0.283 (0.054) & 0.340 (0.050) & 0.388 (0.035) & 0.440 (0.041) & 0.487 (0.041) \\
+		Degree          & 0.192 (0.044) & 0.241 (0.054) & 0.302 (0.043) & 0.341 (0.032) & 0.375 (0.028) & 0.416 (0.022) & 0.462 (0.025) \\
+		\hline
+		Custom 1        & 0.026 (0.026) & 0.154 (0.074) & 0.332 (0.121) & 0.391 (0.072) & 0.470 (0.060) & 0.521 (0.054) & 0.579 (0.039) \\
+		Custom 2        & 0.025 (0.030) & 0.157 (0.073) & 0.287 (0.086) & 0.398 (0.069) & 0.487 (0.057) & 0.508 (0.052) & 0.556 (0.043) \\
+		Custom 3        & 0.187 (0.038) & 0.293 (0.070) & 0.358 (0.051) & 0.389 (0.032) & 0.438 (0.028) & 0.479 (0.035) & 0.500 (0.027) \\
+		Custom 4        & 0.040 (0.039) & 0.156 (0.108) & 0.370 (0.055) & 0.400 (0.052) & 0.465 (0.046) & 0.482 (0.035) & 0.521 (0.024) \\
+		Custom 5        & 0.176 (0.073) & 0.351 (0.053) & 0.414 (0.044) & 0.466 (0.053) & 0.519 (0.046) & 0.550 (0.047) & 0.565 (0.037) \\
+		Custom 6        & 0.214 (0.047) & 0.309 (0.044) & 0.370 (0.046) & 0.407 (0.036) & 0.456 (0.036) & 0.471 (0.028) & 0.505 (0.026) \\
+		Custom 7        & 0.157 (0.050) & 0.226 (0.050) & 0.263 (0.057) & 0.321 (0.039) & 0.380 (0.033) & 0.420 (0.025) & 0.460 (0.028) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Some slight differences are observed on the twitter dataset, greedy and celf perform very well with custom 5 being the almost equivalent to greedy at all points except 300.
+Custom 6 along with Custom 3 perform well at the lowe ranges in comaprison to the other heuritics however tail toff towards higher seed counts past 150.
+There is a very large difference observed at seed sizes of 10 between Custom 2, Custom 1, Custom 4 and the rest of the heuristics, they are almost worthless at sizes 10 and 50 compared to the other methods.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Airports dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.500 (0.012) & 0.524 (0.017) & 0.552 (0.013) & 0.588 (0.014) & 0.609 (0.015) & 0.642 (0.011) & 0.664 (0.014) \\
+		CELF            & 0.500 (0.015) & 0.505 (0.016) & 0.517 (0.016) & 0.517 (0.016) & 0.528 (0.015) & 0.534 (0.015) & 0.539 (0.014) \\
+		Degree          & 0.489 (0.017) & 0.490 (0.018) & 0.501 (0.016) & 0.496 (0.013) & 0.499 (0.016) & 0.497 (0.016) & 0.519 (0.012) \\
+		\hline
+		Custom 1        & 0.395 (0.193) & 0.522 (0.017) & 0.571 (0.013) & 0.597 (0.017) & 0.618 (0.014) & 0.634 (0.013) & 0.665 (0.009) \\
+		Custom 2        & 0.331 (0.227) & 0.520 (0.015) & 0.567 (0.015) & 0.593 (0.014) & 0.614 (0.014) & 0.627 (0.014) & 0.658 (0.012) \\
+		Custom 3        & 0.492 (0.017) & 0.493 (0.020) & 0.490 (0.014) & 0.498 (0.017) & 0.506 (0.016) & 0.518 (0.014) & 0.530 (0.014) \\
+		Custom 4        & 0.451 (0.147) & 0.541 (0.014) & 0.586 (0.016) & 0.634 (0.018) & 0.683 (0.019) & 0.694 (0.015) & 0.694 (0.016) \\
+		Custom 5        & 0.497 (0.017) & 0.500 (0.014) & 0.510 (0.013) & 0.524 (0.017) & 0.533 (0.011) & 0.543 (0.013) & 0.561 (0.010) \\
+		Custom 6        & 0.494 (0.015) & 0.495 (0.017) & 0.497 (0.016) & 0.495 (0.017) & 0.504 (0.012) & 0.514 (0.016) & 0.532 (0.014) \\
+		Custom 7        & 0.492 (0.014) & 0.490 (0.017) & 0.487 (0.015) & 0.490 (0.017) & 0.496 (0.015) & 0.505 (0.015) & 0.513 (0.015) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+The airports dataset is incredibly dense and well connected with a very high mean degree.
+For staritng seed sizes between 50 and 300 there is no comparison to custom 4, it provides much better performance than all f the other heuristics.
+The next best method is Custom 5 which perofrms very closely to CELF from 10 to 100 and surpasses beyond that.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on P2p dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.016 (0.003) & 0.072 (0.006) & 0.143 (0.009) & 0.202 (0.009) & 0.266 (0.009) & 0.324 (0.009) & 0.381 (0.014) \\
+		CELF            & 0.018 (0.005) & 0.076 (0.008) & 0.143 (0.007) & 0.204 (0.011) & 0.264 (0.012) & 0.322 (0.011) & 0.378 (0.010) \\
+		Degree          & 0.023 (0.006) & 0.088 (0.009) & 0.157 (0.007) & 0.213 (0.009) & 0.269 (0.010) & 0.318 (0.008) & 0.369 (0.010) \\
+		\hline
+		Custom 1        & 0.012 (0.002) & 0.066 (0.005) & 0.127 (0.008) & 0.187 (0.008) & 0.242 (0.007) & 0.303 (0.010) & 0.357 (0.008) \\
+		Custom 2        & 0.013 (0.002) & 0.066 (0.006) & 0.126 (0.008) & 0.185 (0.007) & 0.246 (0.009) & 0.302 (0.009) & 0.360 (0.010) \\
+		Custom 3        & 0.022 (0.006) & 0.087 (0.005) & 0.155 (0.008) & 0.213 (0.008) & 0.271 (0.009) & 0.322 (0.009) & 0.372 (0.011) \\
+		Custom 4        & 0.022 (0.006) & 0.086 (0.007) & 0.153 (0.009) & 0.214 (0.009) & 0.270 (0.010) & 0.322 (0.007) & 0.373 (0.009) \\
+		Custom 5        & 0.021 (0.004) & 0.090 (0.008) & 0.166 (0.010) & 0.229 (0.011) & 0.290 (0.011) & 0.344 (0.010) & 0.397 (0.010) \\
+		Custom 6        & 0.024 (0.006) & 0.091 (0.007) & 0.163 (0.008) & 0.225 (0.011) & 0.286 (0.008) & 0.340 (0.009) & 0.391 (0.009) \\
+		Custom 7        & 0.021 (0.005) & 0.080 (0.007) & 0.144 (0.009) & 0.198 (0.008) & 0.253 (0.010) & 0.307 (0.008) & 0.359 (0.008) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+On the p2p network the toplogy leads to a more linear and continous set of results compared to the other networks.
+Custom 5 is a standaout perfoming better than every single other method from 100 and above and being very close to Custom 6 at size 50 whilst being middle of the pack but still better than greedy and celf at size 10.
+
+\begin{enumerate}
+	\item Custom 1: Within the independant cascade model this performs well, closely matching greedy
+	\item Custom 2: As with Custom 1 this also works well and matches closely to the greedy algorithm
+	\item Custom 3: Both Perform poorly across the topologies
+	\item Custom 4: Both perform poorly across the topologies. Outstandign performance on the airports dataset.
+	\item Custom 5: Perfoming as expected across each of the topologies, airports and enron being an outlier where low seed counts perform poorly but at higher counts performs much better than CELF - for how cheap this is to compute this a really good performer.
+	\item Custom 6: Performs poorly on all except the p2p - likely due to p2p having a very consistent degree distribution
+	\item Custom 7: Consistently performs around equal to worse than celf over all topologies.
+	\item Custom 8:
+	\item Custom 9: This is a modification of Custom 5 to helpwith the low seed size runs, this does the opposite of the intended effect.
+\end{enumerate}
+
+\subsubsection{LTM Analysis}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{ltm_all_nets_hybrid.png}
+		\caption{LTM Hybrid Heuristics Performance}
+	\end{center}
+\end{figure}
+
+These are the results from the proposed algorithms in the linear threshold model, each threshold is set at a t distributed uniformily over 0 to 1.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Enron dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.076 (0.056) & 0.246 (0.101) & 0.460 (0.102) & 0.602 (0.084) & 0.702 (0.065) & 0.770 (0.042) & 0.828 (0.039) \\
+		Degree          & 0.374 (0.070) & 0.586 (0.042) & 0.656 (0.051) & 0.699 (0.031) & 0.729 (0.030) & 0.758 (0.030) & 0.787 (0.029) \\
+		\hline
+		cust1           & 0.023 (0.027) & 0.114 (0.048) & 0.219 (0.074) & 0.298 (0.061) & 0.411 (0.078) & 0.519 (0.081) & 0.574 (0.079) \\
+		cust2           & 0.016 (0.005) & 0.107 (0.050) & 0.246 (0.091) & 0.338 (0.108) & 0.448 (0.101) & 0.521 (0.100) & 0.627 (0.101) \\
+		cust3           & 0.391 (0.078) & 0.597 (0.046) & 0.660 (0.041) & 0.701 (0.029) & 0.728 (0.029) & 0.760 (0.031) & 0.803 (0.023) \\
+		cust4           & 0.030 (0.014) & 0.109 (0.085) & 0.571 (0.115) & 0.680 (0.054) & 0.731 (0.032) & 0.766 (0.030) & 0.794 (0.022) \\
+		cust5           & 0.341 (0.077) & 0.636 (0.053) & 0.750 (0.027) & 0.800 (0.031) & 0.838 (0.027) & 0.874 (0.020) & 0.897 (0.018) \\
+		cust6           & 0.378 (0.088) & 0.604 (0.050) & 0.667 (0.040) & 0.711 (0.032) & 0.755 (0.028) & 0.782 (0.025) & 0.811 (0.020) \\
+		cust7           & 0.381 (0.093) & 0.558 (0.044) & 0.622 (0.043) & 0.640 (0.049) & 0.698 (0.038) & 0.718 (0.026) & 0.745 (0.034) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+On the enron dataset the most performant heuristic by a large margin is Custom 5 for all seed sizes except 10.
+Custom 1 and Custom 2 perform very very poorly, similarly to Custom 4 and Greedy.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Twitter dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.071 (0.035) & 0.283 (0.067) & 0.418 (0.048) & 0.598 (0.054) & 0.697 (0.043) & 0.768 (0.032) & 0.810 (0.032) \\
+		Degree          & 0.146 (0.055) & 0.308 (0.085) & 0.408 (0.083) & 0.494 (0.080) & 0.590 (0.077) & 0.652 (0.055) & 0.716 (0.035) \\
+		\hline
+		cust1           & 0.024 (0.019) & 0.135 (0.031) & 0.258 (0.051) & 0.380 (0.048) & 0.501 (0.050) & 0.576 (0.053) & 0.639 (0.045) \\
+		cust2           & 0.023 (0.013) & 0.131 (0.029) & 0.261 (0.059) & 0.386 (0.051) & 0.488 (0.060) & 0.578 (0.055) & 0.660 (0.041) \\
+		cust3           & 0.174 (0.050) & 0.394 (0.078) & 0.543 (0.064) & 0.622 (0.069) & 0.681 (0.053) & 0.744 (0.038) & 0.787 (0.036) \\
+		cust4           & 0.039 (0.029) & 0.137 (0.082) & 0.475 (0.069) & 0.605 (0.064) & 0.687 (0.044) & 0.744 (0.054) & 0.786 (0.032) \\
+		cust5           & 0.201 (0.063) & 0.511 (0.057) & 0.663 (0.037) & 0.767 (0.030) & 0.820 (0.029) & 0.858 (0.021) & 0.884 (0.016) \\
+		cust6           & 0.184 (0.043) & 0.441 (0.070) & 0.576 (0.058) & 0.663 (0.036) & 0.720 (0.045) & 0.762 (0.043) & 0.786 (0.037) \\
+		cust7           & 0.126 (0.052) & 0.283 (0.073) & 0.383 (0.075) & 0.462 (0.088) & 0.548 (0.070) & 0.614 (0.051) & 0.661 (0.045) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+As with the enron dataset the twitter dataset exhibits a very similar behavirous with Custom 5 being the most performatn by far across the entire range of seed sizes.
+Similar behaviour for 1 and 2 is shown with really poor final influence spread at low seed sizes.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Airports dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.122 (0.114) & 0.379 (0.196) & 0.650 (0.117) & 0.750 (0.108) & 0.814 (0.069) & 0.881 (0.060) & 0.899 (0.044) \\
+		Degree          & 0.503 (0.135) & 0.683 (0.043) & 0.754 (0.033) & 0.783 (0.039) & 0.835 (0.027) & 0.871 (0.020) & 0.902 (0.021) \\
+		\hline
+		cust1           & 0.023 (0.022) & 0.097 (0.061) & 0.185 (0.068) & 0.350 (0.126) & 0.611 (0.141) & 0.721 (0.092) & 0.797 (0.091) \\
+		cust2           & 0.019 (0.014) & 0.132 (0.127) & 0.180 (0.099) & 0.386 (0.166) & 0.575 (0.150) & 0.739 (0.091) & 0.783 (0.092) \\
+		cust3           & 0.492 (0.147) & 0.742 (0.047) & 0.792 (0.039) & 0.838 (0.028) & 0.896 (0.016) & 0.925 (0.014) & 0.937 (0.013) \\
+		cust4           & 0.024 (0.022) & 0.096 (0.095) & 0.145 (0.059) & 0.232 (0.114) & 0.320 (0.144) & 0.812 (0.043) & 0.882 (0.030) \\
+		cust5           & 0.501 (0.172) & 0.841 (0.035) & 0.881 (0.020) & 0.914 (0.014) & 0.932 (0.016) & 0.943 (0.015) & 0.956 (0.011) \\
+		cust6           & 0.494 (0.145) & 0.759 (0.050) & 0.778 (0.036) & 0.851 (0.033) & 0.879 (0.025) & 0.907 (0.017) & 0.932 (0.010) \\
+		cust7           & 0.481 (0.152) & 0.688 (0.068) & 0.709 (0.041) & 0.773 (0.040) & 0.770 (0.034) & 0.816 (0.039) & 0.869 (0.023) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+The airports dataset shows a similar story to the other datasets, Custom 5 is the most perofmant across all seed sizes.
+The large gap between (x) and (y) is msot likely to be due to the difference in X for Y because z.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on p2p dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.045 (0.013) & 0.194 (0.023) & 0.347 (0.042) & 0.453 (0.032) & 0.564 (0.030) & 0.643 (0.022) & 0.712 (0.030) \\
+		Degree          & 0.100 (0.033) & 0.288 (0.023) & 0.428 (0.029) & 0.520 (0.023) & 0.601 (0.025) & 0.666 (0.029) & 0.705 (0.019) \\
+		\hline
+		cust1           & 0.028 (0.012) & 0.153 (0.022) & 0.277 (0.035) & 0.381 (0.040) & 0.472 (0.035) & 0.540 (0.025) & 0.616 (0.034) \\
+		cust2           & 0.028 (0.014) & 0.145 (0.031) & 0.269 (0.024) & 0.374 (0.032) & 0.458 (0.035) & 0.554 (0.029) & 0.622 (0.027) \\
+		cust3           & 0.091 (0.027) & 0.283 (0.028) & 0.428 (0.026) & 0.521 (0.029) & 0.603 (0.020) & 0.656 (0.028) & 0.709 (0.022) \\
+		cust4           & 0.091 (0.025) & 0.291 (0.036) & 0.434 (0.027) & 0.523 (0.034) & 0.595 (0.022) & 0.658 (0.027) & 0.709 (0.021) \\
+		cust5           & 0.082 (0.027) & 0.304 (0.032) & 0.485 (0.033) & 0.601 (0.031) & 0.694 (0.021) & 0.764 (0.025) & 0.805 (0.020) \\
+		cust6           & 0.083 (0.025) & 0.319 (0.030) & 0.467 (0.027) & 0.581 (0.030) & 0.654 (0.023) & 0.716 (0.023) & 0.776 (0.022) \\
+		cust7           & 0.076 (0.019) & 0.236 (0.032) & 0.363 (0.027) & 0.472 (0.029) & 0.534 (0.025) & 0.597 (0.023) & 0.659 (0.026) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Again Custom 5 is the most performant across all seed sizes above 10 nodes but with a very good performance in 10 being over 8 times better than degree.
+
+\begin{enumerate}
+	\item Custom 1: Consistently poorly performing in comparison to CELF as a baseline.
+	\item Custom 2: As with Custom 1.
+	\item Custom 3: Not a good or bad performer. Inconsitent across datasets.
+	\item Custom 4: Not a good or bad performer. Inconsistent across datasets.
+	\item Custom 5: Consistently the best perfoming herusitic across all networks from sizes greater than or equal to 50 nodes.
+	\item Custom 6: Strong performance on P2P especially, Good overall performance above celf for each datasets.
+	\item Custom 7: Average, not better than CELF for all datasets , strong at low seed counts and very drastically drops off.
+	\item Custom 8: Perfoming same as with custom 1 and 2, very poor.
+	\item Custom 9:	Lower performance than 5 across all datasets and seed sizes.
+\end{enumerate}
+
+\subsubsection{DCC Analysis}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{dcc_redone_all_nets_hybrid.png}
+		\caption{DCC Hybrid Heuristics Performance}
+	\end{center}
+\end{figure}
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Enron dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.106 (0.020) & 0.158 (0.017) & 0.220 (0.016) & 0.276 (0.016) & 0.328 (0.014) & 0.381 (0.011) & 0.426 (0.014) \\
+		CELF            & 0.109 (0.022) & 0.156 (0.018) & 0.220 (0.011) & 0.266 (0.016) & 0.316 (0.013) & 0.359 (0.011) & 0.407 (0.011) \\
+		Degree          & 0.127 (0.015) & 0.182 (0.014) & 0.233 (0.013) & 0.276 (0.012) & 0.321 (0.011) & 0.364 (0.011) & 0.409 (0.014) \\
+		\hline
+		cust1           & 0.069 (0.042) & 0.131 (0.031) & 0.192 (0.019) & 0.251 (0.019) & 0.310 (0.021) & 0.355 (0.018) & 0.415 (0.015) \\
+		cust2           & 0.044 (0.044) & 0.144 (0.022) & 0.193 (0.019) & 0.249 (0.025) & 0.309 (0.016) & 0.362 (0.023) & 0.415 (0.013) \\
+		cust3           & 0.123 (0.019) & 0.180 (0.014) & 0.231 (0.014) & 0.276 (0.013) & 0.321 (0.012) & 0.363 (0.011) & 0.409 (0.011) \\
+		cust4           & 0.054 (0.043) & 0.129 (0.033) & 0.219 (0.027) & 0.283 (0.012) & 0.324 (0.015) & 0.376 (0.009) & 0.417 (0.012) \\
+		cust5           & 0.126 (0.017) & 0.196 (0.013) & 0.251 (0.011) & 0.304 (0.013) & 0.348 (0.013) & 0.392 (0.011) & 0.434 (0.011) \\
+		cust6           & 0.129 (0.019) & 0.187 (0.013) & 0.232 (0.012) & 0.284 (0.012) & 0.327 (0.012) & 0.365 (0.012) & 0.414 (0.011) \\
+		cust7           & 0.119 (0.019) & 0.175 (0.014) & 0.226 (0.013) & 0.275 (0.016) & 0.316 (0.012) & 0.355 (0.014) & 0.395 (0.011) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+In a similar manner to the linear threshold model custom 5 shows very good behaviour compared to the other heuristics, good initial perofrmance and building a bigger edge the others as seed size increases in the 100-200 range.
+Other heuristics start to catch up as seed coutns approach 300.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Twitter dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.069 (0.028) & 0.148 (0.021) & 0.220 (0.021) & 0.286 (0.017) & 0.343 (0.012) & 0.397 (0.016) & 0.438 (0.014) \\
+		CELF            & 0.054 (0.014) & 0.119 (0.025) & 0.172 (0.029) & 0.240 (0.019) & 0.291 (0.019) & 0.344 (0.016) & 0.394 (0.017) \\
+		Degree          & 0.065 (0.022) & 0.140 (0.027) & 0.196 (0.024) & 0.250 (0.016) & 0.302 (0.015) & 0.350 (0.015) & 0.401 (0.014) \\
+		\hline
+		cust1           & 0.016 (0.006) & 0.093 (0.018) & 0.173 (0.018) & 0.246 (0.019) & 0.306 (0.014) & 0.356 (0.017) & 0.406 (0.018) \\
+		cust2           & 0.017 (0.008) & 0.090 (0.021) & 0.168 (0.022) & 0.246 (0.019) & 0.307 (0.018) & 0.361 (0.017) & 0.409 (0.012) \\
+		cust3           & 0.078 (0.023) & 0.157 (0.023) & 0.227 (0.016) & 0.273 (0.019) & 0.330 (0.017) & 0.372 (0.010) & 0.415 (0.014) \\
+		cust4           & 0.020 (0.013) & 0.086 (0.030) & 0.222 (0.029) & 0.277 (0.022) & 0.327 (0.018) & 0.380 (0.016) & 0.424 (0.012) \\
+		cust5           & 0.081 (0.022) & 0.190 (0.021) & 0.255 (0.013) & 0.306 (0.013) & 0.352 (0.014) & 0.402 (0.013) & 0.446 (0.013) \\
+		cust6           & 0.093 (0.020) & 0.172 (0.015) & 0.233 (0.015) & 0.282 (0.017) & 0.334 (0.017) & 0.376 (0.015) & 0.417 (0.015) \\
+		cust7           & 0.058 (0.021) & 0.130 (0.024) & 0.190 (0.027) & 0.242 (0.022) & 0.292 (0.019) & 0.343 (0.014) & 0.398 (0.012) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Custom 5 is again the highest performing heuristic over all seed sizes except 10.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on Airports dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10             & 50             & 100            & 150            & 200            & 250            & 300            \\
+		\hline
+		Greedy          & 0.137 (0.019)  & 0.192 (0.015)  & 0.248 (0.018)  & 0.296 (0.015)  & 0.342 (0.013)  & 0.384 (0.012)  & 0.430 (0.012)  \\
+		CELF            & 0.146 (0.018)  & 0.197 (0.014)  & 0.243 (0.014)  & 0.291 (0.015)  & 0.329 (0.012)  & 0.375 (0.009)  & 0.415 (0.012)  \\
+		Degree          & 0.144 (0.018)  & 0.202 (0.022)  & 0.252 (0.013)  & 0.297 (0.012)  & 0.339 (0.009)  & 0.379 (0.014)  & 0.420 (0.010)  \\
+		\hline
+		cust1           & 0.091 (0.065)  & 0.182 (0.022)  & 0.226 (0.020)  & 0.283 (0.016)  & 0.329 (0.012)  & 0.366 (0.012)  & 0.415 (0.010)  \\
+		cust2           & 0.094 (0.061)  & 0.180 (0.016)  & 0.235 (0.018)  & 0.280 (0.016)  & 0.326 (0.012)  & 0.372 (0.010)  & 0.412 (0.009)  \\
+		cust3           & *0.160 (0.019) & *0.211 (0.014) & *0.256 (0.010) & *0.302 (0.011) & *0.350 (0.013) & *0.387 (0.010) & *0.429 (0.011) \\
+		cust4           & 0.129 (0.028)  & 0.174 (0.025)  & 0.231 (0.019)  & 0.281 (0.017)  & *0.339 (0.024) & *0.412 (0.012) & *0.451 (0.012) \\
+		cust5           & *0.166 (0.014) & *0.221 (0.010) & *0.270 (0.011) & *0.312 (0.012) & *0.349 (0.011) & *0.393 (0.012) & *0.431 (0.012) \\
+		cust6           & *0.152 (0.023) & *0.213 (0.014) & *0.262 (0.013) & *0.304 (0.012) & *0.345 (0.010) & *0.383 (0.012) & *0.426 (0.008) \\
+		cust7           & *0.153 (0.020) & 0.196 (0.018)  & 0.253 (0.014)  & 0.296 (0.011)  & 0.335 (0.011)  & 0.379 (0.011)  & 0.414 (0.008)  \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Airports shows an interesting behavioru with seed sizes tending past 150, Custom 5 does not follow it's trend compared to in the lower seed proportions.
+Custom 4 really comes into it's element around 200 nodes and overtakes all of the methods by a large margin.
+
+\begin{table}[h]
+	\centering
+	\caption{Final influence proportion and std. dev of each method on p2p dataset}
+	\hspace*{-3cm}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Method} & 10            & 50            & 100           & 150           & 200           & 250           & 300           \\
+		\hline
+		Greedy          & 0.017 (0.004) & 0.071 (0.006) & 0.137 (0.008) & 0.201 (0.009) & 0.257 (0.011) & 0.311 (0.011) & 0.370 (0.008) \\
+		CELF            & 0.016 (0.003) & 0.075 (0.006) & 0.138 (0.009) & 0.199 (0.008) & 0.259 (0.010) & 0.315 (0.011) & 0.363 (0.012) \\
+		Degree          & 0.022 (0.005) & 0.085 (0.008) & 0.147 (0.007) & 0.207 (0.008) & 0.258 (0.007) & 0.313 (0.008) & 0.363 (0.007) \\
+		\hline
+		cust1           & 0.012 (0.002) & 0.064 (0.006) & 0.126 (0.007) & 0.184 (0.007) & 0.239 (0.007) & 0.297 (0.009) & 0.353 (0.009) \\
+		cust2           & 0.013 (0.002) & 0.066 (0.006) & 0.122 (0.006) & 0.183 (0.009) & 0.241 (0.009) & 0.296 (0.007) & 0.352 (0.007) \\
+		cust3           & 0.023 (0.005) & 0.084 (0.007) & 0.147 (0.008) & 0.209 (0.010) & 0.261 (0.010) & 0.314 (0.008) & 0.364 (0.008) \\
+		cust4           & 0.022 (0.004) & 0.085 (0.007) & 0.148 (0.009) & 0.206 (0.007) & 0.259 (0.009) & 0.312 (0.008) & 0.362 (0.009) \\
+		cust5           & 0.022 (0.006) & 0.089 (0.007) & 0.158 (0.008) & 0.220 (0.009) & 0.279 (0.009) & 0.334 (0.009) & 0.381 (0.009) \\
+		cust6           & 0.022 (0.005) & 0.086 (0.008) & 0.155 (0.008) & 0.217 (0.008) & 0.271 (0.008) & 0.326 (0.007) & 0.374 (0.009) \\
+		cust7           & 0.020 (0.003) & 0.077 (0.006) & 0.140 (0.007) & 0.197 (0.008) & 0.253 (0.009) & 0.301 (0.008) & 0.353 (0.006) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+In the p2p network Custom 5 is again the most performant by a relatively margin compared to the other methods, beating out greedy and celf at 10 and all comparsion methods at 50 and above.
+
+\begin{enumerate}
+	\item Custom 1: Very poor performance, Not a good idea
+	\item Custom 2: Same as 1, just not a good idea
+	\item Custom 3:
+	\item Custom 4:
+	\item Custom 5: Consistently at towards the top of the chart, always better than celf.
+	\item Custom 6:
+	\item Custom 7: A poor performer across all datasets, starts off strong but tails off massively.
+	\item Custom 8: Tracks similarly to Custom 5 however performs poorly on the p2p netwok
+	\item Custom 9:
+\end{enumerate}
+
+
+\subsubsection{Subsection of Deg/mnd across parameters}
+From the above it is clear that it is the best overall cheap heuristics across the 3 models.
+It generally outperforms CELF on all datasets on all models.
+
+The above analysis as discusessed uses $p =0.1$ for ICC and DCC with DCC having a 0.7x probability of being turned each time it's attempted call this $q$. We will test the following parameters against CELF.
+$p$ in the ranges of 0.05 to 0.25 in 0.05 incremenets.
+$q$ in the range of 0.5 to 0.9 in 0.1 incremenets, noting that $q=1$ makes it directly equivalent ot the ICC model.
+
+\subsubsection{Methods that Did not work}
+
+\begin{enumerate}
+	\item Using just the clustering coefficient of each node can perform either very well on some datasets or is the absolute worst on some others, for this reason it is not included for comparision.
+	\item Attempting to improve custom 5 (in Custom 9) by means of choosing $logk$ nodes as degree to improve the low seed count performance did not work and made it perform worse across all areas.
+	\item Union based approaches
+	\item Clustering coefficient by itself is overall an incredibly poor performer.
+	\item
+\end{enumerate}
+
+\clearpage
 \section{Limitations}
 
 NOT VERY SMART - LIMITED SCOPE - POOR TIME MANAGEMENT - PROCRASTINATION - MIGHT ACTUALLY DO STUFF WITH DEADLINE IN EXACTLY A MONTH
@@ -448,7 +904,7 @@ NOT VERY SMART - LIMITED SCOPE - POOR TIME MANAGEMENT - PROCRASTINATION - MIGHT 
 \newpage
 \section{Conclusion}
 
-SHORT CONCLUSION MAYBE 800-1000 WORDS SUMMARISING THE ENTIRE PROJECT, RESULTS and HOW COULD THIS BE EXPANDED FURTHER.
+We have shown that some very simple heuristics are able to deliver equal if not better perofrmance than CELF at tiny fractions of the computational cost.
 
 \newpage
 \bibliography{../sources}{}

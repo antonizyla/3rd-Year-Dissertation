@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex Report"] 1774889847.47645 "Report.aux" "Report.bbl" "Report" 1774889847.89917 0
-  "../sources.bib" 1769053092.38182 14856 a156d6cfaece4386a05c37eb007fe30a ""
+["bibtex Report"] 1775292158.04865 "Report.aux" "Report.bbl" "Report" 1775292502.17424 0
+  "../sources.bib" 1774990282.78846 18724 c1e9fa2015353ac67263a3a803c1d8cf ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1737590400 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "Report.aux" 1774889847.80627 5193 12dc4392c9c4dd722f22591c119c7e78 "pdflatex"
+  "Report.aux" 1775292502.11269 9370 e68fe7ea711c5c0dccff59c422adc60d "pdflatex"
   (generated)
   "Report.bbl"
   "Report.blg"
   (rewritten before read)
-["pdflatex"] 1774889847.50953 "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" "Report.pdf" "Report" 1774889847.8994 0
+["pdflatex"] 1775292501.59272 "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" "Report.pdf" "Report" 1775292502.17441 0
   "../../explorations/overlayed_hisotgram_degree_dist_all_nets.png" 1774617650.72143 20439 fa752df5b80d24ff78a2b63646e0facc ""
-  "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" 1774889846.84027 38669 02be60ecd011e1442c2c98f303f32925 ""
+  "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" 1775292501.42911 71138 bc957290187791a9caaf64d89e141a53 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -26,6 +26,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1136768653 768 1321e9409b4137d6fb428ac9dc956269 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
@@ -40,6 +41,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb" 1215737283 138258 6525c253f16cededa14c7fd0da7f67b2 ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1737590400 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/article.cls" 1737590400 20144 d5ecf0a5140c8d8d8b72cbe86e320eff ""
@@ -57,11 +59,15 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1737590400 40900 887e0dc8cac988a9e9c574af364cf837 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1754500487.38159 548928 d5cef11bab9e23afb1f72925de968dee ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1760482276 7571769 36ae38ee58201d53bf171bffed19d40f ""
-  "Report.aux" 1774889847.80627 5193 12dc4392c9c4dd722f22591c119c7e78 "pdflatex"
-  "Report.bbl" 1774889847.50527 2517 98d96af3cd2a8944b248a97e6f11419f "bibtex Report"
-  "Report.tex" 1774889846.84027 38669 02be60ecd011e1442c2c98f303f32925 ""
-  "Report.toc" 1774889847.80727 2481 03d99621d2cfccac5fd8ad4c56f30a73 "pdflatex"
+  "Report.aux" 1775292502.11269 9370 e68fe7ea711c5c0dccff59c422adc60d "pdflatex"
+  "Report.bbl" 1775292158.06349 4551 6c884eb0d462f483369ef5357597065e "bibtex Report"
+  "Report.tex" 1775292501.42911 71138 bc957290187791a9caaf64d89e141a53 ""
+  "Report.toc" 1775292502.11369 3179 b8e3402276d35bd4e37a260150b678b0 "pdflatex"
+  "Runtime_comparison.png" 1775170641.8099 40502 8ffeab15f7eabed3f57ea642dfd8745b ""
+  "dcc_redone_all_nets_hybrid.png" 1775170603.50096 234781 bb86eacc64d39f627b44965409a0d77d ""
   "figures/all_heuristics_icc.png" 1772997643.89211 118838 1d8415b41428c11c732c245a516c3440 ""
+  "icc_redone_all_nets_hybrid.png" 1775170593.61897 226040 aa0d72c940d3c3a958865904790e06f0 ""
+  "ltm_all_nets_hybrid.png" 1775170599.68696 225287 1e882998256b976fa3e9434fd32708ec ""
   (generated)
   "Report.aux"
   "Report.log"

@@ -10,6 +10,11 @@ Henry Franks, Nathan Griffiths, and Sarabjot~Singh Anand.
 \newblock Learning agent influence in mas with complex social networks.
 \newblock {\em Autonomous Agents and Multi-Agent Systems}, 28:836--866, 2014.
 
+\bibitem{SciencePlots}
+John~D. Garrett.
+\newblock {garrettj403/SciencePlots}.
+\newblock September 2021.
+
 \bibitem{gjoka2010}
 Minas Gjoka, Maciej Kurant, Carter Butts, and Athina Markopoulou.
 \newblock Walking in facebook: A case study of unbiased sampling of osns.
@@ -23,6 +28,21 @@ Minas Gjoka, Maciej Kurant, Carter~T. Butts, and Athina Markopoulou.
 \bibitem{goyal2012competitivecontagionnetworks}
 Sanjeev Goyal and Michael Kearns.
 \newblock Competitive contagion in networks, 2012.
+
+\bibitem{networkx}
+Aric~A. Hagberg, Daniel~A. Schult, and Pieter~J. Swart.
+\newblock Exploring network structure, dynamics, and function using networkx.
+\newblock In Ga\"el Varoquaux, Travis Vaught, and Jarrod Millman, editors, {\em Proceedings of the 7th Python in Science Conference}, pages 11 -- 15, Pasadena, CA USA, 2008.
+
+\bibitem{numpy}
+Charles~R. Harris, K.~Jarrod Millman, St{\'{e}}fan~J. van~der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg, Nathaniel~J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten~H. van Kerkwijk, Matthew Brett, Allan Haldane, Jaime~Fern{\'{a}}ndez del R{\'{i}}o, Mark Wiebe, Pearu Peterson, Pierre G{\'{e}}rard-Marchant, Kevin Sheppard, Tyler Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis~E. Oliphant.
+\newblock Array programming with {NumPy}.
+\newblock {\em Nature}, 585(7825):357--362, September 2020.
+
+\bibitem{matplotlib}
+J.~D. Hunter.
+\newblock Matplotlib: A 2d graphics environment.
+\newblock {\em Computing in Science \& Engineering}, 9(3):90--95, 2007.
 
 \bibitem{kempe2003}
 David Kempe, Jon Kleinberg, and \'{E}va Tardos.
@@ -39,10 +59,19 @@ Marcelo~N Kuperman.
 \newblock Invited review: Epidemics on social networks.
 \newblock {\em Papers in physics}, 5(1):0--0, 2013.
 
+\bibitem{pandas}
+The pandas~development team.
+\newblock pandas-dev/pandas: Pandas, February 2020.
+
 \bibitem{sekara2016fundamental}
 Vedran Sekara, Arkadiusz Stopczynski, and Sune Lehmann.
 \newblock Fundamental structures of dynamic social networks.
 \newblock {\em Proceedings of the national academy of sciences}, 113(36):9977--9982, 2016.
+
+\bibitem{scipy}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, Matt Haberland, Tyler Reddy, David Cournapeau, Evgeni Burovski, Pearu Peterson, Warren Weckesser, Jonathan Bright, St{\'e}fan~J. {van der Walt}, Matthew Brett, Joshua Wilson, K.~Jarrod Millman, Nikolay Mayorov, Andrew R.~J. Nelson, Eric Jones, Robert Kern, Eric Larson, C~J Carey, {\.I}lhan Polat, Yu~Feng, Eric~W. Moore, Jake {VanderPlas}, Denis Laxalde, Josef Perktold, Robert Cimrman, Ian Henriksen, E.~A. Quintero, Charles~R. Harris, Anne~M. Archibald, Ant{\^o}nio~H. Ribeiro, Fabian Pedregosa, Paul {van Mulbregt}, and {SciPy 1.0 Contributors}.
+\newblock {{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in Python}.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
 
 \bibitem{Wang2011UnderstandingGS}
 Tianyi Wang, Yang Chen, Zengbin Zhang, Tianyin Xu, Long Jin, Pan Hui, Beixing Deng, and Xing Li.

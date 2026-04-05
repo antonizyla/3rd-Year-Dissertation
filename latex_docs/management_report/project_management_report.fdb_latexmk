@@ -1,7 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1774898368.88481 "/home/antoni/Dev/3rdyearproject/latex_docs/management_report/project_management_report.tex" "project_management_report.pdf" "project_management_report" 1774898369.34707 0
-  "/home/antoni/Dev/3rdyearproject/latex_docs/management_report/project_management_report.tex" 1774898368.1732 6118 172ba4197b152a8af71e5c2de55497a2 ""
+["pdflatex"] 1774899068.82407 "/home/antoni/Dev/3rdyearproject/latex_docs/management_report/project_management_report.tex" "project_management_report.pdf" "project_management_report" 1774899069.36105 0
+  "/home/antoni/Dev/3rdyearproject/latex_docs/management_report/project_management_report.tex" 1774899068.11545 5836 67cf63c7fda77762223eca62b5839a8a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -13,6 +14,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1136768653 1124 6c73e740cf17375f03eec0ee63599741 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
@@ -141,12 +143,14 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1737590400 40900 887e0dc8cac988a9e9c574af364cf837 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1754500487.38159 548928 d5cef11bab9e23afb1f72925de968dee ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1760482276 7571769 36ae38ee58201d53bf171bffed19d40f ""
-  "project_management_report.aux" 1774898369.2882 1544 ceabd3d175375c6c23f488a6a0971325 "pdflatex"
-  "project_management_report.out" 1774898369.2892 1399 bca79a231490137dd953f192c7b5c4a8 "pdflatex"
-  "project_management_report.tex" 1774898368.1732 6118 172ba4197b152a8af71e5c2de55497a2 ""
+  "project_management_report.aux" 1774899069.29745 2154 e0ca2e60ce637fa73939bc7328c21d31 "pdflatex"
+  "project_management_report.out" 1774899069.29745 2084 be6d44aa10b12867b1e4c248454c152d "pdflatex"
+  "project_management_report.tex" 1774899068.11545 5836 67cf63c7fda77762223eca62b5839a8a ""
+  "project_management_report.toc" 1774899069.29745 1067 585e9f8bd0ab95ba7b029ce6bfb69ccc "pdflatex"
   (generated)
   "project_management_report.aux"
   "project_management_report.log"
   "project_management_report.out"
   "project_management_report.pdf"
+  "project_management_report.toc"
   (rewritten before read)

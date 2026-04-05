@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  30 MAR 2026 17:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  4 APR 2026 09:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -101,46 +101,167 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `Report.toc'.
 
- [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+ [2] [3] [4] [5] [6] [7] [8] [9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 198--202
+
+ []
+
+[11] [12] [13{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 <figures/all_heuristics_icc.png, id=56, 709.6914pt x 411.2163pt>
 File: figures/all_heuristics_icc.png Graphic file (type png)
 <use figures/all_heuristics_icc.png>
-Package pdftex.def Info: figures/all_heuristics_icc.png  used on input line 254.
+Package pdftex.def Info: figures/all_heuristics_icc.png  used on input line 272.
 (pdftex.def)             Requested size: 345.0pt x 199.8977pt.
  [14 <./figures/all_heuristics_icc.png>] [15] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 335--337
+Underfull \hbox (badness 10000) in paragraph at lines 354--356
 
  []
 
 [17] [18]
-Overfull \hbox (31.22295pt too wide) in paragraph at lines 372--382
+Overfull \hbox (31.22295pt too wide) in paragraph at lines 394--404
 [][] 
  []
 
-<../../explorations/overlayed_hisotgram_degree_dist_all_nets.png, id=76, 320.1561pt x 328.1058pt>
+<../../explorations/overlayed_hisotgram_degree_dist_all_nets.png, id=77, 320.1561pt x 328.1058pt>
 File: ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png Graphic file (type png)
 <use ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png>
-Package pdftex.def Info: ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png  used on input line 386.
+Package pdftex.def Info: ../../explorations/overlayed_hisotgram_degree_dist_all_nets.png  used on input line 408.
 (pdftex.def)             Requested size: 320.1553pt x 328.105pt.
-[19] [20 <../../explorations/overlayed_hisotgram_degree_dist_all_nets.png>] [21] [22] [23] [24]
-Overfull \hbox (0.48012pt too wide) in paragraph at lines 451--452
-\OT1/cmr/m/n/10 SHORT CON-CLU-SION MAYBE 800-1000 WORDS SUM-MARIS-ING THE EN-
+[19] [20 <../../explorations/overlayed_hisotgram_degree_dist_all_nets.png>]
+<ltm_all_nets_hybrid.png, id=86, 721.9773pt x 717.6411pt>
+File: ltm_all_nets_hybrid.png Graphic file (type png)
+<use ltm_all_nets_hybrid.png>
+Package pdftex.def Info: ltm_all_nets_hybrid.png  used on input line 441.
+(pdftex.def)             Requested size: 345.0pt x 342.93077pt.
+ [21] [22 <./ltm_all_nets_hybrid.png>]
+<Runtime_comparison.png, id=94, 371.4678pt x 368.577pt>
+File: Runtime_comparison.png Graphic file (type png)
+<use Runtime_comparison.png>
+Package pdftex.def Info: Runtime_comparison.png  used on input line 477.
+(pdftex.def)             Requested size: 276.00105pt x 273.87312pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[23] [24 <./Runtime_comparison.png>]
+<icc_redone_all_nets_hybrid.png, id=102, 721.9773pt x 717.6411pt>
+File: icc_redone_all_nets_hybrid.png Graphic file (type png)
+<use icc_redone_all_nets_hybrid.png>
+Package pdftex.def Info: icc_redone_all_nets_hybrid.png  used on input line 507.
+(pdftex.def)             Requested size: 345.0pt x 342.93077pt.
+
+Overfull \hbox (106.80971pt too wide) in paragraph at lines 515--536
+ []|  [] 
  []
 
-[25] (./Report.bbl) [26] (./Report.aux) ) 
+[25
+
+] [26 <./icc_redone_all_nets_hybrid.png>]
+Overfull \hbox (106.80971pt too wide) in paragraph at lines 546--564
+ []|  [] 
+ []
+
+
+Overfull \hbox (106.80971pt too wide) in paragraph at lines 573--591
+ []|  [] 
+ []
+
+[27]
+Overfull \hbox (106.80971pt too wide) in paragraph at lines 600--618
+ []|  [] 
+ []
+
+File: ltm_all_nets_hybrid.png Graphic file (type png)
+<use ltm_all_nets_hybrid.png>
+Package pdftex.def Info: ltm_all_nets_hybrid.png  used on input line 639.
+(pdftex.def)             Requested size: 345.0pt x 342.93077pt.
+[28]
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 649--666
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 674--691
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 699--716
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 724--741
+ []|  [] 
+ []
+
+[29]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[30]
+<dcc_redone_all_nets_hybrid.png, id=123, 721.9773pt x 717.6411pt>
+File: dcc_redone_all_nets_hybrid.png Graphic file (type png)
+<use dcc_redone_all_nets_hybrid.png>
+Package pdftex.def Info: dcc_redone_all_nets_hybrid.png  used on input line 761.
+(pdftex.def)             Requested size: 345.0pt x 342.93077pt.
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 769--787
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 795--813
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (139.0387pt too wide) in paragraph at lines 820--838
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (104.03859pt too wide) in paragraph at lines 846--864
+ []|  [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[31] [32 <./dcc_redone_all_nets_hybrid.png>] [33] [34] [35] [36
+
+] [37] (./Report.bbl [38]) [39] (./Report.aux) ) 
 Here is how much of TeX's memory you used:
- 1452 strings out of 477136
- 24333 string characters out of 5813391
- 1861388 words of memory out of 6000000
- 21754 multiletter control sequences out of 15000+600000
- 517223 words of font info for 48 fonts, out of 8000000 for 9000
+ 1496 strings out of 477136
+ 25346 string characters out of 5813391
+ 1902388 words of memory out of 6000000
+ 21793 multiletter control sequences out of 15000+600000
+ 517391 words of font info for 49 fonts, out of 8000000 for 9000
  430 hyphenation exceptions out of 8191
- 57i,8n,62p,813b,216s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Report.pdf (26 pages, 337154 bytes).
+ 57i,8n,62p,813b,267s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on Report.pdf (39 pages, 918372 bytes).
 PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
+ 226 PDF objects out of 1000 (max. 8388607)
+ 139 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

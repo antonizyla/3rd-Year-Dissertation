@@ -256,6 +256,53 @@ def greedy_h(G: nx.DiGraph, n: int = 2) -> list:
     seeds.sort(reverse=True)
     return [seed for (_, seed) in seeds[0:n]]
 
+def greedy2_h(G: nx.DiGraph, n: int = 2) -> list:
+    """
+    :param G: Directed graph
+    :type G: nx.DiGraph
+    :param n: Number of seeds
+    :type n: int
+    :return: Selected seed nodes
+    :rtype: list
+    """
+
+    if n >= len(G.nodes()):
+        return list(G.nodes())
+
+    net = Network.Network("")
+    net.set_nx(G)
+
+    seeds = []
+
+    for _ in range(n):
+
+        best_node = None
+        best_spread = -1
+
+        for node in G.nodes():
+
+            if node in seeds:
+                continue
+
+            candidate = seeds + [node]
+
+            _, final, _ = net.run_ICC([candidate, 0.1, 10000])
+
+            spread = sum(
+                1 for _, data in final.nodes(data=True)
+                if data["status"] != "inactive"
+            )
+
+            spread /= final.number_of_nodes()
+
+            if spread > best_spread:
+                best_spread = spread
+                best_node = node
+
+        seeds.append(best_node)
+
+    return seeds
+
 
 def celf_h(G: nx.DiGraph, n: int = 2) -> list:
     """
