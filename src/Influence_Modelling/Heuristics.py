@@ -256,6 +256,7 @@ def greedy_h(G: nx.DiGraph, n: int = 2) -> list:
     seeds.sort(reverse=True)
     return [seed for (_, seed) in seeds[0:n]]
 
+
 def greedy2_h(G: nx.DiGraph, n: int = 2) -> list:
     """
     :param G: Directed graph
@@ -275,12 +276,10 @@ def greedy2_h(G: nx.DiGraph, n: int = 2) -> list:
     seeds = []
 
     for _ in range(n):
-
         best_node = None
         best_spread = -1
 
         for node in G.nodes():
-
             if node in seeds:
                 continue
 
@@ -289,8 +288,7 @@ def greedy2_h(G: nx.DiGraph, n: int = 2) -> list:
             _, final, _ = net.run_ICC([candidate, 0.1, 10000])
 
             spread = sum(
-                1 for _, data in final.nodes(data=True)
-                if data["status"] != "inactive"
+                1 for _, data in final.nodes(data=True) if data["status"] != "inactive"
             )
 
             spread /= final.number_of_nodes()

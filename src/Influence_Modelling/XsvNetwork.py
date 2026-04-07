@@ -84,6 +84,18 @@ class XsvNetwork(Network):
                 "Influence_Modelling.datasets", "twitter_combined.txt"
             )
             return data.read().decode("utf-8").split("\n")
+        elif self.__filepath == "physics":
+            self.__sep = "\t"
+            data = importlib.resources.open_binary(
+                "Influence_Modelling.datasets", "CA-AstroPh.txt"
+            )
+            return data.read().decode("utf-8").split("\n")
+        elif self.__filepath == "twitch":
+            self.__sep = ","
+            data = importlib.resources.open_binary(
+                "Influence_Modelling.datasets", "large_twitch_edges.txt"
+            )
+            return data.read().decode("utf-8").split("\n")
         # Own files
         absolute_path: str = ""
         if os.path.isfile(self.__filepath):
@@ -126,9 +138,7 @@ class XsvNetwork(Network):
                               and {split_line[1]} with weight {split_line[2]}"""
                         )
             else:
-                print(
-                    f"[SV Network] Erro dasdsadr Reading row with content `{repr(line)}`"
-                )
+                print(f"[SV Network] Reading row with content `{repr(line)}`")
         self.__G = self.__H
 
     def get_nx(self):

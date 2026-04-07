@@ -1,42 +1,40 @@
 \contentsline {section}{\numberline {1}Abstract}{3}{}%
 \contentsline {section}{\numberline {2}Introduction}{4}{}%
 \contentsline {section}{\numberline {3}Literature Review}{5}{}%
-\contentsline {subsection}{\numberline {3.1}Models of Influence Propogation}{5}{}%
-\contentsline {subsection}{\numberline {3.2}Working with large networks}{6}{}%
-\contentsline {subsubsection}{\numberline {3.2.1}Naive Approaches}{6}{}%
-\contentsline {subsubsection}{\numberline {3.2.2}Smarter Sampling Methods}{7}{}%
-\contentsline {subsubsection}{\numberline {3.2.3}Scale Free (or not) Networks}{7}{}%
-\contentsline {subsection}{\numberline {3.3}Methods for finding seeds}{8}{}%
-\contentsline {subsection}{\numberline {3.4}CoFIM - Community Based Methods}{10}{}%
-\contentsline {subsubsection}{\numberline {3.4.1}Community Detection Algorithms}{10}{}%
-\contentsline {subsection}{\numberline {3.5}Working with multiple metrics}{11}{}%
-\contentsline {subsection}{\numberline {3.6}Evaluating network topology}{11}{}%
-\contentsline {subsubsection}{\numberline {3.6.1}Approximations of metrics}{12}{}%
-\contentsline {section}{\numberline {4}Problem Formulation}{13}{}%
-\contentsline {section}{\numberline {5}Proposed Algorithms}{14}{}%
-\contentsline {subsection}{\numberline {5.1}Hybrid Algorithms}{14}{}%
-\contentsline {subsection}{\numberline {5.2}Community Aware Algorithms}{16}{}%
-\contentsline {subsubsection}{\numberline {5.2.1}Saturating or Connecting Communities}{17}{}%
-\contentsline {subsubsection}{\numberline {5.2.2}Exploiting Community Detection Algorithms}{17}{}%
-\contentsline {subsection}{\numberline {5.3}Limited Context Algorithms}{18}{}%
-\contentsline {section}{\numberline {6}Experimental Method and Setup}{19}{}%
-\contentsline {subsection}{\numberline {6.1}Datasets}{19}{}%
-\contentsline {subsection}{\numberline {6.2}Sampling Methods}{19}{}%
-\contentsline {subsection}{\numberline {6.3}Accounting for differences in network sampling}{19}{}%
-\contentsline {subsection}{\numberline {6.4}Evaluation Methods}{21}{}%
-\contentsline {subsection}{\numberline {6.5}Baseline Behaviours}{21}{}%
-\contentsline {subsection}{\numberline {6.6}Statistical Analysis}{21}{}%
-\contentsline {subsubsection}{\numberline {6.6.1}The data is a curve}{23}{}%
-\contentsline {subsubsection}{\numberline {6.6.2}Generalising to networks in General}{23}{}%
-\contentsline {subsection}{\numberline {6.7}A note on perofrmance}{23}{}%
-\contentsline {subsection}{\numberline {6.8}Tools and Libraries}{23}{}%
-\contentsline {section}{\numberline {7}Results and Analysis}{25}{}%
-\contentsline {subsection}{\numberline {7.1}Hybrid Algorithms}{25}{}%
-\contentsline {subsubsection}{\numberline {7.1.1}Parameters}{25}{}%
-\contentsline {subsubsection}{\numberline {7.1.2}ICC Analysis}{25}{}%
-\contentsline {subsubsection}{\numberline {7.1.3}LTM Analysis}{29}{}%
-\contentsline {subsubsection}{\numberline {7.1.4}DCC Analysis}{31}{}%
-\contentsline {subsubsection}{\numberline {7.1.5}Subsection of Deg/mnd across parameters}{34}{}%
-\contentsline {subsubsection}{\numberline {7.1.6}Methods that Did not work}{34}{}%
-\contentsline {section}{\numberline {8}Limitations}{36}{}%
-\contentsline {section}{\numberline {9}Conclusion}{37}{}%
+\contentsline {subsection}{\numberline {3.1}Problem complexity}{5}{}%
+\contentsline {subsection}{\numberline {3.2}Models of Influence Propagation}{5}{}%
+\contentsline {subsection}{\numberline {3.3}Working with large networks}{6}{}%
+\contentsline {subsubsection}{\numberline {3.3.1}Naive Approaches}{6}{}%
+\contentsline {subsubsection}{\numberline {3.3.2}Smarter Sampling Methods}{7}{}%
+\contentsline {subsubsection}{\numberline {3.3.3}Scale Free (or not) Networks}{7}{}%
+\contentsline {subsection}{\numberline {3.4}Finding seed nodes}{7}{}%
+\contentsline {subsection}{\numberline {3.5}Community Based Methods}{9}{}%
+\contentsline {subsubsection}{\numberline {3.5.1}Community Detection Algorithms}{9}{}%
+\contentsline {subsection}{\numberline {3.6}Working with multiple metrics}{10}{}%
+\contentsline {subsection}{\numberline {3.7}Evaluating network topology}{10}{}%
+\contentsline {subsubsection}{\numberline {3.7.1}Approximations of metrics}{11}{}%
+\contentsline {section}{\numberline {4}Problem Formulation}{12}{}%
+\contentsline {section}{\numberline {5}Proposed Algorithms}{13}{}%
+\contentsline {subsection}{\numberline {5.1}Hybrid Algorithms}{13}{}%
+\contentsline {section}{\numberline {6}Experimental Method and Setup}{14}{}%
+\contentsline {subsection}{\numberline {6.1}Datasets}{14}{}%
+\contentsline {subsection}{\numberline {6.2}Implementation of Greedy and CELF}{14}{}%
+\contentsline {subsection}{\numberline {6.3}Sampling Methods}{14}{}%
+\contentsline {subsection}{\numberline {6.4}Accounting for differences in network sampling}{14}{}%
+\contentsline {subsection}{\numberline {6.5}Evaluation Methods}{15}{}%
+\contentsline {subsection}{\numberline {6.6}Baseline Behaviours}{15}{}%
+\contentsline {subsection}{\numberline {6.7}Statistical Analysis}{16}{}%
+\contentsline {subsubsection}{\numberline {6.7.1}The data is a curve}{16}{}%
+\contentsline {subsubsection}{\numberline {6.7.2}Generalising to networks in General}{16}{}%
+\contentsline {subsection}{\numberline {6.8}A note on performance}{16}{}%
+\contentsline {subsection}{\numberline {6.9}Tools and Libraries}{16}{}%
+\contentsline {section}{\numberline {7}Results and Analysis}{18}{}%
+\contentsline {subsection}{\numberline {7.1}Hybrid Algorithms}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.1}Parameters}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.2}ICC Analysis}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.3}LTM Analysis}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.4}DCC Analysis}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.5}Subsection of Deg/mnd across parameters}{18}{}%
+\contentsline {subsubsection}{\numberline {7.1.6}Methods which did not work}{18}{}%
+\contentsline {section}{\numberline {8}Limitations}{22}{}%
+\contentsline {section}{\numberline {9}Conclusion}{23}{}%
