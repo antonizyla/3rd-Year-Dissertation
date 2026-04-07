@@ -4,6 +4,7 @@
 \usepackage{cite}
 \usepackage{graphicx}
 
+\usepackage{clrscode}
 
 \title{Network Influence Stuff} 
 \author{Antoni Zyla (u5527350) - Supervised by Nathan Griffiths}
@@ -47,17 +48,17 @@ Using a model of conceptual contagion we can choose a subset of nodes to act as 
 \\
 
 Choosing an optimal subset of the population that will produce the greatest influence spread is an NP hard problem via a reduction from set cover.
-Approaches such as the Greedy algorithm and it's optimisation CELF (Cost Effective Lazy Forward) produce a good theoretical approximation of $1-1/e$ of the optimal result.
+Approaches such as the Greedy algorithm and it's optimisation CELF (Cost Effective Lazy Forward) produce a very good theoretical approximation of $(1-1/e)$ of the optimal result (approximately 63\%).
 There is the issue that on a reasonable sized network which would be worth studying even these approximations take an incredibly long time to compute due to the monte carlo simulation process of hundreds or even thousands of trials.
 For a set trials of the greedy algorithm over a range of seed sizes on our networks it takes around (TODO) hours, the same for CELF takes approximately (TODO) minutes with simpler heuristics taking just (TODO).
 \\
 
 Real world networks may have tens or even hundreds of thousands of nodes with millions of edges between them.
 Even CELF may be far too slow to operate on such a scale despite being approximately 700 times faster than a naive greedy approach.
-Approaches which require knowledge of the entire network to compute some measure about a node may be unfeasible to compute on such networks.
+Approaches requiring knowledge of the entire network to compute some measure about a node may be unfeasible to compute on such networks.
 Finding lightweight approaches is therefore crucial to efficient influence maximisation in larger networks.
 Degree based methods have been shown to be highly effective across a range of networks as they exploit the scale free property of typical social networks in which the majority of influence is held by few nodes.
-A drawback is that as our starting seed proportions increase the performance tails off due to a clustering effect observed between sets of high degree nodes.
+Community based approaches aim to exploit the typical clustering of nodes into dense communities with strong inter community links but poor intra community connectivity.
 \\
 
 We find that a single lightweight heuristic, made by giving each node a score of the ratio of their degree to the mean degree of their immediate neighbourhood is able to outperform CELF across each network topology under the decreasing cascade model and the linear threshold model.
@@ -66,16 +67,34 @@ We also investigate methods used in community detection or partitioning of netwo
 \newpage
 \section{Literature Review}
 
-\subsection{Problem complexity}
+\subsection{What is the Influence Maximisation Problem}
+
+\textbf{Definition: Influence Maximisation Problem} Given a network $G = (V, E)$, a non negative integer $k$, and a model of propagation $M$.
+\begin{itemize}
+	\item Find the subset $S \subset V$ of size $k$ such that the expected spread through $G$ under the model $M$ with $S$ as the starting seeds is maximised.
+\end{itemize}
+
+\subsection{Why is it NP-Hard?}
 Under a given influence influence model choosing the optimal starting set is an NP-hard problem.
-This can be shown using a reduction from set cover.
-Take an instance of set cover with a universe $U$, $n$ sets $S_1$ to $S_n$ and a non negative integer $k$.
-We can construct a bipartite graph made up of sets $A$ and $B$ were $A$ is made up of nodes labelled 1 to $n$ to represent each of $S_n$ nodes.
-Set $B$ will consist of each element of the universe, for each $s \in S_i$ drawing an edge between the node $i$ in $A$ to the corresponding node $s$ in set $B$.
+We can prove this using a reduction from a known NP hard problem, Set Cover.
+
+\vspace{1em}
+\noindent \textbf{Definition: Set Cover} Given a universe of elements $U$, a set of subsets of $U$, $S = \{S_1, S_2, ..., S_m\}$, and a non negative integer $k$.
+\begin{itemize}
+	\item Return True if there exists $S' \subset S$ where $|S'| = k$ and $\cup S' = U$
+	\item Return False otherwise
+\end{itemize}
+
+\vspace{1em}
+Let our model of influence have a probability of $1$ of any node influencing another node with a limit on only infecting one hop away.
+From an instance of set cover we can construct a bipartite graph of two sets of nodes $A$ and $B$ with $A$ made up of the nodes $1,2,..m$ with $B$ being each of the elements in the universe.
+Edges between $A$ and $B$ are constructed from each of the subsets in $S$.
+We can solve this transformed instance of set cover by choosing $k$ nodes as the seed which will produce the a resultant influence spread which spans the whole graph.
+This is the problem of choosing maximally influential set.
 \\
 
-We can solve this using an independent cascade model with a proability of 1 and choosing $k$ nodes in set $A$ which will cover the whole graph.
-In this case solving influence maximisation solves the set cover problem and as set cover is NP hard so must influence maximisation.
+We can solve set cover using a simplified version of our problem.
+In actuality our activation probabilities are able to be fractional, there is no limit on how far the influence of a single hop will penetrate.
 
 \subsection{Models of Influence Propagation}
 We will be focusing on three (3) main methods for influence spread across networks.
@@ -140,7 +159,6 @@ once the addition of the final layer would take the total number of sampled node
 A random walk is another simple strategy for exploring a graph.
 Working on the basis of a standard random walk, starting from a node $v$ there is a $\frac{1}{deg(v)}$ probability of choosing the next node to be $u$ where $u$ is one of the neighbours of $v$.
 A random walk based approach will suffer from the same problems as BFS with finding higher degree nodes much more often than lower degrees \cite{gjoka2010}, as a higher degree node has more connections that lead to it.
-
 
 \subsubsection{Smarter Sampling Methods}
 Utilising modified random walks is a standard method of achieving accurate and unbiased samples of large networks such as facebook \cite{gjoka2010}.
@@ -292,9 +310,9 @@ There are many metrics we can use to gain an insight into the type of network to
 \end{enumerate}
 
 \subsubsection{Approximations of metrics}
-Randomised approximation for betweenness centrality - How good is it. how much quicker is it. Is it worthwhile to use. Is betweeness a worthwhile measure
+Randomized approximation for betweenness centrality - How good is it. how much quicker is it. Is it worthwhile to use. Is betweenness a worthwhile measure
 
-Discouss the approxmations for local clustering - their runtimes, comparing to worst case of n cubed for high degree ndoes, how much worse do these perofrm, is it worth doing, is n cubed too slow to be useufl if more exact??
+Discuss the approximations for local clustering - their runtimes, comparing to worst case of n cubed for high degree nodes, how much worse do these perform, is it worth doing, is n cubed too slow to be useful if more exact??
 
 
 \newpage
@@ -306,9 +324,9 @@ The two hop neighborhood of $v$ is $N_2(v) = \cup_{u \in N(v)}N(u)$, this is the
 
 In the independent cascade model each node can have some state within $S = \{active, inactive, used\}$, each attempt for a node to influence it's neighbours as a probability $p$ of succeeding, $p$ is uniformily distributed across the range $[0, 1]$. Nodes may only change from "Active" to "Inactive" to "Used", we terminate once there are no more active nodes.
 
-The decreasing cascade model is a further modification of the indepeadnt cascade model where each node's probability of being turned is computed before starting and on each attempt it's either accepted or put through a function which monotonically decreases it's value.
+The decreasing cascade model is a further modification of the independent cascade model where each node's probability of being turned is computed before starting and on each attempt it's either accepted or put through a function which monotonically decreases it's value.
 
-In the lienar threshold model each node is given a threshold $t$ which is uniformily distrubuted across the range $[0, 1]$.
+In the linear threshold model each node is given a threshold $t$ which is uniformly distributed across the range $[0, 1]$.
 Once the proportion of $v$'s neighborhood which has become infected is greater than or equal to $t$ then the node $v$ will also become infected.
 
 $\sigma(s, t)$ is the set of shortest paths between $s$ and $t$, likewise $\sigma(s, t |v )$ is the set of shortest paths between $s$ and $t$ which contain the node $v$.
@@ -316,8 +334,32 @@ $\sigma(s, t)$ is the set of shortest paths between $s$ and $t$, likewise $\sigm
 $IM(G=(V, E), k)$ is the problem to find a subset of size $k$ of $V$ which will produce the greatest gain in influence after running a model of our choice on it.
 
 \newpage
-\section{Proposed Algorithms}
-These are the ideas and directions I have explored over the time of researching this topic and am hoping will produce a measurable difference over known algorithms.
+\section{Proposed Heuristics}
+
+We propose the following algorithm as a simple heuristic for choosing influential seeds.
+We give each node in the graph a score which is the ratio of the node's degree to the mean degree of that node's neighborhood.
+
+\begin{verbatim}
+def Deg-div-mnd(G: nx.DiGraph, n: int):
+    def __neighbour_deg(G, node):
+        neighbour_degrees = [G.degree(n) for n in G.adj[node]]
+        if neighbour_degrees == []:
+            return 0
+        return sum(neighbour_degrees) / len(neighbour_degrees)
+
+    score = []
+    for node in G.nodes():
+        score.append((G.degree(node) / (1e-6 + __neighbour_deg(G, node)), node))
+    score.sort(reverse=True)
+    return [x[1] for x in score[:n]]
+\end{verbatim}
+
+The rationale behind this combination is that high degree nodes are well known to be highly influential across a wide variety of networks.
+An problem with a degree based approach is choosing nodes which are clustered together making the the gain in influence lesser as the number of seeds increases.
+\\
+
+Dividing by the mean degree of the node's neighbourhood means that we are targeting nodes which are conected to a large amount of poorly connected low degree nodes.
+We hypothesis that this will produce a much better set of seeds than the standard degree heuristics particlarly as the number of seeds increases.
 
 \subsection{Hybrid Algorithms}
 From experimental testing it is clear there are differences in how certain methods for finding seeds perform based on the number of seeds required in relation to eachother.
@@ -362,7 +404,7 @@ This is to ensure that each result described can be reproduced with the methods 
 \subsection{Datasets}
 
 I have used the following real world datasets in my testing.
-As shown in the table they range in sizes from just over fifteen hundred (1500) nodes to just under a hundred and seventy thousand (168114) with between seventeen thousand edges (17215) up to over six million and seven hundred thousand (6797557).
+As shown in the table below \ref{networks-table-stats} they range in sizes from just over fifteen hundred (1500) nodes to just under a hundred and seventy thousand (168114) with between seventeen thousand edges (17215) up to over six million and seven hundred thousand (6797557).
 
 \begin{figure}[h]
 	\begin{tabular}{|c|c|c|c|c|c|c|}
@@ -373,11 +415,12 @@ As shown in the table they range in sizes from just over fifteen hundred (1500) 
 		P2P      & 10876  & 39994   & 7.355     & 0.006         & 10    & 0.001899       \\
 		Airports & 1574   & 17215   & 21.874    & 0.504         & 8     & 0.004334       \\
 		Twitter  & 81306  & 1342310 & 33.019    & 0.565         & 7     & 0.002114       \\
-		Physics  & 18772  & 198110  & 21.107    & 0.631         & x     & x              \\
-		Twitch   & 168114 & 6797557 & 80.868    & x             & 8     & 0.004709       \\
+		Physics  & 18772  & 198110  & 21.107    & 0.631         & 14    & 0.001328       \\
+		Twitch   & 168114 & 6797557 & 80.868    & 0.160         & 8     & 0.004709       \\
 		\hline
 	\end{tabular}
 	\caption{Real world networks metrics}
+	\label{networks-table-stats}
 \end{figure}
 
 \begin{enumerate}
@@ -388,7 +431,6 @@ As shown in the table they range in sizes from just over fifteen hundred (1500) 
 Some heuristics have very similar performance across different models of spread such as degree.
 Some methods such as betweenness or clustering coefficient have varied peformance across different diffusion models.
 As both methods require running a cascade on the network, the corresponding diffusion model is chosen by the function and any marginal gains in influence are done using the required model.
-
 
 \subsection{Sampling Methods}
 
@@ -480,52 +522,91 @@ We will also analyse each of the methods to test for statistical significance co
 In this section we discuss the general results across each model on each set of seed sizes. Any standout values are highlighted with comments on their significance or outlier noted.
 \subsubsection{ICC Analysis}
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=\textwidth]{icc_redone_all_nets_hybrid.png}
+		\includegraphics[width=\textwidth]{ICC p=0.1-performance.png}
 		\caption{ICC Hybrid Heuristics Performance}
+		\label{icc-p-0.1-perf}
 	\end{center}
 \end{figure}
+
+As shown in figure \ref{icc-p-0.1-perf} the IC model with $p=0.1$ each of our six networks we outperform or at least match the degree heuristic across all seed sizes.
+In all networks except the Airports we see our heuristic performing very close to CELF and even exceeding in some cases.
+\\
+We hypothesize that the large difference in performance on the airports dataset (TODO)
 
 \subsubsection{LTM Analysis}
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=\textwidth]{ltm_all_nets_hybrid.png}
+		\includegraphics[width=\textwidth]{LTM-performance.png}
 		\caption{LTM Hybrid Heuristics Performance}
+		\label{ltm-perf}
 	\end{center}
 \end{figure}
+
+As shown in figure \ref{ltm-perf} our heuristic shows a clear performance improvement over both degree and CELF across all seed set sizes.
+\\
+
+We note that the variance in performance from CELF and our degree based methods is due to the way CELF will compute the marginal gain for each node using just that node.
+For the threshold model computing an expected gain for a node is almost random as the full effect of the threshold of neighbours being affected does not take effect.
 
 \subsubsection{DCC Analysis}
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=\textwidth]{dcc_redone_all_nets_hybrid.png}
+		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.7-performance.png}
 		\caption{DCC Hybrid Heuristics Performance}
+		\label{dcc-p-0.1-q-0.7-perf}
 	\end{center}
 \end{figure}
 
+As seen in figure \ref{dcc-p-0.1-q-0.7-perf} our heuristic shows superior performance to both degree and CELF across the entire range of seed sizes and networks.
 
-\subsubsection{Subsection of Deg/mnd across parameters}
-From the above it is clear that it is the best overall cheap heuristics across the 3 models.
-It generally outperforms CELF on all datasets on all models.
 
-The above analysis as discusessed uses $p =0.1$ for ICC and DCC with DCC having a 0.7x probability of being turned each time it's attempted call this $q$. We will test the following parameters against CELF.
-$p$ in the ranges of 0.05 to 0.25 in 0.05 incremenets.
-$q$ in the range of 0.5 to 0.9 in 0.1 incremenets, noting that $q=1$ makes it directly equivalent ot the ICC model.
+\subsubsection{Stability across model parameters}
+It is not useful to find a heursitic which only works across a single narrow range of model parameters, in our case $p=0.1$ and $q=0.7$.
+We have therefore tested each of the IC and DC models with a set of parameters as listed in table \ref{param-table}
 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Model} & \textbf{p} & \textbf{q} & \textbf{t}     \\
+		\hline
+		IC             & 0.1        &            &                \\
+		IC             & 0.2        &            &                \\
+		IC             & 0.3        &            &                \\
+		\hline
+		DC             & 0.1        & 0.5        &                \\
+		DC             & 0.1        & 0.6        &                \\
+		DC             & 0.1        & 0.7        &                \\
+		DC             & 0.1        & 0.8        &                \\
+		DC             & 0.1        & 0.9        &                \\
+		\hline
+		LTM            &            &            & 0.6            \\
+		LTM            &            &            & 0.5            \\
+		LTM            &            &            & 0.4            \\
+		\hline
+	\end{tabular}
+	\caption{Tested Parameters for Regression}
+	\label{param-table}
+\end{table}
+
+\clearpage
 \subsubsection{Methods which did not work}
 
 \begin{enumerate}
 	\item Solely using betweenness or local clustering coefficient of a node as an indicator of influence was very network dependant and barely exceeds degree on most topologies.
 	\item Attempting to improve custom 5 (in Custom 9) by means of choosing $logk$ nodes as degree to improve the low seed count performance did not work and made it perform worse across all areas.
-	\item Union based approaches of selecting 
+	\item Union based approaches of selecting
 	\item
 \end{enumerate}
 
 \clearpage
 \section{Limitations}
 
+There are many ways in which this research could be expanded.
 
 
 \newpage

@@ -44,6 +44,7 @@ class Network:
         self.__name: str = name
         self.__v = verbose
         self.__limit: int = 10**5  # limit on the number of iterations reached
+        self.thresholds = {}
 
     def set_nx(self, G: nx.DiGraph):
         """
@@ -369,7 +370,76 @@ class Network:
             i += 1
         return (i, self.__H)
 
+    def initialise_thresholds(self, thres_funct=lambda G, node: random.random()):
+        self.thresholds = {
+            node: thres_funct(self.__G, node) for node in self.__G.nodes()
+        }
+
     def run_LTM(
+        self, seed_nodes, thres_funct=lambda G, node: random.random()
+    ) -> tuple[int, nx.DiGraph]:
+        """
+        Run a simulation of the linear threshold model on the network.
+        :param list seed_nodes: The set of nodes which start in the
+        `active` state
+        :param lambda thres_funct: A lambda function which gives the
+        threshold for a given node, taking in the graph and the specific node
+        :return: A tuple in the form `(i, G)`, where `i` is the number of
+        iterations before the network could no longer change in influence
+        and `G` is the final graph after `i` iterations
+        """
+        self.__H = self.__G
+        number_infected_0 = 0
+        number_infected_1 = 0
+        if seed_nodes is None or seed_nodes == []:
+            print(
+                f"""[Linear Threshold Model] on network: 
+                {self.__name}. No seed nodes provided. Using 
+                Degree Heuristic"""
+            )
+            seed_nodes = Heuristics.random_h(self.get_nx())
+
+        # for node in self.__H.nodes.data():
+        #    self.__H.add_node(
+        #        node[0], status="inactive", prob=thres_funct(self.__H, node)
+        #    )
+
+        if not self.thresholds:
+            self.initialise_thresholds(thres_funct)
+        for node in self.__H.nodes():
+            self.__H.add_node(node, status="inactive", prob=self.thresholds[node])
+
+        for seed in seed_nodes:
+            self.__H.add_node(seed, status="active")
+            number_infected_0 += 1
+
+        i = 0
+        while not self.__all_nodes_complete() and i < 100:
+            number_infected_1 = number_infected_0
+            i += 1
+            for node, data in self.__H.nodes.data():
+                if data["status"] == "inactive":
+                    # check neighbours for percentage > threshold
+                    active_neighbours = 0
+                    total_neighbours = 0
+                    for adj in self.__H.adj[node]:
+                        if self.__H.nodes[adj]["status"] == "active":
+                            active_neighbours += 1
+                        total_neighbours += 1
+                    if (
+                        total_neighbours > 0
+                        and (active_neighbours / total_neighbours)
+                        > self.__H.nodes[node]["prob"]
+                    ):
+                        self.__H.add_node(node, status="active")
+                        number_infected_1 += 1
+            if number_infected_1 - number_infected_0 == 0:
+                break
+            else:
+                number_infected_0 = number_infected_1
+        return (i, self.__H)
+
+    def run_1_LTM(
         self, seed_nodes, thres_funct=lambda G, node: random.random()
     ) -> tuple[int, nx.DiGraph]:
         """

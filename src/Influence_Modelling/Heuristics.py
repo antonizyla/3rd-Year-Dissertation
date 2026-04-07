@@ -48,7 +48,6 @@ def deg_discount_h(G: nx.DiGraph, n: int = 2) -> list:
 
     :param int n: Number of vertices to return
     :return: list of size n of vertices
-
     """
     if n >= len(G.nodes()):
         return [node for node in G.nodes()]
