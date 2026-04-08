@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex Report"] 1775600326.38655 "Report.aux" "Report.bbl" "Report" 1775600492.31482 0
-  "../sources.bib" 1774990282.78846 18724 c1e9fa2015353ac67263a3a803c1d8cf ""
+["bibtex Report"] 0 "Report.aux" "Report.bbl" "Report" 0 -1
+  "../sources.bib" 1775667383.86266 18970 243b7bc38ece1b12aa1919f91b9bddfe ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1737590400 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "Report.aux" 1775600492.22142 7082 1805b809e6486687250722339f0c52d4 "pdflatex"
+  "Report.aux" 1775686889.81208 9469 3c3504b8810e2f4f7d90828639bcf2b7 "pdflatex"
   (generated)
   "Report.bbl"
   "Report.blg"
   (rewritten before read)
-["pdflatex"] 1775600491.5409 "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" "Report.pdf" "Report" 1775600492.31498 0
-  "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" 1775600491.33542 50352 6691241448355e68089e38cc6e7a20b9 ""
+["pdflatex"] 1775686888.29577 "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" "Report.pdf" "Report" 1775686889.93636 2
+  "/home/antoni/Dev/3rdyearproject/latex_docs/report/Report.tex" 1775686886.1258 60718 39861c8f86f04eac8159bbfccca0730e ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -69,14 +69,22 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1737590400 40900 887e0dc8cac988a9e9c574af364cf837 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1754500487.38159 548928 d5cef11bab9e23afb1f72925de968dee ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1760482276 7571769 36ae38ee58201d53bf171bffed19d40f ""
+  "DCC p=0.1 q=0.5-performance.png" 1775579793.48601 157000 51da4429a14a3c5345cd52f7d4a33390 ""
+  "DCC p=0.1 q=0.6-performance.png" 1775579793.55103 155781 710b91f7188ae8256fb9a3afbb6c3a91 ""
   "DCC p=0.1 q=0.7-performance.png" 1775579793.65001 156439 62ec6b1914efde5bab011f789cf30094 ""
+  "DCC p=0.1 q=0.8-performance.png" 1775617183.0845 157736 1a7a0f3e1aa132809ba7db48cf09cb59 ""
+  "DCC p=0.1 q=0.9-performance.png" 1775617183.09577 156842 fb56fcc1a676cc81eaa913304a3b702f ""
   "ICC p=0.1-performance.png" 1775579793.65501 153497 767e0861e1593f3d2b012b2d9c6eee6e ""
+  "ICC p=0.2-performance.png" 1775579793.65701 147436 3248bd6eb0e3778621894d1d048cf964 ""
+  "ICC p=0.3-performance.png" 1775579793.83501 151648 62ac1d94fced1c6561035681e3ce751f ""
+  "LTM theta=0.3 n=500-performance.png" 1775614738.61031 146434 9276b07ce06d2b193aee289f16a2f04f ""
+  "LTM theta=0.5 n=500-performance.png" 1775614738.61129 145210 ff57167d7319c3c3b0017e82e82b1d99 ""
+  "LTM theta=0.7 n=500-performance.png" 1775614738.61195 145590 a57f1ea97d3f419e7232e3fdef43306c ""
   "LTM-performance.png" 1775579793.90597 137962 fff59250cbed58a46e10fbf7dcdad942 ""
-  "Report.aux" 1775600492.22142 7082 1805b809e6486687250722339f0c52d4 "pdflatex"
-  "Report.bbl" 1775600326.40962 4842 ce8daab8546f2a3930585384515de651 "bibtex Report"
-  "Report.tex" 1775600491.33542 50352 6691241448355e68089e38cc6e7a20b9 ""
-  "Report.toc" 1775600492.22242 3057 49b62c950a3479a5b582c30f9a029215 "pdflatex"
-  "Runtime_comparison.png" 1775170641.8099 40502 8ffeab15f7eabed3f57ea642dfd8745b ""
+  "Report.aux" 1775686889.81208 9469 3c3504b8810e2f4f7d90828639bcf2b7 "pdflatex"
+  "Report.bbl" 1775684940.52793 5427 296c59bc76f9d496243dd01b5ca9db82 "bibtex Report"
+  "Report.tex" 1775686886.1258 60718 39861c8f86f04eac8159bbfccca0730e ""
+  "Report.toc" 1775686889.81208 3247 bbe8b4a786e367210622ec96f8bfcc05 "pdflatex"
   "ltm_all_nets_hybrid.png" 1775170599.68696 225287 1e882998256b976fa3e9434fd32708ec ""
   (generated)
   "Report.aux"

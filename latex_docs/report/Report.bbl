@@ -59,10 +59,20 @@ David Kempe, Jon Kleinberg, and {\'E}va Tardos.
 \newblock Influential nodes in a diffusion model for social networks.
 \newblock In {\em international colloquium on automata, languages, and programming}, pages 1127--1138. Springer, 2005.
 
+\bibitem{p2p}
+Tor Klingberg and Raphael Manfredi.
+\newblock Gnutella 0.6 release memo, June 2002.
+\newblock \url{https://rfc-gnutella.sourceforge.net/src/rfc-0\_6-draft.html} Visited on 08/04/2026.
+
 \bibitem{kuperman2013invited}
 Marcelo~N Kuperman.
 \newblock Invited review: Epidemics on social networks.
 \newblock {\em Papers in physics}, 5(1):0--0, 2013.
+
+\bibitem{celf}
+Jure Leskovec, Andreas Krause, Carlos Guestrin, Christos Faloutsos, Jeanne VanBriesen, and Natalie Glance.
+\newblock Cost-effective outbreak detection in networks.
+\newblock In {\em Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '07, page 420–429, New York, NY, USA, 2007. Association for Computing Machinery.
 
 \bibitem{pandas}
 The pandas~development team.

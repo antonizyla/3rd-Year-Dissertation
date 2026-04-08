@@ -18,7 +18,7 @@
 \newpage
 \section{Abstract}
 
-Influence maximisation is the process of choosing a subset of population within a network to maximise the spread of an idea or concept under a model of spread.
+Influence maximisation is the process of choosing a subset of population within a network to maximise the spread of an idea or concept under a certain model of propogation.
 Computing the optimal solution is NP hard and therefore not feasible to compute for networks of a practical size.
 Existing approaches including the greedy algorithm and it's optimisation produce a good theoretical guarantee as an approximation of the optimal solution but tend to scale poorly even on small networks.
 \\
@@ -28,17 +28,17 @@ We test across four (4) real world networks of varying topologies and scale, sam
 Statistical analysis is performed using Welch's T Test and a linear mixed effect model to account for correlations between runs on the same network.
 \\
 
-Our proposed heuristics investigate locally computable node metrics in conjunction with network wide mesaures and metrics.
-Performance of an approach is highly dependent upon different network topologies, starting influential set sizes and underlying community structures of networks.
-Our strongest performing heuristic is a combination of the degree of a node and the mean degree across it's neighborhood, it consistently outperforms greedy across all of the networks under the decreasing cascade model and the linear threshold model at seed sizes of 50 or greater, for a 1000 seed network sample.
-The ability to be computed with no global knowledge of the network makes it an incredible performant option.
+Our proposed heuristic investigate locally computable node metrics in conjunction with network wide mesaures and metrics.
+Performance of an approach is highly dependent upon different network topologies, starting influential set sizes and the underlying community structures of networks.
+Our strongest performing heuristic is a combination of the degree of a node and the mean degree across it's neighborhood, it consistently matches or exceeds CELF across all of the networks under the decreasing cascade model and the linear threshold model at seed sizes of 50 or greater, for a 1000 seed network sample.
+The ability to be computed with no global knowledge of the network makes it a performant option which can scale across vast networks.
 \\
 
-We also investigate community based methods, attempting to exploit the properties of the (TODO) community detection algorithms to capture influential nodes in an efficient manner.
+We also investigate community based methods, attempting to exploit the properties of the greedy modularity maximisation community detection algorithm to capture influential nodes in an efficient manner.
 \\
 
 Our results suggest that simple and carefully constructed heuristics can reliably match the performance of a computationally heavy approximation method across a range of real world network topologies.
-Treating our problem in a divide and conquer fashion to split into smaller community based sub-problems significantly cutting down the computation required and improving performance.
+We find community based methods perform very well as shown in literature but there we are unable to make gains past that.
 
 \newpage
 \section{Introduction}
@@ -48,8 +48,8 @@ Using a model of conceptual contagion we can choose a subset of nodes to act as 
 \\
 
 Choosing an optimal subset of the population that will produce the greatest influence spread is an NP hard problem via a reduction from set cover.
-Approaches such as the Greedy algorithm and it's optimisation CELF (Cost Effective Lazy Forward) produce a very good theoretical approximation of $(1-1/e)$ of the optimal result (approximately 63\%).
-There is the issue that on a reasonable sized network which would be worth studying even these approximations take an incredibly long time to compute due to the monte carlo simulation process of hundreds or even thousands of trials.
+Approaches such as the Greedy algorithm and it's optimisation CELF (Cost Effective Lazy Forward) produce a very good theoretical approximation of $(1-1/e)$ of the optimal result (this is approximately 63\%).
+Due to the random nature of activations based on a probability $p$ using these greedy based approaches takes a
 For a set trials of the greedy algorithm over a range of seed sizes on our networks it takes around (TODO) hours, the same for CELF takes approximately (TODO) minutes with simpler heuristics taking just (TODO).
 \\
 
@@ -217,7 +217,7 @@ Those above are quick to compute and importantly required no global knowledge of
 	      \begin{equation}
 		      B(v) = \sum_{s, t \in V, s \neq v \neq v} \frac{|\sigma(s, t | v)|}{|\sigma(s, t)|}
 	      \end{equation} where $\sigma(s,t)$ denotes the set of shortest paths from node $s$ to $t$, with the conditional on $v$ is shortest paths which include $v$.
-	      h betweeneess is only taking into account shortest paths of length less than or equal to h, as h approaches the diameter of the network it becomes a slower but more accurate approximation.
+	      h betweenness is only taking into account shortest paths of length less than or equal to h, as h approaches the diameter of the network it becomes a slower but more accurate approximation.
 	      \begin{equation}
 		      B_h(v) = \sum_{s, t \in V, s \neq v \neq t} \frac{\{p | p \in \sigma(s, t | v) ,|p| \leq h \} }{\{ p | p \in \sigma(s,t), |p| \leq h \}}
 	      \end{equation}
@@ -256,7 +256,7 @@ What we are finding via Q is how much different the proportion of edges between 
 If a network displays a strong community structure then that implies there exist subsets where it is hard for ideas to propogate between them.
 If you were to choose nodes in just a single community then you might be able to saturate a community with a concept, however this may not provide an optimal global spread of the concept in the network.
 
-In certain scenarios this behaviour may be a good thing, if a community structure was distinct in real world characteritics, maybe consumer spending power or education levels then to propogate ideas would require different approaches and we could model this in a more fine tuned manner.
+In certain scenarios this behaviour may be a good thing, if a community structure was distinct in real world characteristic, maybe consumer spending power or education levels then to propogate ideas would require different approaches and we could model this in a more fine tuned manner.
 
 \subsubsection{Community Detection Algorithms}
 Talk about top down and bottom up methods - greedy modularity and girvan newman greedy - talk about effects of chosoing a different algorithm for ranking the removal/combination of edges.
@@ -358,11 +358,11 @@ The rationale behind this combination is that high degree nodes are well known t
 An problem with a degree based approach is choosing nodes which are clustered together making the the gain in influence lesser as the number of seeds increases.
 \\
 
-Dividing by the mean degree of the node's neighbourhood means that we are targeting nodes which are conected to a large amount of poorly connected low degree nodes.
-We hypothesis that this will produce a much better set of seeds than the standard degree heuristics particlarly as the number of seeds increases.
+Dividing by the mean degree of the node's neighbourhood means that we are targeting nodes which are connected to a large amount of poorly connected low degree nodes.
+We hypothesis that this will produce a much better set of seeds than the standard degree heuristics particularly as the number of seeds increases.
 
-\subsection{Hybrid Algorithms}
-From experimental testing it is clear there are differences in how certain methods for finding seeds perform based on the number of seeds required in relation to eachother.
+\subsection{Methods which did not yield viable results}
+From experimental testing it is clear there are differences in how certain methods for finding seeds perform based on the number of seeds required in relation to each-other.
 Some methods such as degree and degree discount based approaches work well at low seed counts but demonstrate increasingly diminishing returns as the number of seeds increases.
 This behaviour is expected due to the sub-modular nature of our problem space however other methods demonstrate that it may not necessarily be the case for all heuristics.
 \\
@@ -370,15 +370,12 @@ The following are the ideas and reasoning behind them, which produced interestin
 
 \begin{enumerate}
 	\item Custom 1: $S(k) = \deg(\log(k)) \cup bet(k - \log(k))$.
-	      Running trials of both betweenness and degree across multiple networks and then computing the intersection of the two approaches terminating states indicated minimal intersection of the two methods.
+	      Running trials of both betweenness and degree across multiple networks and then computing the intersection of the two approaches terminating states indicated minimal intersection of the two methods. When combined in this manner performance was good on the Enron network, on this network clustering coefficient and betweeness were particularly good indicators of spread. On the other tested networks this did not perform well at all giving very low performance.
 	\item Custom 3 $s(v) = \deg(v)\times(1 - lcc(v))$. This will find nodes that are a combination of high degree and low clustering coefficient at the same time.
 	      Nodes with a low clustering coefficient are relatively disconnected to the clique that would be formed by their neighbours,
 	      this would be an excellent way to find nodes which may have the greatest reach through the network in terms of distance and therefore distribution rather than immediate raw node counts.
 	\item Custom 4  $s(v) = \deg(v) \times \frac{1}{lcc(v)}$.
 	      Going to the reciprocal of clustering coefficient will weight the choices more towards the lower clustering nodes than that of degree as in Custom 3.
-	\item Custom 5 $s(v) = \deg(v) \times \frac{1}{mnd(v)}$.
-	      Choosing the nodes with the highest ratio of degree to mean neighbour degrees is attempting to choose nodes with lots of low degree neighbours, attempting to reach those nodes which are not well connected to the rest of the network.
-	      We expect this to produce similar effects to Custom 4 by emulating that of choosing low clustering coefficient nodes in a performant and local manner.
 	\item Custom 6 $s(v) = \deg(v) \times (1 - \frac{1}{max_{u \in V}(mnd(u))}mnd(v))$.
 	      Following on from Custom 5 we attempt to choose low mean neighbour degree nodes with a larger focus on node's degree.
 	      By normalising mean neighbour degree into an interval $[0, 1]$ we aim to improve the performance of Custom 5 at lower seed counts whilst maintaining expected performance.
@@ -386,7 +383,6 @@ The following are the ideas and reasoning behind them, which produced interestin
 	      The same logic as with taking high degree low clustering nodes but weighting for a higher mean neighbour degree.
 	      We aim to choose nodes which have lots of far reaching connections due to the low clustering coefficient, each of those connections has a high number of connections.
 	\item Custom 8: $s(v) = \deg(v) \times bet(v)$. Taking nodes with a high degree and a high betweeness at the same time will skew towards influential (due to degree) bridge nodes between relatively disjoint parts of the network
-	\item H-Index: Rank nodes based on the $k$ neighbours who each have a degree of at least $k$ in the same way that publications are ranked.
 \end{enumerate}
 
 Note that $s(v)$ denotes a score for each node, to choose $k$ nodes simply choose the $k$ nodes with the highest score. $S(k)$ denotes the set of $k$ nodes made up of different sets.
@@ -407,30 +403,64 @@ I have used the following real world datasets in my testing.
 As shown in the table below \ref{networks-table-stats} they range in sizes from just over fifteen hundred (1500) nodes to just under a hundred and seventy thousand (168114) with between seventeen thousand edges (17215) up to over six million and seven hundred thousand (6797557).
 
 \begin{figure}[h]
+	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
-		Name     & Nodes  & Edges   & Mean Deg. & Cluster Coef. & Diam. & Centralization \\
+		\textbf{Name} & \textbf{Nodes} & \textbf{Edges} & \textbf{Mean Deg.} & \textbf{Cluster Coef.} & \textbf{Diam.} & \textbf{Centralization} \\
 		\hline
-		Enron    & 36692  & 183831  & 10.020    & 0.497         & 13    & 0.00725        \\
-		P2P      & 10876  & 39994   & 7.355     & 0.006         & 10    & 0.001899       \\
-		Airports & 1574   & 17215   & 21.874    & 0.504         & 8     & 0.004334       \\
-		Twitter  & 81306  & 1342310 & 33.019    & 0.565         & 7     & 0.002114       \\
-		Physics  & 18772  & 198110  & 21.107    & 0.631         & 14    & 0.001328       \\
-		Twitch   & 168114 & 6797557 & 80.868    & 0.160         & 8     & 0.004709       \\
+		Enron         & 36692          & 183831         & 10.020             & 0.497                  & 13             & 0.00725                 \\
+		P2P           & 10876          & 39994          & 7.355              & 0.006                  & 10             & 0.001899                \\
+		Airports      & 1574           & 17215          & 21.874             & 0.504                  & 8              & 0.004334                \\
+		Twitter       & 81306          & 1342310        & 33.019             & 0.565                  & 7              & 0.002114                \\
+		Physics       & 18772          & 198110         & 21.107             & 0.631                  & 14             & 0.001328                \\
+		Twitch        & 168114         & 6797557        & 80.868             & 0.160                  & 8              & 0.004709                \\
 		\hline
 	\end{tabular}
-	\caption{Real world networks metrics}
+	\caption{Our network metrics}
 	\label{networks-table-stats}
 \end{figure}
 
 \begin{enumerate}
-	\item Enron. A 2001
+	\item Enron. Enron was an energy company which went bankrupt in 2001, there was a large amount of fraud and shady practices, as part of the investigation their internal emails were released. These emails form a large network with large
+	\item P2P represents a snapshot of the Gnutella peer to peer network from August 4th 2002, an it has a very interesting topology where nodes are split into peers or leaf nodes and "ultra peers" or hubs. The leaf nodes are connected to up to 5 other nodes. Each of the hub nodes has approximately 32 connections to both leaf nodes and other hub nodes. For a network of this size it has a relatively high diameter due to it's almost grid like nature with overall poor connectivity across it. Targeting those hub nodes which are primarily connected to the leaf nodes rather than other hub nodes will likely yield a performant option. \cite{p2p}
+	\item Airports is a reperesentation of the air traffic across the top 500 American airports by passenger volume observed in 2008 (TODO), we note that there are over 1500 nodes when we are considering 500 airports. This is due to American airports having many flights to international airports. These international airports are likely to act in a similar manner to the leaf nodes in the P2P network. Nodes are highly clustered in this network which is evident from the typical hub and spoke model employed by airlines.
+	\item Twitter represents a small subset of it's user base in (TODO) and their circles, this is no longer a feature and was removed in 2023. This allowed people to select a subset of their followers for which certain tweets could be shared to rather than everyone that they were followed by. This dataset exhibts a relaively low centralisation, a high mean degree as well as a low diameter and is an excellent represenation of a social network in a non work context.
+	\item Physics dataset is all academic paper citations between 1993 and April 2003 within astrophyscics papers on arXiv. It is an example of a professional network displaying a high mean degree, very high clustering but poor centralization. This is easily explained by certain topics having lots of closely cited papers with there not being a very large amount of overlap between these different groups.
+	\item Twitch is an interesting dataset. It is our largest dataset and represents the
 \end{enumerate}
 
 \subsection{Implementation of Greedy and CELF}
 Some heuristics have very similar performance across different models of spread such as degree.
-Some methods such as betweenness or clustering coefficient have varied peformance across different diffusion models.
+Some methods such as betweenness or clustering coefficient have incredibly varied performance across the different diffusion models.
 As both methods require running a cascade on the network, the corresponding diffusion model is chosen by the function and any marginal gains in influence are done using the required model.
+\\
+
+We did not use greedy in any of the comparisons as CELF has the exact same approximation guarantee and is feasible to run over our networks.
+When computing marginal gains it is typically done by using a monte carlo simulation of repeatedly rerunning the cascade with each seed set and candidate node to find an average.
+Due to the very large computational cost associated with performing monte carlo simulations across multiple networks we check how different our simulations are using a Mann-Whitney U test.
+\\
+
+Computing the observed effect size using Cohen's d for the two methods gives values in the range 0.206 to 0.238 for all seed counts except 100, with 100 having a value of 0.37 showing that the observed effect size is small.
+Our standard deviations are small ranging from under 0.02 to 0.034, with our largest observed effect the difference between the two distributions is 0.37 of a standard deviation which for the 100 node selection is equivalent to them varying by 0.74 percent in end coverage.
+To be able to detect such a small effect size with a power of 80 percent we would need to perform between 115 and 372 samples.
+Running just thirty with the monte carlo method takes over 90 minutes in parallel on the compute cluster.
+For our purposes the small effect size, minimal standard deviations, large p values and the required computational power show that the two are able to be used interchangeably particularly if we are able to use larger numbers of trials using the more efficient method.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		Seed Size & Mean Cov. CELF & Mean Cov. CELF with MC & U-Stat & P-Value  & Same Dist. \\
+		\hline
+		10        & 0.378918       & 0.371873               & 521.0  & 0.297272 & Yes        \\
+		50        & 0.399411       & 0.404740               & 416.0  & 0.620394 & Yes        \\
+		100       & 0.421773       & 0.414289               & 530.0  & 0.239843 & Yes        \\
+		200       & 0.440918       & 0.434511               & 524.5  & 0.273927 & Yes        \\
+		300       & 0.461211       & 0.457658               & 500.5  & 0.459754 & Yes        \\
+		\hline
+	\end{tabular}
+	\caption{Mann-Whitney U test $\alpha=0.05$ on the Monte Carlo CELF (100 simulations) and Non Monte Carlo CELF method over 30 runs on the Enron dataset sampled using MHDA with 1000 nodes}
+\end{table}
 
 \subsection{Sampling Methods}
 
@@ -470,40 +500,48 @@ There are a few ways to compare our results, it is important that the analysis i
 We are comparing the performance of a method across networks, we need to take into account usage of samples within those networks and random variability between runs of each algorithm on each sample.
 The number of unique samples is very important to have a number high enough.
 If we had 20 runs per sample with 5 samples of a network it might seem that we have 100 data points to compare.
-This is not the case, we know that network topology is slightly different between samples and network topology has a large effect on the results of a heuristics performance, each of the sets of 20 runs are correlated with eachother and so cannot be treated as indepeadnt trials.
+This is not the case, we know that network topology is slightly different between samples and network topology has a large effect on the results of a heuristics performance, each of the sets of 20 runs are correlated with eachother and so cannot be treated as independent trials.
 Due to this I will use a linear mixed effects model, for each run of a heuristic I will
 
 \subsubsection{The data is a curve}
-Consider a plot of final influence againse seed size as a curve or line. With such a plot there are a few
+A plot of influence spread against starting influential seed set would produce a curve in a similar shape to a logarithm due to the sub-modular nature of the spread function.
+There are two strategies we could use to compare two methods
 \begin{enumerate}
-	\item Use the area under the curve. This might seem as the best way of comparing the performance of two methods however it is a very coarse grained approach and will not allow for analysis of performance at different seed size proportions.
-	\item Compare the heurisitcs at a selection of certain points. This is the approach we will use for the analysis, we may want to find a heuristic for a low seeded proportion and there may be a significant difference with regards to the performance of different methods.
+	\item Use the area under the curve. This might seem as the best way of comparing the performance of two methods however it is a very coarse grained approach and will not allow for analysis of performance at different seed size proportions. Methods which perform very well at low seed counts but show minimal improvements as $k$ increases could look very good when in actuality they are not something that you would want to use due to variance.
+	\item Compare the heuristics at a selection of certain points. Different heuristics perform better or worse at different starting seed counts on different networks, having the most precise data at each point as a proportion of the overall network is a better way to make sure we choose the correct method for our specific usecase.
 \end{enumerate}
 
-\subsubsection{Generalising to networks in General}
-Using a linear mixed effects model to determine if a particular model is better than the baseline across all four of our test networks.
-
 \subsection{A note on performance}
-The following is a log plot of the mean runtime of each of the hybrid methods against eachother in miliseconds across eaach of the seed sizes as discusessed.
-Note that this is the total time to compute the seed and then perform a cascade.
-There may be a small variance based on performance however the network is 1000 nodes so very unlikely to be such a vast diffrence.
+Even on small 1000 node networks there are large performance differences between heuristics and methods.
+These runtimes include the time taken to initialise a new worker thread, read and unpickle the network to be operated on from disk, execute the heurisitc function, use the seeds on the given network and then save results to a new file relinuqishing our worker thread back into the pool.
+This overhead is most easily seen with the difference between Degree and Deg-div-mnd being only a few miliseconds despite performing up to a factor of $O(\Delta ^ 2)$ more operations where $\Delta$ is the maximal degree of a node.
 
-Greedy is over 110 times slower than CELF for 300 seed sizes.
-CELF is Tens of times slower than that of the betweness and clustering heurisitcs.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Method}        & \textbf{Mean Runtime}  & \textbf{Std. Dev Runtime} & \textbf{Big O average case} \\
+		\hline
+		CELF (Monte Carlo)     & $9.14 \times 10^{5}$ms & $4.61 \times 10^4$ms      & $O(100nm + k \log m )$      \\
+		CELF                   & $1.86 \times 10^4$ms   & $1.04 \times 10^3$ms      & $O(nm + k \log m)$          \\
+		Degree                 & $26$ms                 & $2.3$ms                   & $O(m + n \log n)$           \\
+		Local Clustering Coef. & $153$ms                & $102$ms                   & $O((\frac{m}{n})^3)$        \\
+		Betweenness            & $348$ms                & $166$ms                   & $O(nm)$                     \\
+		Deg-div-mnd            & $33.6$ms               & $6.3$ms                   & $O(m + n \log n)$           \\
+		\hline
+	\end{tabular}
+	\caption{Runtime statistics for choosing 300 seed nodes on samples of 1000 node samples Enron under the MHDA sampling algorithm over 30 trials using the IC model with $p=0.2$. The monte carlo CELF used 100 simulations showing minimal overhead to the test script.}
+\end{table}
 
-Clustering and Betweeness are multiple times slower than the basic degree based heurisitics.
-
-\begin{figure}[h]
-	\includegraphics[width=0.8\textwidth]{Runtime_comparison.png}
-	\caption{Log Mean Runtime in miliseconds of each method}
-\end{figure}
-
-In numerical terms on a 64 core zen 5 server cpu on the compute cluster running each trial in a separate process running all of the hybrid heurisitcs took around 23 minutes, CELF took around 35 minutes whilst Greedy ballooned the runtime to 22 hours.
-
+CELF is around 700 times slower than degree and degree-div-mnd based methods.
+CELF is also around 700 times faster than the un-optimised greedy algorithm as shown by \cite{celf}.
+Both the clustering and betweeness based methods show they are between five to ten (5-10) times slower than basic degree based methods.
+Clustering depends upon how dense or sparse the network is, if it was a complete graph for example then $m$ would be equal to $n^2$ and clustering approaches would be cubic and offer the same performance as betweeness.
+Any approaches using either of these would therefore have a significantly larger runtime than that of simpler heurisitcs.
 
 \subsection{Tools and Libraries}
-For the data visualistaion we used the library Matplotlib \cite{matplotlib} along with Scienceplots \cite{SciencePlots} for creating consistent formatting and fonts.
-The following libraries were used in the code and statistical analysis: Numpy \cite{numpy}, Pandas \cite{pandas}, Scipy \cite{scipy}, Networkx \cite{networkx}
+For the data visualisation the library Matplotlib \cite{matplotlib} was used for plotting along with Scienceplots \cite{SciencePlots} for creating consistent formatting and fonts across all figures.
+The following libraries were used in the code and statistical analysis: Numpy \cite{numpy} for general mathematical functions, Pandas \cite{pandas} for data storage, saving and reading files, Scipy \cite{scipy} for the statistical analysis, Networkx \cite{networkx} to allow for the implementation of graph based methods and models.
 
 \clearpage
 \section{Results and Analysis}
@@ -514,18 +552,17 @@ We will also analyse each of the methods to test for statistical significance co
 
 \subsubsection{Parameters}
 \begin{enumerate}
-	\item Networks: Each of Twitter, Enron, P2P, Airports networks sampled thirty (30) times using MHDA. Stored and saved to have the exact same networks for use with the 3 models.
-	\item Baseline Comparisons: Using greedy, CELF and degree as base heuristics to compare against the new hybrid heuristics.
-	\item Seed Sizes: Each network is made up of one thousand (1000) nodes, when comparing methods the seed sizes to compare will be from 50 to 300 in 50 node incremements with the addition of 10 nodes to represent incredibly small networks.
+	\item Networks: Each of the networks was sampled using the MHDA algorithm to produce a unique network for each trial. Each of the different heurisitcs used the same set of networks for consistency and to limit the random variance from both heurisitc and network topology.
+	\item Baseline Comparisons: Using CELF and degree as base heuristics to compare against the new hybrid heuristics. There are few heurisitcs which perform well and are efficient to calculate for so many networks.
+	\item Seed Sizes: Each sampled network is made up of one thousand (1000) nodes, when comparing methods the seed sizes to compare will be from 25 to 300 in 25 node incremements with the addition of 10 nodes to represent incredibly small starting seed proportions.
 \end{enumerate}
 
-In this section we discuss the general results across each model on each set of seed sizes. Any standout values are highlighted with comments on their significance or outlier noted.
 \subsubsection{ICC Analysis}
 
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=\textwidth]{ICC p=0.1-performance.png}
-		\caption{ICC Hybrid Heuristics Performance}
+		\caption{ICC Performance $p=0.1$ $n=100$}
 		\label{icc-p-0.1-perf}
 	\end{center}
 \end{figure}
@@ -540,7 +577,7 @@ We hypothesize that the large difference in performance on the airports dataset 
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=\textwidth]{LTM-performance.png}
-		\caption{LTM Hybrid Heuristics Performance}
+		\caption{LTM Hybrid Heuristics Performance $n=500$}
 		\label{ltm-perf}
 	\end{center}
 \end{figure}
@@ -556,7 +593,7 @@ For the threshold model computing an expected gain for a node is almost random a
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.7-performance.png}
-		\caption{DCC Hybrid Heuristics Performance}
+		\caption{DCC Hybrid Heuristics Performance $p=0.1$, $q=0.7$, $n=100$}
 		\label{dcc-p-0.1-q-0.7-perf}
 	\end{center}
 \end{figure}
@@ -570,28 +607,114 @@ We have therefore tested each of the IC and DC models with a set of parameters a
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|}
 		\hline
-		\textbf{Model} & \textbf{p} & \textbf{q} & \textbf{t}     \\
+		\textbf{Model} & \textbf{p} & \textbf{q} & \textbf{t} & Reasoning                                       \\
 		\hline
-		IC             & 0.1        &            &                \\
-		IC             & 0.2        &            &                \\
-		IC             & 0.3        &            &                \\
+		IC             & 0.1        &            &            & Our Baseline                                    \\
+		IC             & 0.2        &            &            & More likely to spread                           \\
+		IC             & 0.3        &            &            & Even more likely to spread                      \\
 		\hline
-		DC             & 0.1        & 0.5        &                \\
-		DC             & 0.1        & 0.6        &                \\
-		DC             & 0.1        & 0.7        &                \\
-		DC             & 0.1        & 0.8        &                \\
-		DC             & 0.1        & 0.9        &                \\
+		DC             & 0.1        & 0.5        &                                                              \\
+		DC             & 0.1        & 0.6        &                                                              \\
+		DC             & 0.1        & 0.7        &            & Our Baseline                                    \\
+		DC             & 0.1        & 0.8        &                                                              \\
+		DC             & 0.1        & 0.9        &            & Expect to trend close to IC                     \\
 		\hline
-		LTM            &            &            & 0.6            \\
-		LTM            &            &            & 0.5            \\
-		LTM            &            &            & 0.4            \\
+		LTM            &            &            & 0.9        & Expect the gap to open between the methods      \\
+		LTM            &            &            & 0.7        & Expect slower growth and lower overall values   \\
+		LTM            &            &            & 0.5        & Expected to be almost identical to baseline     \\
+		LTM            &            &            & 0.3        & Expect sharper growth and higher overall values \\
 		\hline
 	\end{tabular}
 	\caption{Tested Parameters for Regression}
 	\label{param-table}
 \end{table}
+
+TODO EXPLAIN WHY
+
+\subsubsection{Stability of the IC model}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{ICC p=0.2-performance.png}
+		\caption{IC Stability at $p=0.2$}
+		\label{icc-p-0.2-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{ICC p=0.3-performance.png}
+		\caption{IC Stability at $p=0.3$}
+		\label{icc-p-0.3-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\subsubsection{Stability of Decreasing Cascde}
+
+As shown above the heursitic is stable across varied values of $p$ under the IC model.
+We test now for variance when under the value of $q$ in the recurrence relation between the probability of activation over time $p_{t+1} = q \times p_t$.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.8-performance.png}
+		\caption{DCC stability at $p=0.1$ $q=0.8$}
+		\label{icc-p-0.2-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.9-performance.png}
+		\caption{DCC $p=0.1$ $q=0.5$}
+		\label{icc-p-0.3-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.6-performance.png}
+		\caption{DCC stability at $p=0.1$ $q=0.6$}
+		\label{icc-p-0.2-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{DCC p=0.1 q=0.5-performance.png}
+		\caption{DCC $p=0.1$ $q=0.5$}
+		\label{icc-p-0.3-q-0.7-perf}
+	\end{center}
+\end{figure}
+
+\subsubsection{Stability of the threshold model}
+Rather than assigning a random threshold for each node in the range [0, 1] we can also give all nodes a fixed probability.
+Setting a threshold $\theta$ of 0.5 should produce a very similar output to that of the randomised thresholds over the range 0 to 1 as the expectation of a random variable over that interval is 0.5.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{LTM theta=0.3 n=500-performance.png}
+		\caption{LTM stability at $\theta=0.3$}
+		\label{ltm-0.5-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{LTM theta=0.5 n=500-performance.png}
+		\caption{LTM stability at $\theta=0.5$}
+		\label{ltm-0.5-perf}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{LTM theta=0.7 n=500-performance.png}
+		\caption{LTM stability at $\theta=0.7$}
+		\label{icc-p-0.3-q-0.7-perf}
+	\end{center}
+\end{figure}
 
 \clearpage
 \subsubsection{Methods which did not work}
@@ -606,13 +729,20 @@ We have therefore tested each of the IC and DC models with a set of parameters a
 \clearpage
 \section{Limitations}
 
-There are many ways in which this research could be expanded.
+We consider a wide range of networks that cover a large number of real world topologies.
+Using exact networks to compare with specific papers would be a good idea.
+\\
 
+Investigation into the correlation between the relationship with seeds chosen by CELF in an IC or DC scenario and how they translate into influence under the LTM model would be a very interesting area to explore.
 
 \newpage
 \section{Conclusion}
 
-We have shown that for the influence maximisation problem simple structural heuristics with no global knowledge of the network are able to outperform the baseline greedy approximation.
+We have shown that for the influence maximisation problem a simple structural heuristics with no global knowledge of the network is able to outperform the greedy (1-1/e) approximation on the majority of networks and topologies.
+
+The heurisitcs' behavior is consistent across a range of model parameters including varied activation probabilities, varied decreasing function slopes as well as both randomised and fixed thresholds under the threshold models.
+
+
 
 \newpage
 \bibliography{../sources}{}
