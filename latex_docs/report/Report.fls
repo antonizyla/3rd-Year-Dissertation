@@ -192,57 +192,55 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy6.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
-OUTPUT Report.toc
-OUTPUT Report.pdf
-INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT ./Report.toc
+INPUT Report.toc
+INPUT Report.toc
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy7.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy5.tfm
+OUTPUT Report.toc
+OUTPUT Report.pdf
+INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
-INPUT ./ltm_all_nets_hybrid.png
-INPUT ./ltm_all_nets_hybrid.png
-INPUT ltm_all_nets_hybrid.png
-INPUT ./ltm_all_nets_hybrid.png
-INPUT ./ltm_all_nets_hybrid.png
-INPUT ./ICC p=0.1-performance.png
-INPUT ./ICC p=0.1-performance.png
-INPUT ICC p=0.1-performance.png
-INPUT ./ICC p=0.1-performance.png
-INPUT ./ICC p=0.1-performance.png
+INPUT ./ICC p=0.1 n=100-performance.png
+INPUT ./ICC p=0.1 n=100-performance.png
+INPUT ICC p=0.1 n=100-performance.png
+INPUT ./ICC p=0.1 n=100-performance.png
+INPUT ./ICC p=0.1 n=100-performance.png
 INPUT ./LTM-performance.png
 INPUT ./LTM-performance.png
 INPUT LTM-performance.png
 INPUT ./LTM-performance.png
 INPUT ./LTM-performance.png
-INPUT ./DCC p=0.1 q=0.7-performance.png
-INPUT ./DCC p=0.1 q=0.7-performance.png
-INPUT DCC p=0.1 q=0.7-performance.png
-INPUT ./DCC p=0.1 q=0.7-performance.png
-INPUT ./DCC p=0.1 q=0.7-performance.png
-INPUT ./ICC p=0.2-performance.png
-INPUT ./ICC p=0.2-performance.png
-INPUT ICC p=0.2-performance.png
-INPUT ./ICC p=0.2-performance.png
-INPUT ./ICC p=0.2-performance.png
-INPUT ./ICC p=0.3-performance.png
-INPUT ./ICC p=0.3-performance.png
-INPUT ICC p=0.3-performance.png
-INPUT ./ICC p=0.3-performance.png
-INPUT ./ICC p=0.3-performance.png
-INPUT ./DCC p=0.1 q=0.8-performance.png
-INPUT ./DCC p=0.1 q=0.8-performance.png
-INPUT DCC p=0.1 q=0.8-performance.png
-INPUT ./DCC p=0.1 q=0.8-performance.png
-INPUT ./DCC p=0.1 q=0.8-performance.png
+INPUT ./DCC p=0.1 q=0.7 n=100-performance.png
+INPUT ./DCC p=0.1 q=0.7 n=100-performance.png
+INPUT DCC p=0.1 q=0.7 n=100-performance.png
+INPUT ./DCC p=0.1 q=0.7 n=100-performance.png
+INPUT ./DCC p=0.1 q=0.7 n=100-performance.png
+INPUT ./ICC p=0.2 n=100-performance.png
+INPUT ./ICC p=0.2 n=100-performance.png
+INPUT ICC p=0.2 n=100-performance.png
+INPUT ./ICC p=0.2 n=100-performance.png
+INPUT ./ICC p=0.2 n=100-performance.png
+INPUT ./ICC p=0.3 n=100-performance.png
+INPUT ./ICC p=0.3 n=100-performance.png
+INPUT ICC p=0.3 n=100-performance.png
+INPUT ./ICC p=0.3 n=100-performance.png
+INPUT ./ICC p=0.3 n=100-performance.png
 INPUT ./DCC p=0.1 q=0.9-performance.png
 INPUT ./DCC p=0.1 q=0.9-performance.png
 INPUT DCC p=0.1 q=0.9-performance.png
 INPUT ./DCC p=0.1 q=0.9-performance.png
 INPUT ./DCC p=0.1 q=0.9-performance.png
+INPUT ./DCC p=0.1 q=0.8-performance.png
+INPUT ./DCC p=0.1 q=0.8-performance.png
+INPUT DCC p=0.1 q=0.8-performance.png
+INPUT ./DCC p=0.1 q=0.8-performance.png
+INPUT ./DCC p=0.1 q=0.8-performance.png
 INPUT ./DCC p=0.1 q=0.6-performance.png
 INPUT ./DCC p=0.1 q=0.6-performance.png
 INPUT DCC p=0.1 q=0.6-performance.png
@@ -253,21 +251,6 @@ INPUT ./DCC p=0.1 q=0.5-performance.png
 INPUT DCC p=0.1 q=0.5-performance.png
 INPUT ./DCC p=0.1 q=0.5-performance.png
 INPUT ./DCC p=0.1 q=0.5-performance.png
-INPUT ./LTM theta=0.3 n=500-performance.png
-INPUT ./LTM theta=0.3 n=500-performance.png
-INPUT LTM theta=0.3 n=500-performance.png
-INPUT ./LTM theta=0.3 n=500-performance.png
-INPUT ./LTM theta=0.3 n=500-performance.png
-INPUT ./LTM theta=0.5 n=500-performance.png
-INPUT ./LTM theta=0.5 n=500-performance.png
-INPUT LTM theta=0.5 n=500-performance.png
-INPUT ./LTM theta=0.5 n=500-performance.png
-INPUT ./LTM theta=0.5 n=500-performance.png
-INPUT ./LTM theta=0.7 n=500-performance.png
-INPUT ./LTM theta=0.7 n=500-performance.png
-INPUT LTM theta=0.7 n=500-performance.png
-INPUT ./LTM theta=0.7 n=500-performance.png
-INPUT ./LTM theta=0.7 n=500-performance.png
 INPUT ./Report.bbl
 INPUT Report.bbl
 INPUT ./Report.bbl

@@ -14,11 +14,7 @@ if not os.path.isfile(sys.argv[1]):
 print("Attempting to Open Database conection")
 con = sqlite3.connect(sys.argv[1])
 cursor = con.cursor()
-print("Completed Opening Database Connection")
 
-print("Checking data is imported in temp table")
-
-print("Performing data surgery")
 res = cursor.execute(
     "CREATE TABLE emails (emailID INTEGER PRIMARY KEY ASC, sender TEXT, recipients TEXT, messageID Text)"
 )
