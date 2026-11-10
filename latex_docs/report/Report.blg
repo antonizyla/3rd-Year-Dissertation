@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Report.aux
+The style file: plain.bst
+Database file #1: ../sources.bib
+Warning--entry type for "pandas" isn't style-file defined
+--line 351 of file ../sources.bib
+Warning--empty journal in SciencePlots
+Warning--empty booktitle in gjoka2010
+Warning--empty journal in jin2011albatross
+Warning--empty journal in snapnets
+Warning--empty journal in airports
+You've used 30 entries,
+            2118 wiz_defined-function locations,
+            685 strings with 10921 characters,
+and the built_in function-call counts, 12412 in all, are:
+= -- 1147
+> -- 830
+< -- 7
++ -- 329
+- -- 297
+* -- 983
+:= -- 2097
+add.period$ -- 92
+call.type$ -- 30
+change.case$ -- 237
+chr.to.int$ -- 0
+cite$ -- 35
+duplicate$ -- 392
+empty$ -- 799
+format.name$ -- 297
+if$ -- 2525
+int.to.chr$ -- 0
+int.to.str$ -- 30
+missing$ -- 26
+newline$ -- 151
+num.names$ -- 62
+pop$ -- 251
+preamble$ -- 1
+purify$ -- 207
+quote$ -- 0
+skip$ -- 309
+stack$ -- 0
+substring$ -- 602
+swap$ -- 94
+text.length$ -- 7
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 120
+warning$ -- 5
+while$ -- 95
+width$ -- 32
+write$ -- 323
+(There were 6 warnings)

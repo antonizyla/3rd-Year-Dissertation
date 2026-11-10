@@ -10,6 +10,21 @@ James Archbold and Nathan Griffiths.
 \newblock Limiting concept spread in environments with interacting concepts.
 \newblock In {\em 16th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2017)}, pages 1332--1340. IFAAMAS, 2017.
 
+\bibitem{betweenness}
+Ulrik Brandes.
+\newblock A faster algorithm for betweenness centrality*.
+\newblock {\em The Journal of Mathematical Sociology}, 25(2):163--177, 2001.
+
+\bibitem{cim}
+Yi-Cheng Chen, Wen-Yuan Zhu, Wen-Chih Peng, Wang-Chien Lee, and Suh-Yin Lee.
+\newblock Cim: Community-based influence maximization in social networks.
+\newblock {\em ACM Trans. Intell. Syst. Technol.}, 5(2), April 2014.
+
+\bibitem{clausetnewman}
+Aaron Clauset, M.~E.~J. Newman, and Cristopher Moore.
+\newblock Finding community structure in very large networks.
+\newblock {\em Physical Review E}, 70(6), December 2004.
+
 \bibitem{franks2014learning}
 Henry Franks, Nathan Griffiths, and Sarabjot~Singh Anand.
 \newblock Learning agent influence in mas with complex social networks.
@@ -19,6 +34,11 @@ Henry Franks, Nathan Griffiths, and Sarabjot~Singh Anand.
 John~D. Garrett.
 \newblock {garrettj403/SciencePlots}.
 \newblock September 2021.
+
+\bibitem{girvannewman}
+Michelle Girvan and Mark Newman.
+\newblock Girvan, m. \& newman, m. e. j. community structure in social and biological networks. proc. natl acad. sci. usa 99, 7821-7826.
+\newblock {\em Proceedings of the National Academy of Sciences of the United States of America}, 99:7821--6, 07 2002.
 
 \bibitem{gjoka2010}
 Minas Gjoka, Maciej Kurant, Carter Butts, and Athina Markopoulou.
@@ -49,34 +69,69 @@ J.~D. Hunter.
 \newblock Matplotlib: A 2d graphics environment.
 \newblock {\em Computing in Science \& Engineering}, 9(3):90--95, 2007.
 
-\bibitem{kempe2003}
+\bibitem{jin2011albatross}
+Long Jin, Yang Chen, Pan Hui, Cong Ding, Tianyi Wang, Athanasios Vasilakos, Beixing Deng, and Xing Li.
+\newblock Albatross sampling: robust and effective hybrid vertex sampling for social graphs.
+\newblock 07 2011.
+
+\bibitem{tardoskempe2003}
 David Kempe, Jon Kleinberg, and \'{E}va Tardos.
 \newblock Maximizing the spread of influence through a social network.
-\newblock In {\em Proceedings of the Ninth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '03, page 137–146, New York, NY, USA, 2003. Association for Computing Machinery.
+\newblock In {\em Proceedings of the Ninth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '03, pages 137--146, New York, NY, USA, 2003. Association for Computing Machinery.
 
 \bibitem{kempe2005influential}
 David Kempe, Jon Kleinberg, and {\'E}va Tardos.
 \newblock Influential nodes in a diffusion model for social networks.
 \newblock In {\em international colloquium on automata, languages, and programming}, pages 1127--1138. Springer, 2005.
 
-\bibitem{p2p}
-Tor Klingberg and Raphael Manfredi.
-\newblock Gnutella 0.6 release memo, June 2002.
-\newblock \url{https://rfc-gnutella.sourceforge.net/src/rfc-0\_6-draft.html} Visited on 08/04/2026.
-
 \bibitem{kuperman2013invited}
 Marcelo~N Kuperman.
 \newblock Invited review: Epidemics on social networks.
 \newblock {\em Papers in physics}, 5(1):0--0, 2013.
 
+\bibitem{lee2012randomwalkmetropolishastingssamplers}
+Chul-Ho Lee, Xin Xu, and Do~Young Eun.
+\newblock Beyond random walk and metropolis-hastings samplers: Why you should not backtrack for unbiased graph sampling, 2012.
+
 \bibitem{celf}
 Jure Leskovec, Andreas Krause, Carlos Guestrin, Christos Faloutsos, Jeanne VanBriesen, and Natalie Glance.
 \newblock Cost-effective outbreak detection in networks.
-\newblock In {\em Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '07, page 420–429, New York, NY, USA, 2007. Association for Computing Machinery.
+\newblock In {\em Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, KDD '07, pages 420--429, New York, NY, USA, 2007. Association for Computing Machinery.
+
+\bibitem{snapnets}
+Jure Leskovec and Andrej Krevl.
+\newblock Snap datasets: Stanford large network dataset collection.
+\newblock June 2014.
+\newblock http://snap.stanford.edu/data.
+
+\bibitem{airports}
+Tore Opsahl.
+\newblock Why anchorage is not (that) important: Binary ties and sample selection.
+\newblock 2011.
+\newblock Accessible at https://toreopsahl.com/2011/08/12/why-anchorage-is-not-that-important-binary-ties-and-sample-selection/ Accessed 09/04/2026.
 
 \bibitem{pandas}
 The pandas~development team.
 \newblock pandas-dev/pandas: Pandas, February 2020.
+
+\bibitem{satorras2008scalefree}
+Romualdo Pastor-Satorras and Alessandro Vespignani.
+\newblock Epidemic spreading in scale-free networks.
+\newblock {\em Physical review letters}, 86:3200--3, 05 2001.
+
+\bibitem{Twitch}
+Benedek Rozemberczki and Rik Sarkar.
+\newblock Twitch gamers: a dataset for evaluating proximity preserving and structural role-based node embeddings, 2021.
+
+\bibitem{clustering_coef}
+Jari Saramäki, Mikko Kivelä, Jukka-Pekka Onnela, Kimmo Kaski, and János Kertész.
+\newblock Generalizations of the clustering coefficient to weighted complex networks.
+\newblock {\em Physical Review E}, 75(2), February 2007.
+
+\bibitem{statsmodels}
+Skipper Seabold and Josef Perktold.
+\newblock statsmodels: Econometric and statistical modeling with python.
+\newblock In {\em 9th Python in Science Conference}, 2010.
 
 \bibitem{sekara2016fundamental}
 Vedran Sekara, Arkadiusz Stopczynski, and Sune Lehmann.

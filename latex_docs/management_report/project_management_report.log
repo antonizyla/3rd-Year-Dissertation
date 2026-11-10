@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  8 APR 2026 02:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2025.10.14)  9 APR 2026 05:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -525,9 +525,14 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./project_management_report.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 65--68
+
+ []
+
+[2] [3] (./project_management_report.aux)
 Package rerunfilecheck Info: File `project_management_report.out' has not changed.
-(rerunfilecheck)             Checksum: BE6D44AA10B12867B1E4C248454C152D;2084.
+(rerunfilecheck)             Checksum: 25A9933D88B292CD665596D141821898;2104.
  ) 
 Here is how much of TeX's memory you used:
  21195 strings out of 477136
@@ -538,7 +543,7 @@ Here is how much of TeX's memory you used:
  430 hyphenation exceptions out of 8191
  117i,6n,118p,507b,432s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on project_management_report.pdf (3 pages, 78479 bytes).
+Output written on project_management_report.pdf (3 pages, 80552 bytes).
 PDF statistics:
  114 PDF objects out of 1000 (max. 8388607)
  100 compressed objects within 1 object stream
