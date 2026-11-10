@@ -1,12 +1,59 @@
-# Antoni Zyla 3rd Year Project
+# Antoni Zyla (U5527350) Dissertation Repo
 
-**Abstract:** Influence Maximization Evaluation Research Platform
+![Final Report](https://github.com/antonizyla/3rdyearproject/blob/main/submission/Report.pdf) Scored 73%
 
-Design and Implement a Tool for running various sampling techniques on networks, allowing
-for ’slot in’ testing of various heuristics and comparison against existing papers. Operating on
-Independant Cascade, Decreasing Cascade and Linear Threshold Models.
+# **Abstract:** 
 
-# Usage
+Influence maximisation is the process of choosing a subset of population within a network to max-
+imise the spread of an idea or concept under a certain model of propagation. Computing the
+optimal solution is NP hard and therefore not feasible to compute for networks of a practical size.
+Existing approaches including the greedy algorithm and it’s optimisation produce a good theoret-
+ical guarantee as an approximation of the optimal solution but even still tend to scale poorly even
+on relatively small networks.
+
+In this paper we propose and evaluate an approach to efficiently solving this problem across
+three primary models of propagation, the independent cascade model, the decreasing cascade model
+and the linear threshold model. We test across six (6) real world networks of varying topologies and
+scale, sampled using the Metropolis Hastings Random Walk with Delayed Acceptance (MHDA)
+algorithm, a performant and topology preserving method. Statistical analysis is performed using
+Mann-Whitney U tests to determine equivalence of distributions, power tests to determine sample
+sizes and Cohen’s d to measure effect sizes.
+
+Our proposed heuristic investigates locally computable node metrics in conjunction with net-
+work wide measures and metrics. Performance of an approach is highly dependent upon different
+network topologies, starting influential set sizes and the underlying community structures of net-
+works. Our strongest performing heuristic is a combination of the degree of a node and the mean
+degree across it’s neighborhood, it consistently matches or exceeds CELF across all of the networks
+under the decreasing cascade model and the linear threshold model at all seed sizes, using a 1000
+seed network sample. The ability to be computed with no global knowledge of the network makes
+it a very performant option which can scale across vast networks.
+
+We also investigate community based methods, attempting to exploit the properties of the
+greedy modularity maximisation community detection algorithm to capture influential nodes in an
+efficient manner.
+
+Our results suggest that simple and carefully constructed heuristics can reliably match the
+performance of a computationally heavy approximation method across a range of real world network
+topologies. We find community based methods perform very well as shown in literature but we are
+unable to make gains past that.
+
+## Some Key Results
+
+<img width="939" height="314" alt="image" src="https://github.com/user-attachments/assets/3f8ffbf2-2f83-433c-8c58-d5e1dca81e01" />
+
+The performance characteristics of key heuristics are shown in the above table.
+
+<img width="840" height="699" alt="image" src="https://github.com/user-attachments/assets/ee5efd04-aeff-42cf-900b-cad843d268fa" />
+
+The influence performance characteristics of the methods shown across LTM models. Pages 17-19 of report go into detail about the performance and it's statistical significance.
+
+<img width="1072" height="317" alt="image" src="https://github.com/user-attachments/assets/4f0185f4-6dfa-4bc3-8381-dd5844ff3490" />
+
+Interchangeability of results between CELF with Monte Carlo method and repeatedly running CELF with just one random descision per iteration shown to be equivalent over the required number of samples to eliminate sample variance giving a massive performance uplift.
+
+
+
+## Usage of Code
 
 ### Prerquisities
 1. `Python 3.10` or above
